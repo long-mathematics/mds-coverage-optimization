@@ -61,7 +61,7 @@ The expected-defect objective and the MDS success probability have **separate an
 
 ## Status and scope
 
-These are research manuscripts with analytic proofs, **not proof-assistant-certified results**. Numerical diagnostics are not proofs. See [theorem status](THEOREM_STATUS.md), the [context-sensitive statement registry](docs/statement_registry.json), [integration audit](docs/INTEGRATION_AUDIT.md), [first-audit corrections](docs/FIRST_AUDIT_CORRECTIONS.md), and [formalization roadmap](FORMALIZATION_STATUS.md).
+These are research manuscripts with analytic proofs, **not proof-assistant-certified results**. Numerical diagnostics are not proofs. See [theorem status](THEOREM_STATUS.md), the [context-sensitive statement registry](docs/statement_registry.json), [integration audit](docs/INTEGRATION_AUDIT.md), [first-audit corrections](docs/FIRST_AUDIT_CORRECTIONS.md), [deep-audit clarifications](docs/DEEP_AUDIT_CLARIFICATIONS.md), and [formalization roadmap](FORMALIZATION_STATUS.md).
 
 This is not a general DNA-storage or transfer-calculus collection. Motif-channel posterior inference, capacity, orbit methods, and decoding are excluded from the active papers. The completed-rate-mass theorem is also excluded; its natural connection is to [nonuniform-random-permutations](https://github.com/long-mathematics/nonuniform-random-permutations). Cross-referencing that project does not import its proofs or its formalization status.
 

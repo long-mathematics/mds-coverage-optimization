@@ -52,3 +52,13 @@ The completed local validation is recorded in [global_support_validation.json](g
 ## Still required for stronger certification
 
 The dependency ledger supports further independent review paper by paper. No Lean theorem is yet formalized. Future formalization must include boundary cases, hypotheses and equality-case correspondence, and transitive-axiom checks rather than merely a successful build.
+
+## Deep audits and clarity-only integration
+
+Separate deep audits reconstructed Paper I-A (Gamma allocation), Paper I-B
+(global support phases), and Paper II.  They found no fatal gap, no principal
+statement requiring weakening, and no missing equality case.  The resulting
+patch adds only the explicit intermediate steps listed in
+[DEEP_AUDIT_CLARIFICATIONS.md](DEEP_AUDIT_CLARIFICATIONS.md).  Optional
+strengthenings of the Paper II concentration and perturbation statements
+were deliberately not introduced.  The frozen v30 source remains unchanged.

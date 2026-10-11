@@ -68,6 +68,28 @@ class FirstAuditRegressions(unittest.TestCase):
         self.assertGreaterEqual(F(q >= 1 - delta), 1 - eta)
         self.assertLess(q, (1 - delta) * (1 - eta))
 
+    def test_deep_audit_gamma_explications(self):
+        mixed = statement(self.gamma, 'lem:gamma-tail-ratio-bound')
+        self.assertIn(r'Let \(\tau>1\), put \(m=\tau-1\)', mixed)
+        self.assertIn('normalized form', self.gamma)
+        self.assertIn(r'R_{\rm new}', self.gamma)
+        self.assertIn('first directional derivative along the activation path', self.gamma)
+        self.assertIn(r'\zeta=z-m+\frac z{Q(z)}', self.gamma)
+
+    def test_deep_audit_support_explications(self):
+        self.assertIn('elementary monotone-inversion', self.gamma)
+        self.assertIn('closed convex Borel set', self.gamma)
+        self.assertIn('generated measure', self.gamma)
+        self.assertIn(r'\E e^{-\sigma Z}', self.gamma)
+        density = statement(self.gamma, 'lem:mds-density-ratio-crossing')
+        self.assertIn('nonempty:', self.gamma[self.gamma.index(density):])
+
+    def test_deep_audit_cloud_explications(self):
+        self.assertIn('allocation simplex is compact', self.cloud)
+        self.assertIn("a_1'(x)=\\frac{(x+1)e^{-x}-1}{x^2}<0", self.cloud)
+        self.assertIn(r'If \(q\) is optimal, Theorem', self.cloud)
+        self.assertIn('Averaging those inequalities over the auxiliary uniforms', self.cloud)
+
     def test_ambient_change_invalidates_context_not_statement_hash(self):
         sample = r'Assume \(\tau>1\).\begin{theorem}\label{test}Claim.\end{theorem}'
         changed = sample.replace(r'\tau>1', r'\tau>0')

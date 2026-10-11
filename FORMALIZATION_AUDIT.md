@@ -13,3 +13,11 @@ For future coverage claims require all of the following:
 Priority pitfalls: an active-face theorem is not a global theorem; a numerical grid is not an interval theorem; the existence of an active-uniform optimizer is weaker than classification of all optimizers; shape-one degeneracy cannot be omitted; expected-cloud and MDS-tail objectives must not be identified.
 
 For the global Gamma/MDS support theorem, check the strict direction of the quantile ratio and the CDF crossing separately. Non-strict log-concavity alone does not prove the exact tie classification. The geometric-support interpolation must agree with integer support values, the strictness argument must establish positive measure, and a leading-coefficient tie must imply strict global dominance. The staircase begins at the largest leading-coefficient maximizer q0, which need not equal k; q0 = n produces no crossing list. A candidate-response geometry theorem cannot replace the active-uniform allocation theorem.
+
+For the deep-audit baseline, treat the monotone inversion statements,
+normalized Newton inequality, multi-affine boundary expansion, and
+Pr'ekopa set measurability/convexity as explicit lemmas rather than
+informal simplification steps.  In Paper II, formalize existence on the
+compact simplex before selecting a minimizer, prove the threshold-one
+derivative sign, and derive the localization corollary from the phase
+bounds including clipped endpoints.

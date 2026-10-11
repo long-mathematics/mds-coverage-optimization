@@ -231,7 +231,9 @@ Writing \(h=z-m+1\), differentiation yields
 
 \begin{lemma}[Mixed Gamma tail-ratio bound]
 \label{lem:gamma-tail-ratio-bound}
-For every real \(m>0\) and \(z>0\),
+Let \(\tau>1\), put \(m=\tau-1\), and let \(\eta,\zeta\) be the
+corresponding Gamma tail-ratio elasticities defined above. Then, for
+every \(z>0\),
 \[
   \frac{3m}{5}<\eta(z)\zeta(z)<m.
 \]
@@ -277,7 +279,19 @@ and
   \quad(z\to\infty).
 \]
 For example, at zero one has
-\(P(z)\sim\Gamma(m+1)z^{-m}\) and \(Q(z)\sim z/(m+1)\); at infinity, \eqref{eq:mds-gamma-P-integral} gives \(P(z)=1+m/z+O(z^{-2})\).  Thus \(W(z)\to m\) at both ends.  If \(W\) reached \(3m/5\) or a smaller value, it would attain an interior minimum at or below that level.  This contradicts \eqref{eq:mds-gamma-critical-second-derivative}, proving the lower bound.
+\(P(z)\sim\Gamma(m+1)z^{-m}\) and \(Q(z)\sim z/(m+1)\).
+At infinity, Taylor expansion under the exponentially weighted integral
+in~\eqref{eq:mds-gamma-P-integral} gives
+\[
+ P(z)=\int_0^\infty e^{-u}\left(1+\frac uz\right)^m\,du
+     =1+\frac mz+O(z^{-2}).
+\]
+Consequently \(\eta=-zP'/P=m/z+O(z^{-2})\).  Also the identity
+\(zQ'=(z-m)Q+z\) gives
+\[
+ \zeta=z-m+\frac z{Q(z)}=z-m+o(1),
+\]
+since \(Q(z)\to\infty\).  Thus \(W(z)\to m\) at both ends.  If \(W\) reached \(3m/5\) or a smaller value, it would attain an interior minimum at or below that level.  This contradicts \eqref{eq:mds-gamma-critical-second-derivative}, proving the lower bound.
 
 For the upper bound, use the probability density on \((0,\infty)\) proportional to \(e^{-u}(1+u/z)^m\), and let \(V=u/(z+u)\).  Then
 \begin{equation}\label{eq:mds-gamma-eta-decrease}
@@ -453,7 +467,8 @@ The terms involving \(g'\) cancel when this expression is differentiated:
 Moreover, \(N_\alpha(0+)=+\infty\) and
 \(N_\alpha(\infty)=-(1-\alpha)<0\).  Thus there is exactly one zero, with \(L_\alpha\) strictly increasing before it and strictly decreasing after it.
 
-At the zero of \(N_\alpha\),
+At the zero of \(N_\alpha\), the critical relation
+\(uD+\alpha g=0\) gives
 \[
   \partial_\alpha N_\alpha=g-uF=\frac gD>0.
 \]
@@ -479,7 +494,21 @@ Direct differentiation gives
   \alpha'(\theta)
   =\frac{p_{k-2}^2-p_{k-1}p_{k-3}}{\beta(\theta)^2}\ge0.
 \]
-The last inequality is log-concavity of the Poisson-binomial mass sequence.  Its probability generating polynomial is a product of linear factors with nonpositive real zeros, so Newton's inequalities give the required coefficient inequality; see also \cite{Liggett1997}.
+The last inequality is log-concavity of the Poisson-binomial mass
+sequence.  If \(W\) is a sum of \(d\) Bernoulli variables, its
+probability generating polynomial is a product of linear factors with
+nonpositive real zeros.  For an interior index \(j\), Newton's
+inequalities give the normalized form
+\[
+ \left(\frac{p_j}{\binom dj}\right)^2
+ \ge
+ \frac{p_{j-1}}{\binom d{j-1}}
+ \frac{p_{j+1}}{\binom d{j+1}}.
+\]
+Since \(\binom dj^2>\binom d{j-1}\binom d{j+1}\), this implies
+\(p_j^2\ge p_{j-1}p_{j+1}\).  Taking \(j=k-2\) proves the displayed
+inequality; boundary indices follow from the zero extension.  See also
+\cite{Liggett1997}.
 \end{proof}
 
 \subsection{Exclusion of asymmetric critical patterns}
@@ -659,7 +688,22 @@ No boundary allocation can maximize in this range of shapes.  Indeed, a boundary
   F_\tau(\varepsilon)
   =\frac{\varepsilon^\tau}{\Gamma(\tau+1)}(1+O(\varepsilon)).
 \]
-The pivotal probability for the new coordinate tends to the strictly positive probability that exactly \(k-1\) of the original active coordinates recover.  The loss caused by the donor perturbation is \(O(\varepsilon)\), since that coordinate remains bounded away from zero.  Hence the gain is a positive multiple of \(\varepsilon^\tau\), up to \(o(\varepsilon^\tau)\), and it dominates the donor loss.  Every maximizer therefore has full support, and the preceding stationary-point argument proves that full uniformity is the unique maximizer.
+Let
+\[
+ R_{\rm new}=\Pbb\left(\text{exactly \(k-1\) of the original active
+ coordinates recover}\right)>0.
+\]
+Multi-affinity of the Bernoulli tail in its success probabilities, and
+differentiability of the donor response at its positive intensity, give
+\[
+ \mathcal S(\lambda(\varepsilon))-\mathcal S(\lambda(0))
+ =\frac{R_{\rm new}}{\Gamma(\tau+1)}\varepsilon^\tau+O(\varepsilon).
+\]
+Because \(0<\tau<1\), one has \(O(\varepsilon)=o(\varepsilon^\tau)\),
+so the displayed difference is positive for all sufficiently small
+\(\varepsilon>0\).  Every maximizer therefore has full support, and the
+preceding stationary-point argument proves that full uniformity is the
+unique maximizer.
 
 Finally, let \(\tau=1\).  For \(k=1\),
 \[
@@ -685,7 +729,11 @@ Their ratio is
   \frac{\binom q{k-1}}{\binom{q-1}{k-1}}
   =\frac q{q-k+1}>1.
 \]
-The perturbation strictly improves the objective.  Thus a maximizer has full support and is uniquely uniform.
+Thus the first directional derivative along the activation path is the
+positive donor derivative multiplied by
+\(q/(q-k+1)-1\), and is strictly positive.  The perturbation strictly
+improves the objective.  Hence a maximizer has full support and is
+uniquely uniform.
 
 In the cases \(0<\tau\le1\), the established full-uniform optimum is one of the active-uniform candidates, so it also proves the finite-maximum formula.  For \(k=n\), uniqueness for every \(\tau>0\) follows directly from Lemma \ref{lem:mds-endpoint-cases}.  This completes the proof.
 \end{proof}
@@ -1206,17 +1254,23 @@ has at most one zero in \((0,\infty)\). At such a zero,
 \(D'(x)>0\), and the sign changes from negative to positive.
 \end{lemma}
 \begin{proof}
-The set \(I=\{x:g(x)>f(x)\}\) is a nonempty interval and cannot
-be the entire half-line, since the densities have equal integral.
-Strict concavity excludes an interval on which \(g/f=1\).
-To the left of \(I\), when nonempty, \(D<0\). To its right,
-when nonempty, total mass zero gives
+The set \(I=\{x:g(x)>f(x)\}=\{x:\log(g/f)>0\}\) is an interval,
+because a superlevel set of a concave function is convex.  It is
+nonempty: otherwise \(g\le f\) everywhere, and equality of the two
+total integrals together with continuity would force \(g=f\),
+contradicting strict concavity of \(\log(g/f)\).  The set cannot be the
+entire half-line, again because the densities have equal integral.
+Strict concavity also excludes an interval on which \(g/f=1\).
+Consequently, on every nonempty region to the left of \(I\), the
+integrand \(g-f\) is nonpositive and strictly negative on a set of
+positive measure, so \(D<0\).  To the right of \(I\), total mass zero
+gives
 \[
  D(x)=-\int_x^\infty(g(t)-f(t))\,dt>0.
 \]
-On \(I\), \(D'=g-f>0\). Thus every zero lies in \(I\), is
-unique, and has positive derivative. The same argument covers
-intervals \(I\) with zero or infinity as an endpoint.
+On \(I\), \(D'=g-f>0\). Thus every zero lies in \(I\), is unique,
+and has positive derivative. The same argument covers intervals
+\(I\) with zero or infinity as an endpoint.
 \end{proof}
 
 \begin{lemma}[Exponential quantile-ratio monotonicity]
@@ -1308,7 +1362,21 @@ the logarithmic derivative.
 
 \begin{proof}[Proof of Theorem~\ref{thm:mds-pairwise-crossing}]
 For a fixed pair \(q,r\), apply the endpoint estimates with a finite
-support cap at least \(r\).
+support cap at least \(r\).  We use the elementary monotone-inversion
+rules
+\[
+ H(x)\sim ax^p\ (x\downarrow0)
+ \ \Longrightarrow\
+ H^{-1}(u)\sim (u/a)^{1/p}\ (u\downarrow0),
+\]
+and
+\[
+ -\log(1-H(x))=ax+o(x)\ (x\to\infty)
+ \ \Longrightarrow\
+ H^{-1}(u)\sim a^{-1}\log\frac1{1-u}\ (u\uparrow1).
+\]
+Both follow by sandwiching the monotone function between the
+corresponding comparison functions with factors \(1\pm\varepsilon\).
 Proposition~\ref{prop:mds-small-depth} gives
 \(V_q(M)\sim c(q)M^{\tau k}/\Gamma(\tau+1)^k\) at zero, so
 \begin{equation}\label{eq:mds-quantile-zero}
@@ -1390,8 +1458,10 @@ increasing in each argument, and
  \frac{d^2}{ds^2}[-\log(1-je^{-s})]
  =\frac{je^{-s}}{(1-je^{-s})^2}\ge0.
 \]
-Lemma~\ref{lem:mds-cumulative-hazard-geometry} makes \(b_M\)
-strictly concave.
+For each \(s\), the function \(u\mapsto L(u,s)\) is continuous and
+convex, so \(K_s\) is a closed convex Borel set.  Lemma
+\ref{lem:mds-cumulative-hazard-geometry} makes \(b_M\) strictly
+concave.
 
 Take \(s_0\ne s_1\), \(0<\theta<1\), and
 \(s_\theta=(1-\theta)s_0+\theta s_1\). Put
@@ -1404,8 +1474,10 @@ Joint convexity of \(L\) gives
  \subseteq
  K_\theta^-:=\{u:L(u,s_\theta)\le b_M(s_\theta)-\delta\}.
 \]
-The Pr\'ekopa--Leindler inequality for the log-concave measure
-\(\mu\) \cite[Theorem 2]{Prekopa1973} yields
+The density \(\rho\) is log-concave, so Pr\'ekopa's theorem
+\cite[Theorem 2]{Prekopa1973} makes the generated measure \(\mu\)
+log-concave.  Applying its defining Minkowski inequality to the closed
+convex Borel sets above yields
 \[
  \mu(K_\theta^-)
  \ge\mu(K_{s_0})^{1-\theta}\mu(K_{s_1})^\theta.
@@ -1436,12 +1508,12 @@ where \(I_p(a,b)\) is the distribution function of a
 \(\mathrm{Beta}(a,b)\) variable at \(p\). Indeed, for
 \(Z=\sum_{j=0}^{k-1}E_j/(q-j)\),
 \[
- \E e^{-tZ}
- =\prod_{j=0}^{k-1}\frac{q-j}{q-j+t}
- =\frac{\Gamma(q+1)\Gamma(q-k+1+t)}
-        {\Gamma(q-k+1)\Gamma(q+1+t)}.
+ \E e^{-\sigma Z}
+ =\prod_{j=0}^{k-1}\frac{q-j}{q-j+\sigma}
+ =\frac{\Gamma(q+1)\Gamma(q-k+1+\sigma)}
+        {\Gamma(q-k+1)\Gamma(q+1+\sigma)}.
 \]
-For nonnegative integer \(t\), these are the moments of a
+For nonnegative integer \(\sigma\), these are the moments of a
 \(\mathrm{Beta}(q-k+1,k)\) variable. Uniqueness of moments on
 \([0,1]\) identifies \(e^{-Z}\) with that law. Applying the symmetry
 of the beta distribution to \(\Pbb(Z\le A(M/q))\) gives the formula.

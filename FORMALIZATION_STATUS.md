@@ -18,3 +18,14 @@ When work begins, use a root `lakefile.toml`, pinned `lean-toolchain` and Mathli
 ## Ambient context after the first audit
 
 Before translating a statement, resolve its complete local context, not only its theorem environment. Registry schema 2 fingerprints source prefixes and whole manuscripts to flag context drift. Important contexts include Paper I's common Gamma response and positive-face hypotheses, its fixed n/k/shape asymptotic regime, and Paper II's distinction between positive-budget optimizer claims and nonnegative-budget probability identities. Calibration depth rules are now explicitly measurable and finite, and the conditional sequencing law is stated. These source checks do not certify measurability or any analytic proof in Lean.
+
+## Deep-audit proof-explication baseline
+
+The formalization baseline now states explicitly the parameter relation in
+the mixed Gamma bound, the normalized Newton inequality, the boundary
+activation expansions, both monotone inverse-asymptotic rules, the closed
+convex Borel nature of the Pr'ekopa sets, compactness in the abstract
+collapse theorem, the threshold-one derivative, support localization, and
+averaging over auxiliary reconstruction uniforms.  These additions reduce
+implicit paper reasoning but do not constitute Lean coverage or alter the
+principal theorem scopes.
