@@ -1,0 +1,84 @@
+name: Prepare Paper II toolkit strengthenings
+on:
+  push:
+    branches: [strengthen/paper-ii-toolkit]
+    paths:
+      - _apply_paper_ii_toolkit_strengthenings.py
+      - .github/workflows/prepare-paper-ii-toolkit.yml
+permissions:
+  contents: write
+jobs:
+  prepare:
+    if: github.repository == 'long-mathematics/mds-coverage-optimization'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+      - name: Install repository build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends latexmk texlive-latex-base texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended lmodern poppler-utils python3-venv
+          python3 -m venv .venv
+          .venv/bin/python -m pip install -r requirements.txt
+      - name: Preserve baseline PDFs and apply focused changes
+        run: |
+          mkdir -p build/paper-ii-toolkit-review/before build/paper-ii-toolkit-review/after build/checks
+          cp gamma_mds_active_uniform.pdf terminal_cloud_staircase.pdf build/paper-ii-toolkit-review/before/
+          .venv/bin/python _apply_paper_ii_toolkit_strengthenings.py
+          .venv/bin/python scripts/validate_repository.py --write-registry --sources-only
+      - name: Run tests, rebuild manuscripts, and validate repository
+        run: |
+          make test PYTHON=.venv/bin/python 2>&1 | tee build/paper-ii-toolkit-review/make-test.log
+          make pdf PYTHON=.venv/bin/python 2>&1 | tee build/paper-ii-toolkit-review/make-pdf.log
+          make check PYTHON=.venv/bin/python 2>&1 | tee build/paper-ii-toolkit-review/make-check.log
+          git diff --check
+      - name: Record validation and review artifact
+        run: |
+          .venv/bin/python - <<'PY'
+          from pathlib import Path
+          import hashlib, json, subprocess
+          root=Path('.')
+          def sha(path): return hashlib.sha256(path.read_bytes()).hexdigest()
+          def pages(path):
+              output=subprocess.check_output(['pdfinfo',str(path)],text=True)
+              return int(next(line.split(':',1)[1] for line in output.splitlines() if line.startswith('Pages:')).strip())
+          path=root/'docs/paper_ii_toolkit_validation.json'
+          data=json.loads(path.read_text())
+          data.update({
+              'status':'all standard checks passed on the clean GitHub runner',
+              'commands_passed':['make test','make pdf','make check'],
+              'source_and_pdf_records':[
+                  {'source':'gamma_mds_active_uniform.tex','pdf':'gamma_mds_active_uniform.pdf','source_sha256':sha(root/'gamma_mds_active_uniform.tex'),'pdf_sha256':sha(root/'gamma_mds_active_uniform.pdf'),'pages':pages(root/'gamma_mds_active_uniform.pdf')},
+                  {'source':'terminal_cloud_staircase.tex','pdf':'terminal_cloud_staircase.pdf','source_sha256':sha(root/'terminal_cloud_staircase.tex'),'pdf_sha256':sha(root/'terminal_cloud_staircase.pdf'),'pages':pages(root/'terminal_cloud_staircase.pdf')},
+              ],
+              'statement_registry_schema':2,
+              'visual_review':'pending affected-page review before merge',
+              'proof_assistant_coverage':None,
+          })
+          path.write_text(json.dumps(data,indent=2)+'\n')
+          PY
+          cp gamma_mds_active_uniform.pdf terminal_cloud_staircase.pdf build/paper-ii-toolkit-review/after/
+          cp gamma_mds_active_uniform.tex terminal_cloud_staircase.tex build/paper-ii-toolkit-review/after/
+          pdfinfo gamma_mds_active_uniform.pdf > build/paper-ii-toolkit-review/gamma-pdfinfo.txt
+          pdfinfo terminal_cloud_staircase.pdf > build/paper-ii-toolkit-review/cloud-pdfinfo.txt
+          pdftotext terminal_cloud_staircase.pdf build/paper-ii-toolkit-review/cloud-after.txt
+          git diff -- . ':!*.pdf' > build/paper-ii-toolkit-review/reviewed-text.patch
+      - name: Upload before-and-after review artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: paper-ii-toolkit-review
+          path: build/paper-ii-toolkit-review
+          if-no-files-found: error
+          retention-days: 14
+      - name: Commit validated focused revision
+        run: |
+          git add THEOREM_STATUS.md FORMALIZATION_STATUS.md
+          git add docs/DEEP_AUDIT_CLARIFICATIONS.md docs/INTEGRATION_AUDIT.md docs/PAPER_II_TOOLKIT_STRENGTHENINGS.md
+          git add docs/paper_ii_toolkit_validation.json docs/pdf_manifest.json docs/statement_registry.json
+          git add terminal_cloud_staircase.tex terminal_cloud_staircase.pdf
+          git add gamma_mds_active_uniform.pdf
+          git add scripts/test_audit_regressions.py
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Strengthen Paper II lattice concentration and boundary parametrization'
+          git push origin HEAD:strengthen/paper-ii-toolkit
