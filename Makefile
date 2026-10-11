@@ -8,6 +8,7 @@ test:
 	$(PYTHON) scripts/exact_certificates.py > build/checks/exact_certificates.json
 	$(PYTHON) scripts/verify_identities.py > build/checks/symbolic_identities.json
 	$(PYTHON) scripts/verify_numerics.py > build/checks/numerical_diagnostics.json
+	$(PYTHON) scripts/test_audit_regressions.py
 	$(PYTHON) scripts/validate_repository.py --sources-only
 
 check:

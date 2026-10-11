@@ -75,7 +75,7 @@ These probability identities and bounds are separated from the
 optimizer classification.
 
 \section{Model and principal results}
-Write \([n]=\{1,\ldots,n\}\) and
+For an integer \(n\ge1\), write \([n]=\{1,\ldots,n\}\) and
 \(\Delta_n=\{p\in[0,1]^n:\sum_i p_i=1\}\). Fix \(M>0\) and
 an integer threshold \(t\ge1\). Independent Poisson counts
 \(N_i\sim\Poisson(Mp_i)\) recover type \(i\) exactly when
@@ -473,8 +473,10 @@ Theorem \ref{thm:active-uniform-terminal-cloud} gives a precise sacrifice princi
 
 \section{Coverage probabilities and concentration}
 \label{sec:coverage-toolkit}
-We now fix \(p\); these statements evaluate or bound a specified
-allocation rather than classify an optimum. Read counts take values in
+In this toolkit, \(n\ge1\) and \(1\le k\le n\) are integers,
+\(p\in\Delta_n\) is fixed, and \(M\ge0\) is a finite budget.
+These statements evaluate or bound a specified allocation rather than
+classify an optimum. Read counts take values in
 \(\N=\{0,1,2,\ldots\}\). If a total \(N\sim\Poisson(M)\) of
 independent reads is assigned with probabilities \(p\), the joint
 probability generating function is
@@ -484,6 +486,9 @@ probability generating function is
  =\prod_i\exp(Mp_i(z_i-1)).
 \]
 Thus Poisson splitting gives independent counts of means \(Mp_i\).
+At \(M=0\), all counts vanish. For hard thresholds,
+\(\Lambda_t(0;p)=n\) for every \(p\); the preceding optimizer and
+uniqueness theorems retain their positive-budget hypotheses.
 
 \begin{proposition}[Independent recovery and the Poisson-binomial tail]
 \label{thm:poissonized-identity}
@@ -501,8 +506,9 @@ Recovery of at least \(k\) types has probability
  P_{\rm succ}(M)=\Pbb\!\left(\sum_i B_i\ge k\right)
  =\sum_{j=k}^n[u^j]\prod_i(1-\theta_i(M)+\theta_i(M)u).
 \]
-In particular, for \(s_i(r)=\1_{\{r\ge t\}}\), one has
-\(\theta_i(M)=\phi_t(Mp_i)\).
+At \(M=0\), \(\theta_i(0)=s_i(0)\), with the usual convention
+\(0^0=1\) in the series. In particular, for
+\(s_i(r)=\1_{\{r\ge t\}}\), one has \(\theta_i(M)=\phi_t(Mp_i)\).
 \end{proposition}
 \begin{proof}
 For any recovery pattern, its conditional probability factors into
@@ -519,18 +525,22 @@ With \(d_0(0)=1\), all other initial entries zero, and \(d_i(-1)=0\),
  d_i(j)=(1-\theta_i)d_{i-1}(j)+\theta_i d_{i-1}(j-1),\qquad
  P_{\rm succ}=1-\sum_{j=0}^{k-1}d_n(j).
 \]
-This uses \(O(nk)\) arithmetic operations and \(O(k)\) memory.
-If every \(s_i\) is nondecreasing, \(P_{\rm succ}(M)\) is continuous
-and nondecreasing in \(M\); bisection is valid once a feasible target
+Given the recovery probabilities \(\theta_i\), this uses \(O(nk)\)
+arithmetic operations and \(O(k)\) memory. For arbitrary curves
+\(s_i:\N\to[0,1]\), \(P_{\rm succ}(M)\) is continuous on
+\([0,\infty)\). If every \(s_i\) is nondecreasing, it is also
+nondecreasing in \(M\); bisection then applies once a feasible target
 bracket has been established.
 \end{proposition}
 \begin{proof}
 Condition on \(B_i\) to obtain the recurrence, and retain only the
-previous row. A Poisson-increment coupling and the same independent
-uniform random variables for the Bernoulli decisions show monotonicity.
-Continuity of each Poisson expectation follows by dominated convergence
-under this coupling, or from its locally uniformly convergent series;
-the tail is a polynomial in the \(\theta_i\).
+previous row. On \(0\le M\le A<\infty\), the absolute value of
+the \(r\)-th series term for \(\theta_i(M)\) is at most
+\(A^r/r!\). The series therefore converges uniformly on every compact
+budget interval, without a monotonicity assumption on \(s_i\).
+The tail is a polynomial in the \(\theta_i\), so it is continuous.
+When the curves are nondecreasing, a Poisson-increment coupling and
+the same independent uniforms for the decisions show monotonicity.
 \end{proof}
 
 \begin{proposition}[Terminal cloud and concentration]\label{thm:terminal-cloud}
@@ -595,7 +605,7 @@ With exactly \(m\in\N\) reads, the counts are
 \(Z_i^{(\lambda)}\sim\Poisson(\lambda p_i)\) independently.
 
 \begin{theorem}[De-Poissonization sandwich]\label{thm:depoissonization}
-For every \(m\ge1\) and \(0<\varepsilon<1\),
+For every integer \(m\ge0\) and \(0<\varepsilon<1\),
 \begin{align*}
  P_m(A)&\ge\Pi_{(1-\varepsilon)m}(A)
         -e^{-m[-\log(1-\varepsilon)-\varepsilon]},\\
@@ -604,7 +614,10 @@ For every \(m\ge1\) and \(0<\varepsilon<1\),
 \end{align*}
 \end{theorem}
 \begin{proof}
-Construct all \(C^{(j)}\) from successive prefixes of one infinite
+If \(m=0\), then \(C^{(0)}=Z^{(0)}=0\) almost surely and both
+exponential error terms equal one, so the inequalities hold directly.
+Assume now \(m\ge1\). Construct all \(C^{(j)}\) from successive
+prefixes of one infinite
 sequence of independent reads. For an independent
 \(T_\lambda\sim\Poisson(\lambda)\), the vector
 \(C^{(T_\lambda)}\) has the law of \(Z^{(\lambda)}\).
@@ -724,8 +737,9 @@ After factoring out \(n e^{-\alpha}\), the stated expansion and remainder bound 
 
 \begin{proposition}[Conditional environments and a two-stage guarantee]
 \label{thm:random-environment}
-Let \(P=(P_1,\ldots,P_n)\) be a random probability vector. Conditional
-on \(P\), suppose counts are independent Poisson variables of means
+Let \(0<\delta,\eta<1\), let \(M\ge0\) be a fixed finite budget,
+and let \(P=(P_1,\ldots,P_n)\) be a random probability vector.
+Conditional on \(P\), suppose counts are independent Poisson variables of means
 \(MP_i\). Put \(q_M(P)=\Pbb(\mathrm{success}\mid P)\).
 Then the Poisson-binomial identity and concentration bounds above apply
 conditionally, with parameters \(\phi_t(MP_i)\). The unconditional
@@ -743,7 +757,8 @@ nonnegative.
 \end{proof}
 
 \begin{proposition}[Annealed one-read bias penalty]\label{thm:annealed-jensen}
-If \(\E P_i=1/n\) for every \(i\), then
+Let \(M>0\) and let \(P=(P_1,\ldots,P_n)\) be a random probability
+vector with \(\E P_i=1/n\) for every \(i\). Then
 \[
  \E\Lambda_1(M;P)\ge ne^{-M/n},
 \]
@@ -768,16 +783,21 @@ For the expansion, use \(\sum_i\varepsilon_i=0\) almost surely and
 \end{proof}
 
 \begin{theorem}[Conservative calibration guarantee]\label{thm:plugin}
-For a fixed true law \(p\), let \(0\le\ell_i\le p_i\).
+For a fixed true law \(p\in\Delta_n\) and a finite budget \(M\ge0\),
+let \(0\le\ell_i\le p_i\).
 Let \(\underline q_\ell(M)\) be the probability of at least \(k\)
 successes for independent Bernoulli variables with parameters
 \(\phi_t(M\ell_i)\). Then the true Poissonized success probability
 \(q_p(M)\) satisfies \(q_p(M)\ge\underline q_\ell(M)\).
 
-Suppose independent calibration data produce nonnegative simultaneous
-lower bounds \(\widehat\ell_i\) such that
+Let \(0<\delta,\eta<1\). Suppose calibration data produce
+nonnegative simultaneous lower bounds \(\widehat\ell_i\) such that
 \(\Pbb(\widehat\ell_i\le p_i\text{ for all }i)\ge1-\eta\).
-If a calibration-dependent depth \(M(\widehat\ell)\) is chosen with
+Choose a measurable depth rule
+\(M:[0,\infty)^n\to[0,\infty)\). Conditional on calibration,
+subsequent counts are independent Poisson variables of means
+\(M(\widehat\ell)p_i\), generated using independent fresh randomness.
+If the selected finite depth satisfies
 \[
  \underline q_{\widehat\ell}\bigl(M(\widehat\ell)\bigr)\ge1-\delta
 \]

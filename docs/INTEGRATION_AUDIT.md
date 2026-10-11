@@ -22,3 +22,7 @@ The exact archive hash is checked separately. Visual review of the generated pag
 ## Still required for stronger certification
 
 An independent mathematical audit can now be performed paper by paper using the dependency ledger. No Lean theorem is yet formalized. Future formalization must include boundary cases, hypotheses and equality-case correspondence, and transitive-axiom checks rather than merely a successful build.
+
+## Localized corrections following the first audit
+
+The subsequent first audit identified missing local error-parameter domains, one undefined comparison symbol, and compressed toolkit scope. Those issues are addressed in [FIRST_AUDIT_CORRECTIONS.md](FIRST_AUDIT_CORRECTIONS.md). The initial audit record above is historical and has not been rewritten as a deeper certification. The principal theorems and proofs and the frozen v30 remain unchanged; source-context fingerprinting and targeted regression tests have been added.

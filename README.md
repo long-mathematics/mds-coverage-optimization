@@ -9,7 +9,7 @@ Research manuscripts by **Christopher D. Long** on two closely related allocatio
 | **I. Active-Uniform Laws for Gamma Completion and MDS Recovery** | Complete common-Gamma optimizer classification; support asymptotics, local stability, and a common-response criterion | [PDF](gamma_mds_active_uniform.pdf) · [LaTeX](gamma_mds_active_uniform.tex) |
 | **II. Nonuniform Coverage and the Terminal-Cloud Staircase** | Active-uniform expected-defect minimizers and an exact adjacent-support staircase | [PDF](terminal_cloud_staircase.pdf) · [LaTeX](terminal_cloud_staircase.tex) |
 
-The initial PDFs have **21 pages** (Paper I) and **13 pages** (Paper II). Both manuscripts are standalone. The principal theorem is stated near the beginning of each paper. Their cross-references are bibliographical: neither flagship theorem depends on the companion theorem.
+The current PDFs have **21 pages** (Paper I) and **14 pages** (Paper II). Both manuscripts are standalone. The principal theorem is stated near the beginning of each paper. Their cross-references are bibliographical: neither flagship theorem depends on the companion theorem.
 
 ### Paper I: deadline success
 
@@ -39,7 +39,7 @@ The expected-defect objective is not the MDS success probability. The staircase 
 
 ## Status and scope
 
-These are research manuscripts with analytic proofs, **not proof-assistant-certified results**. Numerical diagnostics are not proofs. See [theorem status](THEOREM_STATUS.md), the [statement registry](docs/statement_registry.json), [integration audit](docs/INTEGRATION_AUDIT.md), and [formalization roadmap](FORMALIZATION_STATUS.md).
+These are research manuscripts with analytic proofs, **not proof-assistant-certified results**. Numerical diagnostics are not proofs. See [theorem status](THEOREM_STATUS.md), the [context-sensitive statement registry](docs/statement_registry.json), [integration audit](docs/INTEGRATION_AUDIT.md), [first-audit corrections](docs/FIRST_AUDIT_CORRECTIONS.md), and [formalization roadmap](FORMALIZATION_STATUS.md).
 
 This is not a general DNA-storage or transfer-calculus collection. Motif-channel posterior inference, capacity, orbit methods, and decoding are excluded from the active papers. The completed-rate-mass theorem is also excluded; its natural connection is to [nonuniform-random-permutations](https://github.com/long-mathematics/nonuniform-random-permutations). Cross-referencing that project does not import its proofs or its formalization status.
 
@@ -58,7 +58,7 @@ make pdf
 make check
 ```
 
-`make test` runs exact rational certificates, symbolic identities, and deterministic finite numerical diagnostics. Results are written to `build/checks/`; recorded initial outputs are in [scripts/results](scripts/results/README.md). `make pdf` builds both PDFs and updates the source/PDF hash manifest. `make check` checks provenance, stable statements, internal references, local README links, and warning-free rebuilds, and compares rebuilt PDF text against the tracked PDFs. Different TeX versions need not produce byte-identical PDFs; hashes certify the stored source/PDF pair, while rebuild checks compare extracted text.
+`make test` runs exact rational certificates, symbolic identities, deterministic finite numerical diagnostics, and localized-audit regression tests. Results are written to `build/checks/`; recorded initial outputs are in [scripts/results](scripts/results/README.md). `make pdf` builds both PDFs and updates the source/PDF hash manifest. `make check` checks provenance, stable statements and source-context fingerprints, internal references, local README links, and warning-free rebuilds, and compares rebuilt PDF text against the tracked PDFs. Different TeX versions need not produce byte-identical PDFs; hashes certify the stored source/PDF pair, while rebuild checks compare extracted text.
 
 `make archive` optionally compiles the frozen master. `make clean` removes build products, not the tracked PDFs or archive. No Lean project or placeholder theorem is included; see [formalization audit policy](FORMALIZATION_AUDIT.md).
 

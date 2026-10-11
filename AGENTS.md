@@ -21,3 +21,7 @@
 ## Formalization
 
 Follow `FORMALIZATION_STATUS.md` and `FORMALIZATION_AUDIT.md`. When formalization begins, use a pinned root-level Lake project with `MdsCoverageOptimization.lean` and `MdsCoverageOptimization/`, not a separate `formalization/` project. Do not introduce `sorry`, `admit`, custom proof axioms, or tautological redefinitions to claim coverage. A clean kernel build must be accompanied by statement-correspondence and transitive-axiom audits.
+
+## Context-sensitive statement registry
+
+Registry schema 2 records each statement environment, its complete preceding source prefix, and the whole manuscript source. Review context/source hash changes as well as statement hashes; a changed surrounding assumption or definition is mathematically relevant even when a theorem environment is unchanged. Prefix hashes are deliberately conservative, not semantic dependency analysis. Do not refresh the registry merely to silence a failure without reviewing the source diff.
