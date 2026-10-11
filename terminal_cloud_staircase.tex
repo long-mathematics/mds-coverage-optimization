@@ -568,39 +568,51 @@ Under the common hard threshold, \(U_{M,t}\) is Poisson-binomial with
  V=\Var(U_{M,t})=\sum_i\psi_t(Mp_i)(1-\psi_t(Mp_i)).
 \]
 An \([n,k]\) MDS code succeeds exactly when \(U_{M,t}\le n-k\).
+Thus the first failing defect count is
+\[
+ r_{\rm fail}=n-k+1.
+\]
 For every \(s>0\),
 \[
  \Pbb(U_{M,t}\ge\Lambda+s),\quad
  \Pbb(U_{M,t}\le\Lambda-s)
  \ \le\ \exp\!\left(-\frac{s^2}{2V+2s/3}\right).
 \]
-If \(\Lambda<n-k\), a sufficient failure bound is
+If \(\Lambda<r_{\rm fail}\), then
 \[
  \Pbb(\mathrm{failure})
- \le \exp\!\left(-\frac{(n-k-\Lambda)^2}
-                         {2V+2(n-k-\Lambda)/3}\right).
+ \le \exp\!\left(-\frac{(r_{\rm fail}-\Lambda)^2}
+                         {2V+2(r_{\rm fail}-\Lambda)/3}\right).
 \]
 For general independent recovery indicators, let
 \(\mu=\sum_i\theta_i\) and \(v=\sum_i\theta_i(1-\theta_i)\).
-If \(\mu>k\), then
+If \(\mu>k-1\), then
 \[
  \Pbb\!\left(\sum_i B_i<k\right)
- \le\exp\!\left(-\frac{(\mu-k)^2}{2v+2(\mu-k)/3}\right).
+ \le\exp\!\left(-\frac{(\mu-k+1)^2}{2v+2(\mu-k+1)/3}\right).
 \]
 In particular, for \(0<\delta<1\), success probability is at least
 \(1-\delta\) whenever
 \[
- \mu-k\ge\sqrt{2v\log(1/\delta)}+\frac23\log(1/\delta).
+ \mu-k+1\ge\sqrt{2v\log(1/\delta)}+\frac23\log(1/\delta).
+\]
+For the hard-threshold model, \(\mu=n-\Lambda\) and \(v=V\), so the
+two lattice gaps agree:
+\[
+ \mu-k+1=r_{\rm fail}-\Lambda.
 \]
 \end{proposition}
 \begin{proof}
 The defect indicators are independent Bernoulli variables with
 parameters \(\psi_t(Mp_i)\), giving the moment formulas and recovery
-event. Apply Bernstein's inequality for independent centered variables
-bounded by one \cite[Chapter~2]{BoucheronLugosiMassart2013}. Apply it
-again to \(B_i-\theta_i\) for the general recovery bound. If
+event.  Since failure is exactly \(U_{M,t}\ge r_{\rm fail}\), apply
+Bernstein's upper-tail inequality with
+\(s=r_{\rm fail}-\Lambda>0\).  For general recovery indicators,
+\(\sum_i B_i<k\) means \(\sum_iB_i\le k-1\), so Bernstein's lower-tail
+inequality applies with displacement \(a=\mu-k+1>0\).  If
 \(L=\log(1/\delta)\) and \(a\ge\sqrt{2vL}+2L/3\), direct expansion
-gives \(a^2\ge L(2v+2a/3)\), proving the sufficient margin condition.
+gives \(a^2\ge L(2v+2a/3)\), proving the sufficient margin condition
+\cite[Chapter~2]{BoucheronLugosiMassart2013}.
 \end{proof}
 
 \begin{remark}[Expected cloud is not success probability]
@@ -700,8 +712,9 @@ Moreover, suppose
 \[
   p_i=\frac{1+\varepsilon_i}{n},
   \qquad \sum_{i=1}^n\varepsilon_i=0,
-  \qquad \varepsilon_i>-1.
+  \qquad \varepsilon_i\ge-1.
 \]
+Thus the expansion includes boundary sampling laws with \(p_i=0\).
 Let
 \[
   \alpha=\frac{M}{n},\qquad

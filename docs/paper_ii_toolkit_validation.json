@@ -1,0 +1,42 @@
+{
+  "date": "2026-10-11",
+  "base_commit": "244c1fab380f6db03dd5f82d1d03d9a7bd35f16f",
+  "scope": "Focused Paper II toolkit strengthening: exact integer concentration thresholds and closed-simplex perturbative parametrization.",
+  "changed_formal_statements": [
+    "thm:terminal-cloud",
+    "thm:uniform-penalty"
+  ],
+  "principal_optimizer_or_staircase_statements_changed": false,
+  "paper_i_source_changed": false,
+  "exact_quadratic_bernstein_inversion_added": false,
+  "commands_required": [
+    "make test",
+    "make pdf",
+    "make check"
+  ],
+  "status": "all standard checks passed on the clean GitHub runner",
+  "commands_passed": [
+    "make test",
+    "make pdf",
+    "make check"
+  ],
+  "source_and_pdf_records": [
+    {
+      "source": "gamma_mds_active_uniform.tex",
+      "pdf": "gamma_mds_active_uniform.pdf",
+      "source_sha256": "7914154fe2a409a070f54437371b8db79aed5c6a935d2104462edbc6bc234155",
+      "pdf_sha256": "5cc14c15b7a5873731dd52ae69b0d7efbf59d8f70838dcdcb486638bdb196148",
+      "pages": 28
+    },
+    {
+      "source": "terminal_cloud_staircase.tex",
+      "pdf": "terminal_cloud_staircase.pdf",
+      "source_sha256": "fc42be627d1f1307a59a21df32712638d8b1eb5f7566ae1a384cd3f3be037c8c",
+      "pdf_sha256": "e21b2098b1171f14c9a6b6754149eac4b468cbf9b52f5bcaf076bc3aba6dc6de",
+      "pages": 14
+    }
+  ],
+  "statement_registry_schema": 2,
+  "visual_review": "pending affected-page review before merge",
+  "proof_assistant_coverage": null
+}

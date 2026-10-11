@@ -29,3 +29,12 @@ collapse theorem, the threshold-one derivative, support localization, and
 averaging over auxiliary reconstruction uniforms.  These additions reduce
 implicit paper reasoning but do not constitute Lean coverage or alter the
 principal theorem scopes.
+
+## Paper II lattice and boundary endpoints
+
+The formalization target should encode failure as the integer event
+`U >= n-k+1` (equivalently recovered count `S <= k-1`) before invoking a
+real-valued concentration inequality.  The perturbative one-read
+parametrization now includes `epsilon_i = -1`, corresponding to a zero
+sampling coordinate; no interior-simplex hypothesis is available or needed
+for its Taylor remainder bound.
