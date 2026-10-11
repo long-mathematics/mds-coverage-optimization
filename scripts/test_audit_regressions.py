@@ -97,25 +97,29 @@ class FirstAuditRegressions(unittest.TestCase):
         self.assertIn(r'\Lambda<r_{\rm fail}', concentration)
         self.assertIn(r'\mu>k-1', concentration)
         self.assertIn(r'\mu-k+1', concentration)
-        self.assertNotIn(r'\Lambda<n-k\)', concentration)
+        self.assertNotIn(r'\Lambda<n-k', concentration)
         # Boundary case where the old condition was unavailable:
         # n=k=1, one Bernoulli success with probability 1/2.
+        k = 1
+        mu = 0.5
         failure = 0.5
         variance = 0.25
-        gap = 0.5  # mu-k+1 = r_fail-Lambda
+        gap = mu - k + 1
         bound = math.exp(-(gap * gap) / (2 * variance + 2 * gap / 3))
         self.assertLessEqual(failure, bound)
-        self.assertGreater(0.5, 0)  # mu > k-1
-        self.assertFalse(0.5 > 1)   # old mu > k condition did not apply
+        self.assertGreater(mu, k - 1)
+        self.assertFalse(mu > k)
 
     def test_closed_simplex_bias_parametrization(self):
         uniform = statement(self.cloud, 'thm:uniform-penalty')
         self.assertIn(r'\varepsilon_i\ge-1', uniform)
         self.assertIn(r'p_i=0', uniform)
-        # Exact boundary parametrization eps=(-1,1), checked against the
-        # stated Taylor remainder at a fixed alpha.
+        # Boundary parametrization eps=(-1,1), checked against the stated
+        # Taylor remainder at a fixed alpha.
         alpha = 0.75
         eps = (-1.0, 1.0)
+        probabilities = tuple((1 + value) / 2 for value in eps)
+        self.assertEqual(probabilities, (0.0, 1.0))
         sigma2 = sum(value * value for value in eps) / 2
         sigma3 = sum(abs(value) ** 3 for value in eps) / 2
         delta = max(abs(value) for value in eps)
