@@ -1,5 +1,13 @@
 # PDF visual review
 
+## Deep-audit clarity revisions, October 11, 2026
+
+The clean-runner PDFs contain **28 pages** in Paper I and **14 pages** in Paper II. Before-and-after PDFs were retained in the workflow artifact, rendered with the repository PDF tools, and compared page by page. All pages of both revised manuscripts were inspected in contact sheets. Paper I pages 5, 6, 9, 12, 19, 21, 22, and 23 and Paper II pages 4, 5, 7, and 11 were additionally inspected individually at full rendered resolution because they contain the principal deep-audit clarifications.
+
+Paper I pages 1--4 render identically to the preceding version. The added proof details begin on page 5 and cause normal downstream reflow, increasing the manuscript from 27 to 28 pages. The explicit mixed-Gamma parameters and endpoint expansion, normalized Newton inequality, boundary-activation calculations, density-ratio details, inverse-asymptotic rules, Prékopa hypotheses, and renamed beta-form Laplace parameter are all legible. Paper II pages 1--3 and 6 render identically; the compactness sentence, threshold-one derivative, support-localization proof, and averaging step appear cleanly on pages 4, 5, 7, and 11.
+
+No clipping, overlapping text or equations, broken mathematical glyphs, unexpected blank pages, isolated headings, or margin violations were found. The added page in Paper I is a normal consequence of the expanded proof text rather than a typography change. Both papers retain 11pt text and 1.1-inch margins, and both TeX builds are warning-free. This is a visual/layout review, not mathematical or proof-assistant certification.
+
 ## Global-support integration, October 11, 2026
 
 The current PDFs contain **27 pages** in Paper I and **14 pages** in Paper II. Both were rendered with PyMuPDF at 1.35x scale. All pages were inspected in contact sheets. Paper I pages 1–4, 12, 17–23, and 27 and Paper II pages 1–2 and 8–14 were additionally inspected individually at the rendered resolution.
