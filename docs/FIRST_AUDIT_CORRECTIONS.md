@@ -4,6 +4,10 @@ Date: October 11, 2026. Baseline: `d5a8b96201785a02fb93b0cc93ba6a658c55345a`.
 This is the disposition of the first-audit findings, not a new independent
 referee audit, a novelty claim, or proof-assistant certification.
 
+This is the historical record of the corrections merged in PR #3.
+The subsequent global Gamma/MDS support integration into Paper I is
+recorded separately in [INTEGRATION_AUDIT.md](INTEGRATION_AUDIT.md).
+
 ## Changes applied
 
 | Finding | Resolution |
@@ -19,8 +23,8 @@ referee audit, a novelty claim, or proof-assistant certification.
 
 Positive-budget optimizer and uniqueness hypotheses have not been relaxed.
 At zero hard-threshold budget every sampling law has expected cloud `n`.
-No global MDS support-phase result or higher-threshold fixed-read optimizer
-is asserted. The fixed-parameter qualifications on Paper I's asymptotics
+That corrections-only revision asserted no global MDS support-phase result
+or higher-threshold fixed-read optimizer. The fixed-parameter qualifications on Paper I's asymptotics
 are unchanged.
 
 ## Changed statement environments

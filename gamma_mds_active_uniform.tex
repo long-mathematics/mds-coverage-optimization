@@ -28,25 +28,82 @@
 \newcommand{\R}{\mathbb R}
 \newcommand{\1}{\mathbf 1}
 
-\title{Active-Uniform Laws for Gamma Completion\\and MDS Recovery}
+\title{Optimal Allocations for Gamma Completion\\and MDS Recovery}
 \author{Christopher D. Long}
 \date{October 11, 2026}
-\hypersetup{pdftitle={Active-Uniform Laws for Gamma Completion and MDS Recovery},pdfauthor={Christopher D. Long}}
+\hypersetup{pdftitle={Optimal Allocations for Gamma Completion and MDS Recovery},pdfauthor={Christopher D. Long}}
 \begin{document}
 \maketitle
 \begin{abstract}
-We optimize the probability that at least \(k\) of \(n\) independent Gamma requirements finish by a prescribed deadline, subject to a fixed total allocation rate. For a common shape greater than one, every maximizing allocation is uniform on its positive support; the remaining optimization is a finite comparison of binomial tails. For shapes below one, full uniformity is uniquely optimal. At shape one, full uniformity is uniquely optimal for \(k\ge2\), while every allocation ties for \(k=1\). Integer shapes give the corresponding Poissonized MDS recovery theorem. The proof combines pivotal-probability equations, log-concavity of Bernoulli convolutions, and a real-parameter Gamma tail-ratio bound with a direct second variation. We derive small- and large-budget support laws, an exact local stability criterion, and a sufficient condition for other common recovery curves. The global MDS support-phase diagram remains open.
+We optimize the probability that at least \(k\) of \(n\) independent Gamma requirements finish by a prescribed deadline, subject to a fixed total allocation rate. For a common shape greater than one, every maximizing allocation is uniform on its positive support. We completely classify the resulting support phases for \(k\ge2\): two support curves either are strictly ordered at every positive budget or have a unique transverse crossing in favor of the larger support. A continuous interpolation is strictly log-concave in the logarithm of support size. Consequently the optimal supports form a consecutive staircase from the small-budget winner through full support, with no re-entry or skipped transition and exactly two adjacent supports at each phase boundary. The allocation proof combines pivotal probabilities, log-concavity of Bernoulli convolutions, and a mixed Gamma tail-ratio bound; the support proof uses cumulative-hazard geometry, exponential order statistics, and the Pr\'ekopa--Leindler inequality. Shapes below one have a unique full-uniform optimum. At shape one, the same holds for \(k\ge2\), while every allocation ties for \(k=1\). For shapes greater than one and \(k=1\), one active coordinate is optimal. Integer shapes give Poissonized MDS recovery. We also derive exact local stability thresholds and sufficient conditions for other common recovery responses.
 \end{abstract}
 
 \section{Introduction}
-A collection of types shares a fixed resource budget. Each type is recovered once its random requirement has been met, and success means that at least \(k\) types have recovered. Is it best to distribute the resource evenly, or to sacrifice some types and protect the rest more intensively? We prove that for independent Gamma requirements with a common shape greater than one, every optimum has equal positive allocations and zero allocations elsewhere. We call this form \emph{active-uniform}.
+A collection of types shares a fixed resource budget. Each type is recovered once its random requirement has been met, and success means that at least \(k\) types have recovered. Is it best to distribute the resource evenly, or to sacrifice some types and protect the rest more intensively? We determine both the form of the optimum and its complete support phases. For independent Gamma requirements with a common shape greater than one, every optimum has equal positive allocations and zero allocations elsewhere. We call this form \emph{active-uniform}.
 
 For Poisson read counts, an integer Gamma shape \(t\) is equivalent to requiring at least \(t\) reads of each recovered type. The cardinality condition is the recovery rule of an outer \([n,k]\) MDS code. The theorem thus applies to the nonuniform coverage-depth problem in DNA storage, but its continuous-shape formulation is independent of that application. Theorem~\ref{thm:gamma-active-uniform} gives the full optimizer classification, including the different behavior at shapes at or below one.
+
+The support phases have the following complete description. Here
+\(F_\tau\) denotes the distribution function of a unit-rate Gamma
+variable of shape \(\tau\).
+
+\newpage
+\begin{theorem}[Complete Gamma MDS support staircase]
+\label{thm:mds-global-support-staircase}
+Fix a real \(\tau>1\) and integers \(n\ge k\ge2\). Put
+\begin{gather*}
+ V_q(M)=\Pbb\bigl(\Bin(q,F_\tau(M/q))\ge k\bigr),\\
+ c_{k,\tau}(q)=\frac{\binom qk}{q^{\tau k}},\qquad
+ q_0=\max\operatorname*{arg\,max}_{k\le q\le n}c_{k,\tau}(q).
+\end{gather*}
+For each \(q_0\le q<n\), the curves \(V_q,V_{q+1}\) have a unique
+crossing \(\beta_q>0\). If \(q_0<n\), these satisfy
+\[
+ 0<\beta_{q_0}<\beta_{q_0+1}<\cdots<\beta_{n-1}<\infty.
+\]
+With \(\beta_{q_0-1}=0\) and \(\beta_n=\infty\), for every \(M>0\),
+\[
+ \operatorname*{arg\,max}_{k\le r\le n}V_r(M)=
+ \begin{cases}
+ \{q\},&\beta_{q-1}<M<\beta_q,\quad q_0\le q\le n,\\
+ \{q,q+1\},&M=\beta_q,\quad q_0\le q<n.
+ \end{cases}
+\]
+For independent \(B_i\sim\Bernoulli(F_\tau(\lambda_i))\), all
+allocations maximizing \(\Pbb(\sum_{i=1}^n B_i\ge k)\) subject to
+\(\lambda_i\ge0\) and \(\sum_{i=1}^n\lambda_i=M\) are exactly the
+permutations of
+\[
+ (\underbrace{M/q,\ldots,M/q}_{q\text{ entries}},0,\ldots,0)
+\]
+for the support sizes in this set. Every support from \(q_0\) through
+\(n\) is uniquely optimal on a nonempty open budget interval; supports
+below \(q_0\) are never optimal. If \(q_0=n\), the crossing list is
+empty and full uniformity is uniquely optimal for every \(M>0\).
+\end{theorem}
+
+The proof is in Section~\ref{sec:mds-global-support}. Thus no optimal
+support can re-enter after losing optimality, and no transition after
+\(q_0\) skips a support. The initial support itself can exceed \(k\):
+for \(k=10,\tau=2,n\ge12\), one has \(q_0=12\)
+(Example~\ref{ex:mds-small-depth-twelve}).
 
 \paragraph{Proof and consequences.}
 Conditioning on all but two Bernoulli recovery indicators produces a pair objective determined by two adjacent probabilities of the remaining sum. Its stationary equations and log-concavity restrict a nonuniform local maximum to one small coordinate and equal larger coordinates. A mixed Gamma tail-ratio inequality then gives a strictly positive second derivative in a feasible direction, excluding that last pattern. The argument is analytic for every real shape greater than one; it is not an extrapolation from computations at integer shapes.
 
-Section~\ref{sec:mds-support} studies the finite support comparison, including an example in which the small-budget optimum uses more than \(k\) coordinates. Section~\ref{subsec:common-recovery-criterion} isolates sufficient hypotheses on a common recovery curve. Section~\ref{sec:perturbation} gives a perturbation bound for finite comparisons. None of these statements asserts a global staircase for the MDS success objective.
+Section~\ref{sec:mds-support} gives the endpoint support laws and the
+local stability criterion. The global support proof in
+Section~\ref{sec:mds-global-support} uses a different consequence of
+the Gamma tail ratios: geometric concavity of the cumulative hazard.
+Its inverse transfers a strict quantile comparison from exponential
+order statistics, proving uniqueness and orientation of every
+pairwise crossing. Exponential spacings and the Pr\'ekopa--Leindler
+inequality give strict concavity in logarithmic support, which orders
+the adjacent crossings and excludes skipped phases.
+Section~\ref{subsec:common-recovery-criterion} isolates sufficient
+hypotheses on a common recovery curve, and
+Section~\ref{sec:perturbation} gives a perturbation bound for finite
+comparisons.
 
 \paragraph{Related work and scope.}
 Nonuniform coupon collection and its links to caching were developed in \cite{FGT1992}. Equal non-null probabilities are stochastically optimal for collecting a prescribed number of distinct types \cite{Anceaume2015}; this supplies the first-copy benchmark. The DNA coverage study \cite{BarLevSabaryGabrysYaakobi2025} states its uniform-allocation theorem for the first-copy case. Computational methods for collecting multiple copies of any prescribed number of types are given in \cite{Abraham2026}. Our companion paper \cite{LongCloud2026} treats the separable expected-defect objective and proves its exact support staircase. That is a different objective, and neither its optimizer nor its phase diagram automatically optimizes deadline success.
@@ -223,11 +280,11 @@ For example, at zero one has
 \(P(z)\sim\Gamma(m+1)z^{-m}\) and \(Q(z)\sim z/(m+1)\); at infinity, \eqref{eq:mds-gamma-P-integral} gives \(P(z)=1+m/z+O(z^{-2})\).  Thus \(W(z)\to m\) at both ends.  If \(W\) reached \(3m/5\) or a smaller value, it would attain an interior minimum at or below that level.  This contradicts \eqref{eq:mds-gamma-critical-second-derivative}, proving the lower bound.
 
 For the upper bound, use the probability density on \((0,\infty)\) proportional to \(e^{-u}(1+u/z)^m\), and let \(V=u/(z+u)\).  Then
-\[
+\begin{equation}\label{eq:mds-gamma-eta-decrease}
   \eta=m\E[V],
   \qquad
   z\eta'=-m\E[V(1-V)]-m^2\Var(V)<0.
-\]
+\end{equation}
 Under the probability density on \((0,1)\) proportional to \(e^{zv}(1-v)^m\), one similarly has
 \[
   \zeta=1+z\E[v],
@@ -662,7 +719,11 @@ For MDS success, it maximizes
 \[
   \Pbb\left(\Bin(q,\phi_t(M/q))\ge k\right).
 \]
-These support sizes need not agree.  The expected-cloud support size has an exact staircase \cite{LongCloud2026}.  A corresponding description of crossings, possible support jumps, and absence of re-entry for the MDS binomial-tail objective is a separate support-phase problem.
+These support sizes need not agree. The expected-cloud support size
+has an exact staircase \cite{LongCloud2026};
+Theorem~\ref{thm:mds-global-support-staircase} proves the MDS staircase
+by a separate comparison of binomial-tail probabilities. Neither
+staircase follows from the other objective's optimizer classification.
 \end{remark}
 
 \section{Support selection and local stability}
@@ -675,8 +736,10 @@ the finite family
   \qquad k\le q\le n.
 \end{equation}
 The support selected by this binomial tail can differ from the support
-that minimizes the expected terminal cloud.  We give its small- and
-large-depth limits and a local test that eliminates unstable candidates.
+that minimizes the expected terminal cloud. We first give its small-
+and large-depth limits and a local test that eliminates unstable
+candidates. Section~\ref{sec:mds-global-support} then proves all global
+crossings and the complete support staircase.
 Throughout the asymptotic statements, \(n,k,\tau\) are fixed.
 
 \subsection{Small-depth support selection}
@@ -963,9 +1026,9 @@ cannot be a global maximizer on the simplex.
 
 At \(M=qz_*\), the constrained Hessian vanishes and this test makes
 no local classification.  Nor does facewise local maximality by
-itself compare different support sizes.  The support-phase problem
-at intermediate depth still requires comparisons among the values
-\(V_q(M)\).
+itself compare different support sizes. The global comparisons among
+the \(V_q(M)\) in Section~\ref{sec:mds-global-support} determine
+optimality, while the Hessian also describes suboptimal barycenters.
 
 \subsection{An obstruction to frozen-pair equalization}
 
@@ -1036,6 +1099,468 @@ not require the fixed third coordinate to satisfy its own
 stationarity equation.  The structured variations in
 Section~\ref{sec:mds-success-modules} use those additional equations
 to exclude asymmetric local maxima of the full objective.
+
+\section{Global crossings and support phases}
+\label{sec:mds-global-support}
+
+Throughout this section, \(\tau>1\) and \(n\ge k\ge2\) are fixed.
+For support-curve comparisons, we use the same formula for \(V_q\)
+at every integer \(q\ge k\); feasible allocations still require
+\(q\le n\).
+Write \(c(q)=c_{k,\tau}(q)\), with \(q_0\) as in
+\eqref{eq:mds-leading-coefficient}. We first classify every pair of
+support curves and prove strict concavity in logarithmic support.
+Together these yield Theorem~\ref{thm:mds-global-support-staircase}.
+The support comparisons themselves do not use the active-uniform
+theorem; that theorem supplies the final allocation classification.
+
+\begin{theorem}[Complete pairwise crossing classification]
+\label{thm:mds-pairwise-crossing}
+Let \(\tau>1\) and let \(k,q,r\) be integers with
+\(2\le k\le q<r\). Exactly one of the following holds.
+\begin{enumerate}[label=(\roman*)]
+\item If \(c_{k,\tau}(r)\ge c_{k,\tau}(q)\), then
+\(V_r(M)>V_q(M)\) for every \(M>0\). This includes equality of
+the leading coefficients.
+\item If \(c_{k,\tau}(r)<c_{k,\tau}(q)\), there is a unique
+\(\beta_{q,r}>0\) at which \(V_q=V_r\), with
+\[
+ V_q(M)>V_r(M)\quad(0<M<\beta_{q,r}),\qquad
+ V_q(M)<V_r(M)\quad(M>\beta_{q,r}).
+\]
+The crossing is transverse:
+\(V_r'(\beta_{q,r})>V_q'(\beta_{q,r})>0\).
+\end{enumerate}
+\end{theorem}
+
+\begin{theorem}[Strict concavity in logarithmic support]
+\label{thm:mds-log-support-concavity}
+Let \(\tau>1\), \(k\ge2\) be an integer, and \(M>0\).
+There is a positive continuous interpolation
+\(\widetilde V(q,M)\) for real \(q\ge k\), agreeing with
+\(V_q(M)\) at integers, such that
+\[
+ s\longmapsto\log\widetilde V(e^s,M),\qquad s\ge\log k,
+\]
+is strictly concave. In particular, for integers \(k\le q<r<t\),
+\begin{equation}\label{eq:mds-geometric-support-interpolation}
+ V_r(M)>V_q(M)^{1-\theta}V_t(M)^\theta,
+ \qquad \theta=\frac{\log r-\log q}{\log t-\log q}.
+\end{equation}
+Among any finite set of consecutive feasible support sizes, at most
+two maximize at a given budget, and if two do, they are adjacent.
+\end{theorem}
+
+\subsection{Cumulative-hazard geometry}
+
+Put
+\[
+ S(x)=1-F_\tau(x),\qquad h(x)=\frac{g_\tau(x)}{S(x)},\qquad
+ A(x)=-\log S(x)=\int_0^x h(t)\,dt.
+\]
+The cumulative hazard \(A\) increases strictly from zero to infinity.
+Moreover \(h=1/P\), where \(P\) is the upper Gamma tail-to-density
+ratio from Section~\ref{sec:mds-success-modules}. Thus
+\(xh'(x)/h(x)=\eta_\tau(x)\), and
+\eqref{eq:mds-gamma-eta-decrease} proves that this elasticity is
+positive and strictly decreasing.
+
+\begin{lemma}[Cumulative-hazard geometry]
+\label{lem:mds-cumulative-hazard-geometry}
+For \(\tau>1\), the function \(s\mapsto\log A(e^s)\) is strictly
+concave. Its inverse \(s\mapsto\log A^{-1}(e^s)\) is strictly convex.
+If \(T=A^{-1}\), then
+\(e_T(y)=yT'(y)/T(y)\) is positive and strictly increasing.
+\end{lemma}
+\begin{proof}
+For \(x>0\),
+\begin{equation}\label{eq:mds-hazard-integrated-elasticity}
+ \frac{A(x)}{xh(x)}=\int_0^1\frac{h(xv)}{h(x)}\,dv.
+\end{equation}
+For each \(0<v<1\),
+\[
+ \frac{d}{d\log x}\log\frac{h(xv)}{h(x)}
+ =\eta_\tau(xv)-\eta_\tau(x)>0.
+\]
+Hence the integral in \eqref{eq:mds-hazard-integrated-elasticity} is
+strictly increasing. Its reciprocal
+\[
+ \alpha(x)=\frac{xh(x)}{A(x)}
+ =\frac{d}{d\log x}\log A(x)
+\]
+is positive and strictly decreasing, which proves strict concavity.
+The increasing inverse is strictly convex, and more explicitly
+\(e_T(y)=1/\alpha(T(y))\) is positive and strictly increasing.
+\end{proof}
+
+\subsection{An exponential comparison and its Gamma transfer}
+
+\begin{lemma}[Density-ratio crossing lemma]
+\label{lem:mds-density-ratio-crossing}
+Let \(f,g\) be positive continuous probability densities on
+\((0,\infty)\). If \(\log(g/f)\) is strictly concave, then
+\[
+ D(x)=\int_0^x(g(t)-f(t))\,dt
+\]
+has at most one zero in \((0,\infty)\). At such a zero,
+\(D'(x)>0\), and the sign changes from negative to positive.
+\end{lemma}
+\begin{proof}
+The set \(I=\{x:g(x)>f(x)\}\) is a nonempty interval and cannot
+be the entire half-line, since the densities have equal integral.
+Strict concavity excludes an interval on which \(g/f=1\).
+To the left of \(I\), when nonempty, \(D<0\). To its right,
+when nonempty, total mass zero gives
+\[
+ D(x)=-\int_x^\infty(g(t)-f(t))\,dt>0.
+\]
+On \(I\), \(D'=g-f>0\). Thus every zero lies in \(I\), is
+unique, and has positive derivative. The same argument covers
+intervals \(I\) with zero or infinity as an endpoint.
+\end{proof}
+
+\begin{lemma}[Exponential quantile-ratio monotonicity]
+\label{lem:mds-exponential-quantile-ratio}
+For integers \(2\le k\le q<r\), let \(X_q,X_r\) be the \(k\)-th
+order statistics from \(q,r\) independent unit exponentials, with
+quantiles \(Q_q,Q_r\). For \(0<u<1\),
+\[
+ Q_q(u)>Q_r(u),\qquad
+ \frac{d}{du}\log\frac{Q_q(u)}{Q_r(u)}>0.
+\]
+\end{lemma}
+\begin{proof}
+Adding \(r-q\) independent observations strictly increases the
+probability of at least \(k\) completions at every positive deadline,
+which gives the first inequality. The density for sample size \(q\) is
+\[
+ f_q(x)=k\binom qk(1-e^{-x})^{k-1}e^{-(q-k+1)x}.
+\]
+For \(0<c<1\), set \(R_c(x)=c f_r(cx)/f_q(x)\). Then
+\[
+ (\log R_c)'(x)
+ =(k-1)\left(\frac{c}{e^{cx}-1}-\frac1{e^x-1}\right)
+ +(q-k+1)-c(r-k+1),
+\]
+and therefore
+\[
+ (\log R_c)''(x)=\frac{k-1}{x^2}[\Phi(x)-\Phi(cx)]<0,
+ \qquad
+ \Phi(x)=\left(\frac{x}{2\sinh(x/2)}\right)^2.
+\]
+Indeed, \(\Phi\) is strictly decreasing: for \(z>0\),
+\(\sinh z-z\cosh z<0\), since its derivative is
+\(-z\sinh z<0\) and its limit at zero is zero.
+
+Fix \(u\), and put \(a=Q_q(u)\), \(b=Q_r(u)\),
+\(c=b/a\in(0,1)\). At \(x=a\), the distribution functions
+corresponding to \(c f_r(cx)\) and \(f_q(x)\) agree.
+Lemma~\ref{lem:mds-density-ratio-crossing} gives
+\(c f_r(b)>f_q(a)\), or \(b f_r(b)>a f_q(a)\). Thus
+\[
+ \frac{d}{du}\log\frac{a}{b}
+ =\frac1{a f_q(a)}-\frac1{b f_r(b)}>0.
+\]
+\end{proof}
+
+\begin{lemma}[Transfer through a geometrically convex function]
+\label{lem:mds-quantile-transfer}
+Suppose \(a(u)>b(u)>0\) are differentiable with positive derivatives
+and \((\log a-\log b)'>0\). Let \(T:(0,\infty)\to(0,\infty)\)
+be increasing and differentiable, with positive nondecreasing
+elasticity \(e_T(y)=yT'(y)/T(y)\). Then
+\[
+ \frac{d}{du}\log\frac{T(a(u))}{T(b(u))}>0.
+\]
+\end{lemma}
+\begin{proof}
+Write \(A_1=(\log a)'\), \(B_1=(\log b)'\), so
+\(A_1>B_1>0\). The derivative in question equals
+\[
+ e_T(a)A_1-e_T(b)B_1
+ =e_T(a)(A_1-B_1)+(e_T(a)-e_T(b))B_1>0.
+\]
+\end{proof}
+
+Let \(Y_{(k:q)}\) be the \(k\)-th order statistic of \(q\) unit-rate
+Gamma variables of shape \(\tau\), and let \(K_q\) denote the
+quantile function of \(qY_{(k:q)}\), whose distribution function is
+\(V_q\). These variables have positive continuous densities on
+\((0,\infty)\).
+
+\begin{proposition}[Strict scaled Gamma quantile order]
+\label{prop:mds-gamma-quantile-order}
+For \(\tau>1\) and integers \(2\le k\le q<r\),
+\begin{equation}\label{eq:mds-gamma-quantile-order}
+ \frac{d}{du}\log\frac{K_q(u)}{K_r(u)}>0
+ \qquad(0<u<1).
+\end{equation}
+\end{proposition}
+\begin{proof}
+The cumulative-hazard transform \(A(Y)\) is unit exponential.
+Since \(A\) is increasing, \(Y_{(k:q)}\) has the distribution of
+\(T(X_q)\), where \(T=A^{-1}\). Hence \(K_q(u)=qT(Q_q(u))\).
+Apply Lemmas~\ref{lem:mds-cumulative-hazard-geometry},
+\ref{lem:mds-exponential-quantile-ratio}, and
+\ref{lem:mds-quantile-transfer}; the factor \(q/r\) does not affect
+the logarithmic derivative.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:mds-pairwise-crossing}]
+For a fixed pair \(q,r\), apply the endpoint estimates with a finite
+support cap at least \(r\).
+Proposition~\ref{prop:mds-small-depth} gives
+\(V_q(M)\sim c(q)M^{\tau k}/\Gamma(\tau+1)^k\) at zero, so
+\begin{equation}\label{eq:mds-quantile-zero}
+ \lim_{u\downarrow0}\frac{K_q(u)}{K_r(u)}
+ =\left(\frac{c(r)}{c(q)}\right)^{1/(\tau k)}.
+\end{equation}
+At infinity, Proposition~\ref{prop:mds-large-depth} yields
+\[
+ -\log(1-V_q(M))=\frac{q-k+1}{q}M+O(\log M),
+ \qquad
+ K_q(u)\sim\frac{q}{q-k+1}\log\frac1{1-u}.
+\]
+Consequently
+\begin{equation}\label{eq:mds-quantile-one}
+ \lim_{u\uparrow1}\frac{K_q(u)}{K_r(u)}
+ =\frac{q(r-k+1)}{r(q-k+1)}>1,
+\end{equation}
+where the last inequality follows from \((r-q)(k-1)>0\).
+All parameters in these asymptotics are fixed.
+
+If \(c(r)\ge c(q)\), the limit in \eqref{eq:mds-quantile-zero}
+is at least one. Strict increase of the quantile ratio implies
+\(K_q(u)>K_r(u)\) for every \(0<u<1\), including when the limit
+equals one. Equivalently, \(V_r(M)>V_q(M)\) for every \(M>0\).
+
+If \(c(r)<c(q)\), the two endpoint limits lie on opposite sides
+of one. The continuous strictly increasing ratio equals one at a
+unique \(u_*\). Put \(\beta_{q,r}=K_q(u_*)=K_r(u_*)\).
+Below \(u_*\), one has \(K_q<K_r\), and above it \(K_q>K_r\).
+For a budget \(M\), set \(u=V_q(M)\), so \(K_q(u)=M\).
+These quantile inequalities give the asserted signs of
+\(V_r(M)-V_q(M)\). At equality,
+\[
+ 0<\left.\frac{d}{du}\log\frac{K_q(u)}{K_r(u)}\right|_{u=u_*}
+ =\frac1{\beta_{q,r}V_q'(\beta_{q,r})}
+  -\frac1{\beta_{q,r}V_r'(\beta_{q,r})}.
+\]
+Positivity of the densities proves transversality.
+\end{proof}
+
+\subsection{Strict concavity in logarithmic support}
+
+\begin{proof}[Proof of Theorem~\ref{thm:mds-log-support-concavity}]
+Let \(E_0,\ldots,E_{k-1}\) be independent unit exponentials.
+By memorylessness, the successive waiting times until the \(k\)-th
+of \(q\) exponential clocks rings are independent with rates
+\(q,q-1,\ldots,q-k+1\). Thus, for integer \(q\ge k\),
+\[
+ X_q\stackrel d=\sum_{j=0}^{k-1}\frac{E_j}{q-j}.
+\]
+The cumulative-hazard transform therefore gives
+\begin{equation}\label{eq:mds-support-spacing}
+ V_q(M)=\Pbb\left(
+ \sum_{j=0}^{k-1}\frac{E_j}{1-j/q}\le qA(M/q)\right).
+\end{equation}
+Define \(\widetilde V(q,M)\) for real \(q\ge k\) by this same
+right-hand side. It is positive and continuous: the coefficients
+depend continuously on \(q\), every weighted exponential sum has
+a continuous distribution, and dominated convergence applies.
+
+Put \(s=\log q\) and \(U_j=\log E_j\). Their joint density is
+\begin{equation}\label{eq:mds-logexp-density}
+ \rho(u)=\exp\left(\sum_{j=0}^{k-1}(u_j-e^{u_j})\right),
+ \qquad u\in\R^k,
+\end{equation}
+which is positive and log-concave. Set
+\begin{align}
+ L(u,s)&=\log\left(\sum_{j=0}^{k-1}
+   \exp\{u_j-\log(1-je^{-s})\}\right),
+   \label{eq:mds-joint-logsum}\\
+ b_M(s)&=s+\log A(Me^{-s}).
+   \label{eq:mds-log-support-boundary}
+\end{align}
+Then \(\widetilde V(e^s,M)=\mu(K_s)\), where \(\mu\) has density
+\(\rho\) and \(K_s=\{u:L(u,s)\le b_M(s)\}\).
+The function \(L\) is jointly convex: log-sum-exp is convex and
+increasing in each argument, and
+\[
+ \frac{d^2}{ds^2}[-\log(1-je^{-s})]
+ =\frac{je^{-s}}{(1-je^{-s})^2}\ge0.
+\]
+Lemma~\ref{lem:mds-cumulative-hazard-geometry} makes \(b_M\)
+strictly concave.
+
+Take \(s_0\ne s_1\), \(0<\theta<1\), and
+\(s_\theta=(1-\theta)s_0+\theta s_1\). Put
+\[
+ \delta=b_M(s_\theta)-(1-\theta)b_M(s_0)-\theta b_M(s_1)>0.
+\]
+Joint convexity of \(L\) gives
+\[
+ (1-\theta)K_{s_0}+\theta K_{s_1}
+ \subseteq
+ K_\theta^-:=\{u:L(u,s_\theta)\le b_M(s_\theta)-\delta\}.
+\]
+The Pr\'ekopa--Leindler inequality for the log-concave measure
+\(\mu\) \cite[Theorem 2]{Prekopa1973} yields
+\[
+ \mu(K_\theta^-)
+ \ge\mu(K_{s_0})^{1-\theta}\mu(K_{s_1})^\theta.
+\]
+The shell
+\[
+ \{u:b_M(s_\theta)-\delta<L(u,s_\theta)<b_M(s_\theta)\}
+\]
+is nonempty and open, since
+\(L(u+t(1,\ldots,1),s)=L(u,s)+t\). Its measure is positive
+because \(\rho>0\) everywhere. Hence
+\[
+ \widetilde V(e^{s_\theta},M)>
+ \widetilde V(e^{s_0},M)^{1-\theta}
+ \widetilde V(e^{s_1},M)^\theta.
+\]
+No equality classification for Pr\'ekopa--Leindler is needed.
+Restricting to integers proves
+\eqref{eq:mds-geometric-support-interpolation}. Two nonadjacent
+maximizers would force an intermediate integer support to have
+strictly larger value, which is impossible.
+\end{proof}
+
+\begin{remark}[Beta form of the interpolation]
+\label{rem:mds-beta-interpolation}
+The interpolation is \(\widetilde V(q,M)=I_{F_\tau(M/q)}(k,q-k+1)\),
+where \(I_p(a,b)\) is the distribution function of a
+\(\mathrm{Beta}(a,b)\) variable at \(p\). Indeed, for
+\(Z=\sum_{j=0}^{k-1}E_j/(q-j)\),
+\[
+ \E e^{-tZ}
+ =\prod_{j=0}^{k-1}\frac{q-j}{q-j+t}
+ =\frac{\Gamma(q+1)\Gamma(q-k+1+t)}
+        {\Gamma(q-k+1)\Gamma(q+1+t)}.
+\]
+For nonnegative integer \(t\), these are the moments of a
+\(\mathrm{Beta}(q-k+1,k)\) variable. Uniqueness of moments on
+\([0,1]\) identifies \(e^{-Z}\) with that law. Applying the symmetry
+of the beta distribution to \(\Pbb(Z\le A(M/q))\) gives the formula.
+This closed form is not required for the concavity proof.
+\end{remark}
+
+\subsection{Ordered transitions and the allocation phases}
+
+\begin{lemma}[An adjacent tie is a global tie]
+\label{lem:mds-adjacent-global-tie}
+Let \(\tau>1\), \(n\ge k\ge2\), and \(k\le q<n\).
+If \(V_q(M)=V_{q+1}(M)\) at \(M>0\), then
+\[
+ V_r(M)<V_q(M)
+ \qquad(r\in\{k,\ldots,n\}\setminus\{q,q+1\}).
+\]
+\end{lemma}
+\begin{proof}
+Let \(f(s)=\log\widetilde V(e^s,M)\). Its secant slope between
+\(\log q\) and \(\log(q+1)\) is zero. Strict concavity makes every
+secant continuing to the right have negative slope, and every
+secant ending at \(\log q\) from the left have positive slope.
+Thus every value outside the adjacent pair is strictly smaller.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:mds-global-support-staircase}]
+The leading coefficients have a strictly concave logarithmic
+interpolation: using \(\binom{x}{k}=k!^{-1}\prod_{j=0}^{k-1}(x-j)\),
+\[
+ \frac{d^2}{ds^2}\log c(e^s)
+ =-\sum_{j=1}^{k-1}\frac{je^s}{(e^s-j)^2}<0
+ \qquad(s\ge\log k).
+\]
+Their integer values are strictly unimodal, apart from a possible
+tie at two adjacent maximizing integers. Since \(q_0\) is the larger
+maximizer, \(c(q)>c(q+1)\) for \(q_0\le q<n\).
+Theorem~\ref{thm:mds-pairwise-crossing} supplies each unique adjacent
+crossing \(\beta_q=\beta_{q,q+1}>0\).
+
+At \(M=\beta_q\), Lemma~\ref{lem:mds-adjacent-global-tie} gives
+\(V_{q+2}(M)<V_{q+1}(M)\) whenever \(q+2\le n\).
+The crossing of \(q+1,q+2\) must occur later, so
+\(\beta_q<\beta_{q+1}\).
+For \(k\le r<q_0\), one has \(c(q_0)\ge c(r)\), and
+Theorem~\ref{thm:mds-pairwise-crossing} gives
+\(V_{q_0}(M)>V_r(M)\) for every positive budget. Such supports
+are permanently dominated.
+
+If \(\beta_{q-1}<M<\beta_q\), each adjacent crossing below \(q\)
+has occurred and each crossing at or above \(q\) has yet to occur.
+Chaining their strict comparisons makes \(q\) the unique maximizing
+support. At \(M=\beta_q\), Lemma~\ref{lem:mds-adjacent-global-tie}
+gives exactly the two maximizing supports \(q,q+1\).
+If \(q_0=n\), all smaller supports are permanently dominated and
+there are no crossings to list. Finally,
+Theorem~\ref{thm:gamma-active-uniform} gives exactly the stated
+maximizing allocations, including all equality cases at a boundary.
+\end{proof}
+
+\begin{corollary}[Nonadjacent crossing locations]
+\label{cor:mds-nonadjacent-crossing-location}
+Let \(\tau>1\), \(n\ge k\ge2\), and
+\(q_0\le q<r-1\le n-1\). Then
+\[
+ \beta_q<\beta_{q,r}<\beta_{r-1}.
+\]
+At \(V_q(\beta_{q,r})=V_r(\beta_{q,r})\), every integer support
+strictly between \(q\) and \(r\) has larger value. This equality is
+therefore not a global tie.
+\end{corollary}
+\begin{proof}
+At \(\beta_q\), support \(r\) is below \(q\); at
+\(\beta_{r-1}\), support \(q\) is below \(r\).
+The unique crossing lies between these budgets.
+Theorem~\ref{thm:mds-log-support-concavity} gives the last assertion.
+\end{proof}
+
+For \(k=10,\tau=2,n\ge12\),
+Example~\ref{ex:mds-small-depth-twelve} and the staircase theorem give
+the sequence \(12,13,\ldots,n\), with every listed support optimal
+on a nonempty open interval. Supports \(10,11\) never become optimal.
+This illustrates why absence of skipped transitions refers to the
+phases beginning at \(q_0\), rather than asserting that \(q_0=k\).
+For \(n=16\), the four transition budgets are approximately
+\[
+\begin{array}{c@{\qquad}r}
+\text{Transition}&\text{Budget}\\[2pt]
+12\longrightarrow13&3.751806808726\\
+13\longrightarrow14&8.851172168188\\
+14\longrightarrow15&14.333018261348\\
+15\longrightarrow16&20.197931039196
+\end{array}
+\]
+These diagnostic values were computed with 80-decimal working
+precision; the displayed decimals are approximations. The
+\href{https://github.com/long-mathematics/mds-coverage-optimization/blob/main/scripts/verify_support_phases.py}{repository support-phase diagnostic}
+records finite numerical checks. Existence, uniqueness, and ordering
+of the transitions follow from the analytic proof above.
+The cases \(k=1\), \(\tau\le1\), and \(k=n\) retain the
+classifications in Theorem~\ref{thm:gamma-active-uniform}.
+
+\begin{remark}[Support comparisons for other common responses]
+\label{rem:mds-common-response-support}
+Let \(F\) be a continuously differentiable distribution function on
+\((0,\infty)\), with positive density, \(F(0)=0\), and
+\(\lim_{x\to\infty}F(x)=1\). Suppose that its cumulative hazard
+\(A=-\log(1-F)\) satisfies strict concavity of
+\(s\mapsto\log A(e^s)\). The spacing and Pr\'ekopa argument then
+gives strict concavity in logarithmic support for the curves
+\(\Pbb(\Bin(q,F(M/q))\ge k)\). For \(k\ge2\), the inverse-hazard
+comparison also gives strict quantile-ratio ordering. Any pair thus
+has at most one crossing, with the same transverse orientation in
+favor of the larger support. The Gamma endpoint asymptotics above
+are what decide crossing existence and identify \(q_0\) and the
+terminal support in the present theorem. This remark concerns
+active-uniform candidates only: a global allocation theorem for a
+different response requires a separate argument, such as the criterion
+in Section~\ref{subsec:common-recovery-criterion}.
+\end{remark}
 
 \section{A sufficient criterion for a common recovery response}
 \label{subsec:common-recovery-criterion}
@@ -1283,15 +1808,18 @@ CDF perturbation bound in Proposition
 
 
 \section{Further questions and verification scope}
-The finite support curves \(V_q(M)\) in~\eqref{eq:mds-support-values}
-remain the main unresolved part of the optimization problem. For
-\(\tau>1\) and \(2\le k<n\), it remains to determine uniqueness of
-crossings, whether an optimal support can reappear after losing
-optimality, and whether transitions can skip support sizes. The
-small-budget classification, eventual full support, and local Hessian
-test do not resolve these global questions.
+Theorems~\ref{thm:mds-pairwise-crossing},
+\ref{thm:mds-log-support-concavity}, and
+\ref{thm:mds-global-support-staircase} settle the global support
+comparisons: crossings are unique whenever they exist, support
+re-entry is impossible, and the optimizing support visits every
+integer from \(q_0\) through \(n\). Quantitative questions remain,
+including estimates for the transition budgets \(\beta_q\), their
+dependence on \(k,\tau\), and asymptotic descriptions when the
+parameters grow. The fixed-parameter endpoint expansions in
+Section~\ref{sec:mds-support} do not assert uniformity in such regimes.
 
-Other directions are to identify further common responses satisfying
+Further directions are to identify common responses satisfying
 Proposition~\ref{prop:common-recovery-active-uniform}, sharpen the mixed
 Gamma bound, and determine what replaces equal-positive-coordinate
 extremizers for heterogeneous responses or unequal costs. For integer
@@ -1304,9 +1832,15 @@ with integration to minimize expected completion time.
 The repository includes exact finite checks, symbolic identity checks,
 and explicitly labeled numerical diagnostics. They supplement the
 analytic proofs above and do not certify their infinite parameter
-ranges. No proof-assistant formalization is claimed. Stable statement
-labels and a dependency ledger are supplied to support subsequent
-independent auditing and formalization.
+ranges. The global support proof uses decreasing Gamma hazard
+elasticity, an elementary exponential quantile comparison, and the
+classical Pr\'ekopa--Leindler inequality; its allocation conclusion
+additionally uses the active-uniform theorem. It does not require
+unimodality of a ratio of Gamma completion densities, the local
+barycenter Hessian, or the expected-terminal-cloud staircase.
+No proof-assistant formalization is claimed. Stable statement labels
+and a dependency ledger are supplied to support subsequent independent
+auditing and formalization.
 
 \begin{thebibliography}{99}\raggedright
 
@@ -1349,6 +1883,13 @@ T. M. Liggett,
 Nonuniform Coverage and the Terminal-Cloud Staircase,
 companion manuscript (2026),
 \href{https://github.com/long-mathematics/mds-coverage-optimization/blob/main/terminal_cloud_staircase.tex}{repository source}.
+
+\bibitem{Prekopa1973} A. Pr\'ekopa,
+On logarithmic concave measures and functions,
+\emph{Acta Scientiarum Mathematicarum (Szeged)} 34 (1973), 335--343.
+\href{https://acta.bibl.u-szeged.hu/14411/1/math_034_335-343.pdf}{Original paper}.
+Theorem 2 gives log-concavity of the generated measure;
+Theorem 6 gives preservation under marginalization.
 
 \bibitem{Segura2014} J. Segura,
 Monotonicity properties and bounds for the chi-square and gamma distributions,

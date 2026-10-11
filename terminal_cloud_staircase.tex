@@ -61,11 +61,12 @@ sampling laws are developed in~\cite{Abraham2026}.
 
 Our companion paper~\cite{LongGamma2026} optimizes the probability of
 recovering at least \(k\) types and extends that optimizer theorem to
-all positive common Gamma shapes. It is not a proof dependency of the
-present staircase theorem. In particular, an expected-defect minimizer
-need not maximize MDS success: a support smaller than \(k\) cannot
-recover \(k\) types at all. The global support-phase problem for the
-MDS tail is not settled by the staircase proved here.
+all positive common Gamma shapes. For shapes greater than one and
+\(k\ge2\), it also proves global crossing uniqueness and consecutive
+MDS support phases. The two staircase theorems have independent proofs.
+An expected-defect minimizer need not maximize MDS success: a support
+smaller than \(k\) cannot recover \(k\) types at all. The two objectives
+can therefore have different optimizing supports and phase boundaries.
 
 Sections~\ref{sec:cloud-proofs} and~\ref{sec:cloud-examples} contain
 the extremal proofs and examples. The remaining sections give a compact
@@ -589,10 +590,12 @@ gives \(a^2\ge L(2v+2a/3)\), proving the sufficient margin condition.
 Minimizing \(\Lambda\) need not maximize \(\Pbb(U_{M,t}\le n-k)\).
 For \(n=2,t=2,M=1\), the expected-cloud optimum has support one,
 whereas recovery of both types requires positive allocation to both.
-The separate MDS theorem in~\cite{LongGamma2026} optimizes the binomial
-tail over active supports; its support-phase diagram is a different
-problem. Concentration bounds above can be useful for a chosen law,
-but do not identify an exact success-probability optimizer.
+The companion paper~\cite{LongGamma2026} optimizes the binomial tail
+for common Gamma shapes and proves its support-phase diagram
+independently. Those phase boundaries belong to the success-probability
+objective and need not coincide with the expected-cloud boundaries.
+Concentration bounds above can be useful for a chosen law, but do not
+identify an exact success-probability optimizer.
 \end{remark}
 
 \section{Fixed-read transfer}
@@ -828,10 +831,11 @@ needs an additional argument.
 
 \section{Further questions and verification scope}
 The expected-cloud allocation and staircase problems above are solved
-for the common integer threshold under Poissonization. They do not
-settle the companion MDS support-phase problem, exact higher-threshold
-fixed-read optimization, heterogeneous recovery costs, or risk-sensitive
-objectives such as a terminal-cloud moment-generating function.
+for the common integer threshold under Poissonization. The companion
+MDS support phases are settled independently in~\cite{LongGamma2026}.
+Further questions concern exact higher-threshold fixed-read optimization,
+heterogeneous recovery costs, and risk-sensitive objectives such as a
+terminal-cloud moment-generating function.
 Independent reconstruction given the full counts, and monotonicity
 when transferring between read budgets, remain essential hypotheses.
 
@@ -870,7 +874,7 @@ Birthday paradox, coupon collectors, caching algorithms and self-organizing sear
 \emph{Discrete Applied Mathematics} 39 (1992), 207--229.
 
 \bibitem{LongGamma2026} C. D. Long,
-Active-Uniform Laws for Gamma Completion and MDS Recovery,
+Optimal Allocations for Gamma Completion and MDS Recovery,
 companion manuscript (2026),
 \href{https://github.com/long-mathematics/mds-coverage-optimization/blob/main/gamma_mds_active_uniform.tex}{repository source}.
 \end{thebibliography}

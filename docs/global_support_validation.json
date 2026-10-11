@@ -1,0 +1,78 @@
+{
+  "date": "2026-10-11",
+  "scope": "Local validation of the global Gamma/MDS support integration, including the separately merged first-audit corrections; no proof-assistant certification.",
+  "base_commit": "32a82e03a6ad78331635e465a42c91308eaeafcd",
+  "commands": [
+    "make test",
+    "make pdf",
+    "make check"
+  ],
+  "all_commands_passed": true,
+  "labeled_formal_statements": 45,
+  "statement_changes": {
+    "gamma_mds_active_uniform.tex": {
+      "added": [
+        "thm:mds-global-support-staircase",
+        "thm:mds-pairwise-crossing",
+        "thm:mds-log-support-concavity",
+        "lem:mds-cumulative-hazard-geometry",
+        "lem:mds-density-ratio-crossing",
+        "lem:mds-exponential-quantile-ratio",
+        "lem:mds-quantile-transfer",
+        "prop:mds-gamma-quantile-order",
+        "lem:mds-adjacent-global-tie",
+        "cor:mds-nonadjacent-crossing-location"
+      ],
+      "modified": [],
+      "removed": []
+    },
+    "terminal_cloud_staircase.tex": {
+      "added": [],
+      "modified": [],
+      "removed": []
+    }
+  },
+  "source_and_pdf_records": [
+    {
+      "source": "gamma_mds_active_uniform.tex",
+      "pdf": "gamma_mds_active_uniform.pdf",
+      "source_sha256": "314d3959557803756ae58f4fb59939257b96fffcc72137572fd96df4ceb0d21b",
+      "pdf_sha256": "404290f6cdace3d7c0bf4abb8cde1e63208db50d7f527335e9d0b09da4525db2",
+      "pages": 27
+    },
+    {
+      "source": "terminal_cloud_staircase.tex",
+      "pdf": "terminal_cloud_staircase.pdf",
+      "source_sha256": "24790dfd913e430ee44d8b24bc96cacccb6555f5a7e5b765c56a75ae49b34214",
+      "pdf_sha256": "c4da336c222fe254a11df2a88c0ff767c6094ebf0cbd083a008d97777a1949f6",
+      "pages": 14
+    }
+  ],
+  "recorded_diagnostics_match_fresh_outputs": {
+    "exact_certificates": true,
+    "symbolic_identities": true,
+    "numerical_diagnostics": true,
+    "support_phases": true
+  },
+  "support_diagnostics": {
+    "precision_decimal_digits": 80,
+    "identity_records": 8,
+    "crossing_examples": 9,
+    "dominance_budget_comparisons": 10,
+    "real_support_concavity_examples": 5,
+    "all_checks_passed": true
+  },
+  "tex_warnings": [],
+  "visual_review": "docs/VISUAL_REVIEW.md",
+  "analytic_integration_review": "docs/INTEGRATION_AUDIT.md",
+  "external_referee_review_claimed": false,
+  "proof_assistant_coverage": null,
+  "preserved_audit_pull_request": "https://github.com/long-mathematics/mds-coverage-optimization/pull/3",
+  "statement_registry_schema": 2,
+  "statement_comparison_basis": "Per-label statement_sha256 against the corrected base; context and whole-source fingerprints are refreshed separately.",
+  "preserved_paper_ii_proof_blocks": 13,
+  "audit_regression_tests": {
+    "count": 5,
+    "all_passed": true
+  }
+}
