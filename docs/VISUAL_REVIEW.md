@@ -1,5 +1,13 @@
 # PDF visual review
 
+## Focused Paper II toolkit strengthening, October 11, 2026
+
+The clean-runner PDFs contain **28 pages** in Paper I and **14 pages** in Paper II. Paper I's source and PDF are byte-identical to the preceding version. Paper II was rendered at 160 dpi and compared page by page with its baseline PDF: pages 1--9 are pixel-identical, while normal downstream reflow affects pages 10--14.
+
+All five affected pages were inspected in a contact sheet and individually at full rendered resolution. Page 10 cleanly displays the first failing defect count, the exact lattice gaps `n-k+1-Lambda` and `mu-k+1`, their equality in the hard-threshold model, and the revised proof. Page 12 cleanly displays the closed-simplex condition `epsilon_i >= -1` and the explicit boundary interpretation `p_i=0`. Pages 11, 13, and 14 contain ordinary reflow of the unchanged fixed-read, environment, calibration, and bibliography material.
+
+No clipping, overlapping text or equations, broken mathematical glyphs, unexpected blank pages, isolated headings, or margin violations were found. The page counts, 11pt text, and 1.1-inch margins are unchanged. Both TeX builds are warning-free. This is a visual/layout review, not mathematical or proof-assistant certification.
+
 ## Deep-audit clarity revisions, October 11, 2026
 
 The clean-runner PDFs contain **28 pages** in Paper I and **14 pages** in Paper II. Before-and-after PDFs were retained in the workflow artifact, rendered with the repository PDF tools, and compared page by page. All pages of both revised manuscripts were inspected in contact sheets. Paper I pages 5, 6, 9, 12, 19, 21, 22, and 23 and Paper II pages 4, 5, 7, and 11 were additionally inspected individually at full rendered resolution because they contain the principal deep-audit clarifications.
@@ -44,4 +52,4 @@ with no clipping, overlap, or broken glyphs. The local PDFs are 21 and
 This is a visual check of local builds of the corrected sources, not an
 independent mathematical audit or a claim of byte-identical output across
 TeX installations. GitHub Actions separately rebuilds and validates the
-tracked source/PDF pair on its runner.
+tracked source/PDF pair.

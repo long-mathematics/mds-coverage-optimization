@@ -3,6 +3,7 @@
 from fractions import Fraction as F
 from pathlib import Path
 import hashlib
+import math
 import re
 import unittest
 from validate_repository import ROOT, statements
@@ -89,6 +90,43 @@ class FirstAuditRegressions(unittest.TestCase):
         self.assertIn("a_1'(x)=\\frac{(x+1)e^{-x}-1}{x^2}<0", self.cloud)
         self.assertIn(r'If \(q\) is optimal, Theorem', self.cloud)
         self.assertIn('Averaging those inequalities over the auxiliary uniforms', self.cloud)
+
+    def test_integer_lattice_concentration_strengthening(self):
+        concentration = statement(self.cloud, 'thm:terminal-cloud')
+        self.assertIn(r'r_{\rm fail}=n-k+1', concentration)
+        self.assertIn(r'\Lambda<r_{\rm fail}', concentration)
+        self.assertIn(r'\mu>k-1', concentration)
+        self.assertIn(r'\mu-k+1', concentration)
+        self.assertNotIn(r'\Lambda<n-k', concentration)
+        # Boundary case where the old condition was unavailable:
+        # n=k=1, one Bernoulli success with probability 1/2.
+        k = 1
+        mu = 0.5
+        failure = 0.5
+        variance = 0.25
+        gap = mu - k + 1
+        bound = math.exp(-(gap * gap) / (2 * variance + 2 * gap / 3))
+        self.assertLessEqual(failure, bound)
+        self.assertGreater(mu, k - 1)
+        self.assertFalse(mu > k)
+
+    def test_closed_simplex_bias_parametrization(self):
+        uniform = statement(self.cloud, 'thm:uniform-penalty')
+        self.assertIn(r'\varepsilon_i\ge-1', uniform)
+        self.assertIn(r'p_i=0', uniform)
+        # Boundary parametrization eps=(-1,1), checked against the stated
+        # Taylor remainder at a fixed alpha.
+        alpha = 0.75
+        eps = (-1.0, 1.0)
+        probabilities = tuple((1 + value) / 2 for value in eps)
+        self.assertEqual(probabilities, (0.0, 1.0))
+        sigma2 = sum(value * value for value in eps) / 2
+        sigma3 = sum(abs(value) ** 3 for value in eps) / 2
+        delta = max(abs(value) for value in eps)
+        normalized = sum(math.exp(-alpha * value) for value in eps) / 2
+        remainder = normalized - 1 - alpha * alpha * sigma2 / 2
+        remainder_bound = alpha ** 3 * math.exp(alpha * delta) * sigma3 / 6
+        self.assertLessEqual(abs(remainder), remainder_bound + 1e-15)
 
     def test_ambient_change_invalidates_context_not_statement_hash(self):
         sample = r'Assume \(\tau>1\).\begin{theorem}\label{test}Claim.\end{theorem}'

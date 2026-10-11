@@ -38,10 +38,12 @@ It is not an external referee report and adds no proof-assistant coverage.
 - Explicitly average the fixed-uniform de-Poissonization inequalities over
   the auxiliary reconstruction uniforms.
 
-The optional strengthenings identified by the audit--allowing a boundary
-value in one perturbative parametrization and sharpening integer
-concentration offsets--are not included, in order to avoid unreviewed scope
-changes.
+The two optional Paper II strengthenings identified by the audit were
+not included in that clarity-only patch.  They were subsequently reviewed
+and adopted in a separate focused change: the concentration theorem now uses
+the exact first failing lattice thresholds, and the perturbative bias
+parametrization covers the closed simplex.  See
+[PAPER_II_TOOLKIT_STRENGTHENINGS.md](PAPER_II_TOOLKIT_STRENGTHENINGS.md).
 
 ## Statement impact
 

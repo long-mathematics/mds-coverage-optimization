@@ -3,7 +3,7 @@
   "status": "Analytic proofs supplied; no proof-assistant coverage claimed.",
   "source_sha256": {
     "gamma_mds_active_uniform.tex": "7914154fe2a409a070f54437371b8db79aed5c6a935d2104462edbc6bc234155",
-    "terminal_cloud_staircase.tex": "dd5ac834f104ddbc04596b6b05c67b5e37ea4219ae89e34a1cea90e014b98529"
+    "terminal_cloud_staircase.tex": "fc42be627d1f1307a59a21df32712638d8b1eb5f7566ae1a384cd3f3be037c8c"
   },
   "manuscripts": {
     "gamma_mds_active_uniform.tex": [
@@ -279,7 +279,7 @@
         "label": "thm:terminal-cloud",
         "kind": "proposition",
         "title": "Terminal cloud and concentration",
-        "statement_sha256": "3c3d2ce5675f1d19b3754b2072453e654094362d93fa95b4b87d0a64ce09c54f",
+        "statement_sha256": "a191135ba0d5d5bd8d6817a483133b6412f0deab3a43b0909e6b5528c18272d1",
         "context_sha256": "96acc3962af0b6be3985dc45f274dff54cd4482fc11c64186846649083690610"
       },
       {
@@ -287,42 +287,42 @@
         "kind": "theorem",
         "title": "De-Poissonization sandwich",
         "statement_sha256": "ad0d3b52146d766cdb342814bb9d2c156ce35fbacbf9b386b2ad85459b0dc21c",
-        "context_sha256": "1189a91296fa114dccd65bc55f54d69740bf500a0f54294350a244cc90cf318f"
+        "context_sha256": "b0ee82c5710ed120cc79e6e7d62b35c8fc737a39db3b83ff945995f46f2b02cb"
       },
       {
         "label": "cor:monotone-transfer",
         "kind": "corollary",
         "title": "Monotone recovery rules",
         "statement_sha256": "46f6ec3187602d2599f79a6568825f92f92ea58c0798de6cd8d0d2d8d874871f",
-        "context_sha256": "2f6e38017b4cfb05891811943f82cdcad97ba19f57f833efcaa122456901cdd7"
+        "context_sha256": "53f4a043c644576e280ea2d3c26ffd171d9fe4e9e66846ce115130388b50a238"
       },
       {
         "label": "thm:uniform-penalty",
         "kind": "theorem",
         "title": "Uniform benchmark and perturbative bias penalty",
-        "statement_sha256": "c9918a43c2d18417e869015524e88e2e8633c16aaa0f2f48a3a29e140b998b7e",
-        "context_sha256": "992b51e3677489f2a911168e47d7e7db1df11e9a7afedf87eef6789c36235460"
+        "statement_sha256": "48071c121f560ccae63c95cc7e791ad807c6e65c95fe7a096b52ac27417cf36a",
+        "context_sha256": "cecf34697b8790a0f4eef13a1abc301bff40063eec52434ac4682aa25dcb902e"
       },
       {
         "label": "thm:random-environment",
         "kind": "proposition",
         "title": "Conditional environments and a two-stage guarantee",
         "statement_sha256": "47cd7d4e4ab3564d1d95451d2f0a47c73c957a5283fb222356aa829862e136a7",
-        "context_sha256": "40910dab7df223bafd844c1904cb6d3bdc9867b7066e09eae48833f5060351c5"
+        "context_sha256": "e7e58caac4a4e9ee48fe7ef56c83a40c21a21d538d35bdaf4f0f7bc545ab444f"
       },
       {
         "label": "thm:annealed-jensen",
         "kind": "proposition",
         "title": "Annealed one-read bias penalty",
         "statement_sha256": "c9607b0b126bffef5b6c0ba981409c793ea86c77ef24068385bfaa26bb401fb8",
-        "context_sha256": "af55f2cbd8b78a4e8257a7bda10166fd8cde00738376d2bb6efa791dbf1fc721"
+        "context_sha256": "f47ec542928ad8bb6e7f12794d75af7aa6305dea2ce27a8b1dd3cc2ae4640bd9"
       },
       {
         "label": "thm:plugin",
         "kind": "theorem",
         "title": "Conservative calibration guarantee",
         "statement_sha256": "69078f789a9ed245ade2418d3c0e108761038ef6af38fc86838d87e8eb47394e",
-        "context_sha256": "33fda24efa0136d418a0868bfca94edc1a1dc188d2a657c5df3c08ff8b85a058"
+        "context_sha256": "37708511103d94478edf50b0ad34cab668bdd61b305b5bd3bfc19a84dc2b3e7a"
       }
     ]
   }

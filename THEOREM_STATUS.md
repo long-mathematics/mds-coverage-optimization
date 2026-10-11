@@ -44,3 +44,14 @@ the Pr'ekopa step, and supplies four omitted proof details in Paper II.
 Only `lem:gamma-tail-ratio-bound` changes inside a formal statement
 environment, solely to state its existing relation `m = tau - 1`
 explicitly.  See [docs/DEEP_AUDIT_CLARIFICATIONS.md](docs/DEEP_AUDIT_CLARIFICATIONS.md).
+
+## Focused Paper II toolkit strengthenings
+
+The concentration theorem `thm:terminal-cloud` now uses the exact integer
+failure gaps `n-k+1-Lambda` and `mu-k+1`, including the additional regime in
+which the mean lies between the old real-valued threshold and the first
+failing lattice point.  The one-read perturbative theorem
+`thm:uniform-penalty` now permits `epsilon_i = -1`, so its expansion applies
+on the closed simplex, including zero sampling coordinates.  No optimizer,
+staircase, or fixed-read classification changes.  See
+[docs/PAPER_II_TOOLKIT_STRENGTHENINGS.md](docs/PAPER_II_TOOLKIT_STRENGTHENINGS.md).

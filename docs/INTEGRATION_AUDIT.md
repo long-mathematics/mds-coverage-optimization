@@ -62,3 +62,12 @@ patch adds only the explicit intermediate steps listed in
 [DEEP_AUDIT_CLARIFICATIONS.md](DEEP_AUDIT_CLARIFICATIONS.md).  Optional
 strengthenings of the Paper II concentration and perturbation statements
 were deliberately not introduced.  The frozen v30 source remains unchanged.
+
+## Focused Paper II toolkit strengthening
+
+A later focused change adopts the two optional strengthenings identified by
+the Paper II deep audit.  The Bernstein bounds use the exact first failing
+integer thresholds, and the one-read perturbative expansion permits boundary
+sampling laws.  The simple sufficient Bernstein margin is retained; the
+exact quadratic inversion is deliberately not added.  No Paper I source or
+principal Paper II optimizer/staircase result is changed.
