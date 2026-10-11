@@ -12,7 +12,8 @@ def statements(text):
   lab=re.search(r'\\label\{([^}]+)\}',m.group(3))
   if not lab:raise ValueError('Unlabeled formal statement: '+str(m.group(2)))
   out.append({'label':lab.group(1),'kind':m.group(1),'title':m.group(2) or '',
-              'statement_sha256':hashlib.sha256(m.group(0).encode()).hexdigest()})
+              'statement_sha256':hashlib.sha256(m.group(0).encode()).hexdigest(),
+              'context_sha256':hashlib.sha256(text[:m.start()].encode()).hexdigest()})
  return out
 
 def main():
@@ -31,7 +32,10 @@ def main():
   if re.search(r'\\(?:input|include)\{',text):raise ValueError('Manuscripts must be standalone')
   if text.count(r'\author{Christopher D. Long}')!=1:raise ValueError('Author mismatch')
   registry[f'{stem}.tex']=statements(text);count+=len(registry[f'{stem}.tex'])
- record={'status':'Analytic proofs supplied; no proof-assistant coverage claimed.','manuscripts':registry}
+ record={'schema_version':2,
+         'status':'Analytic proofs supplied; no proof-assistant coverage claimed.',
+         'source_sha256':{f'{stem}.tex':sha(ROOT/f'{stem}.tex') for stem in STEMS},
+         'manuscripts':registry}
  regpath=ROOT/'docs/statement_registry.json'
  if args.write_registry:regpath.write_text(json.dumps(record,indent=2)+'\n')
  elif json.loads(regpath.read_text())!=record:raise ValueError('Statement registry is stale')
