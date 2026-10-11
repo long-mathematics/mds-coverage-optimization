@@ -17,7 +17,7 @@ Let $F_\tau$ be the unit-rate Gamma distribution function with common shape $\ta
 
 $$
 \max_{\lambda_i\ge0,\,\sum_i\lambda_i=M}\mathbb P\!\left(\sum_i B_i\ge k\right)
-=\max_{k\le q\le n}\mathbb P\!\left(\operatorname{Bin}(q,F_\tau(M/q))\ge k\right).
+=\max_{k\le q\le n}\mathbb P\!\left(\mathrm{Bin}(q,F_\tau(M/q))\ge k\right).
 $$
 
 For $\tau>1$, **every maximizer is uniform on its positive support**, with an optimal support size on the right. For $0<\tau<1$, full uniformity is uniquely optimal. At $\tau=1$, full uniformity is uniquely optimal for $k\ge2$, whereas every allocation ties for $k=1$. For $\tau>1,k=1$, optimal support has size one. Integer shapes recover the Poissonized MDS model.
@@ -26,7 +26,7 @@ The paper supplies an analytic proof using Bernoulli-shadow equations and a real
 
 ### Paper II: expected terminal cloud
 
-For integer $t\ge2$, put $\psi_t(x)=\mathbb P(\operatorname{Poisson}(x)<t)$. Then
+For integer $t\ge2$, put $\psi_t(x)=\mathbb P(\mathrm{Poisson}(x)<t)$. Then
 
 $$
 \min_{\lambda_i\ge0,\,\sum_i\lambda_i=M}\sum_i\psi_t(\lambda_i)
