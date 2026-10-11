@@ -1,0 +1,30 @@
+name: Manuscript validation
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: manuscripts-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  manuscripts:
+    name: Build and audit manuscripts
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - name: Install build dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends latexmk texlive-latex-base texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended lmodern poppler-utils python3-venv
+          python3 -m venv .venv
+          .venv/bin/python -m pip install -r requirements.txt
+      - name: Exact checks and finite diagnostics
+        run: make test PYTHON=.venv/bin/python
+      - name: Source, provenance and PDF rebuild audit
+        run: make check PYTHON=.venv/bin/python

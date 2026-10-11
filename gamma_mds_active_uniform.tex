@@ -1,0 +1,1361 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Poisson}{Poisson}
+\DeclareMathOperator{\Bernoulli}{Bernoulli}
+\DeclareMathOperator{\Multinomial}{Multinomial}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\supp}{supp}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pbb}{\mathbb P}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\1}{\mathbf 1}
+
+\title{Active-Uniform Laws for Gamma Completion\\and MDS Recovery}
+\author{Christopher D. Long}
+\date{October 11, 2026}
+\hypersetup{pdftitle={Active-Uniform Laws for Gamma Completion and MDS Recovery},pdfauthor={Christopher D. Long}}
+\begin{document}
+\maketitle
+\begin{abstract}
+We optimize the probability that at least \(k\) of \(n\) independent Gamma requirements finish by a prescribed deadline, subject to a fixed total allocation rate. For a common shape greater than one, every maximizing allocation is uniform on its positive support; the remaining optimization is a finite comparison of binomial tails. For shapes below one, full uniformity is uniquely optimal. At shape one, full uniformity is uniquely optimal for \(k\ge2\), while every allocation ties for \(k=1\). Integer shapes give the corresponding Poissonized MDS recovery theorem. The proof combines pivotal-probability equations, log-concavity of Bernoulli convolutions, and a real-parameter Gamma tail-ratio bound with a direct second variation. We derive small- and large-budget support laws, an exact local stability criterion, and a sufficient condition for other common recovery curves. The global MDS support-phase diagram remains open.
+\end{abstract}
+
+\section{Introduction}
+A collection of types shares a fixed resource budget. Each type is recovered once its random requirement has been met, and success means that at least \(k\) types have recovered. Is it best to distribute the resource evenly, or to sacrifice some types and protect the rest more intensively? We prove that for independent Gamma requirements with a common shape greater than one, every optimum has equal positive allocations and zero allocations elsewhere. We call this form \emph{active-uniform}.
+
+For Poisson read counts, an integer Gamma shape \(t\) is equivalent to requiring at least \(t\) reads of each recovered type. The cardinality condition is the recovery rule of an outer \([n,k]\) MDS code. The theorem thus applies to the nonuniform coverage-depth problem in DNA storage, but its continuous-shape formulation is independent of that application. Theorem~\ref{thm:gamma-active-uniform} gives the full optimizer classification, including the different behavior at shapes at or below one.
+
+\paragraph{Proof and consequences.}
+Conditioning on all but two Bernoulli recovery indicators produces a pair objective determined by two adjacent probabilities of the remaining sum. Its stationary equations and log-concavity restrict a nonuniform local maximum to one small coordinate and equal larger coordinates. A mixed Gamma tail-ratio inequality then gives a strictly positive second derivative in a feasible direction, excluding that last pattern. The argument is analytic for every real shape greater than one; it is not an extrapolation from computations at integer shapes.
+
+Section~\ref{sec:mds-support} studies the finite support comparison, including an example in which the small-budget optimum uses more than \(k\) coordinates. Section~\ref{subsec:common-recovery-criterion} isolates sufficient hypotheses on a common recovery curve. Section~\ref{sec:perturbation} gives a perturbation bound for finite comparisons. None of these statements asserts a global staircase for the MDS success objective.
+
+\paragraph{Related work and scope.}
+Nonuniform coupon collection and its links to caching were developed in \cite{FGT1992}. Equal non-null probabilities are stochastically optimal for collecting a prescribed number of distinct types \cite{Anceaume2015}; this supplies the first-copy benchmark. The DNA coverage study \cite{BarLevSabaryGabrysYaakobi2025} states its uniform-allocation theorem for the first-copy case. Computational methods for collecting multiple copies of any prescribed number of types are given in \cite{Abraham2026}. Our companion paper \cite{LongCloud2026} treats the separable expected-defect objective and proves its exact support staircase. That is a different objective, and neither its optimizer nor its phase diagram automatically optimizes deadline success.
+
+Equal-positive-coordinate extremizers also arise for weighted-exponential sum tails in the MISO outage theorem \cite{Abbe2013}; our objective is instead a Gamma order-statistic tail. Gamma order-statistic comparisons \cite{SunZhang2004}, Mills-ratio inequalities \cite{Baricz2012}, and incomplete-Gamma bounds \cite{Segura2014} provide additional context. We use log-concavity of Bernoulli convolutions \cite{Liggett1997}, and prove the particular mixed tail-ratio estimate required here directly. The theorem concerns a common recovery response and an unweighted budget; heterogeneous requirements, fixed-read multinomial optimization beyond the first-copy case, and optimization of expected completion time require separate arguments.
+\section{MDS success-probability optimization}
+\label{sec:mds-success-modules}
+
+MDS success depends on the entire distribution of the number of recovered types. Its maximum is nevertheless attained by an active-uniform allocation. We prove this assertion together with a complete description of the maximizing allocations, including the constant-objective exception. The argument applies to a common Gamma recovery curve of any positive shape; the Poisson threshold model is its integer-shape specialization.
+
+For \(\tau>0\), define
+\[
+  g_\tau(x)=\frac{x^{\tau-1}e^{-x}}{\Gamma(\tau)},
+  \qquad
+  F_\tau(x)=\frac{1}{\Gamma(\tau)}
+       \int_0^x s^{\tau-1}e^{-s}\,ds
+  \quad(x>0),
+\]
+and set \(F_\tau(0)=0\).  Thus \(F_\tau\) is the distribution function of a unit-rate Gamma random variable with shape \(\tau\).  For every integer \(t\ge1\), integration by parts gives
+\[
+  F_t(x)=1-e^{-x}\sum_{j=0}^{t-1}\frac{x^j}{j!}
+        =\phi_t(x).
+\]
+For a \(q\)-coordinate allocation, write
+\[
+  \mathcal S_{q,k,\tau}(\lambda_1,\ldots,\lambda_q)
+  =\Pbb\left(\sum_{i=1}^q B_i\ge k\right),
+  \qquad B_i\sim\Bernoulli(F_\tau(\lambda_i))
+\]
+with independent Bernoulli variables.  The constraint is
+\(\lambda_i\ge0\), \(\sum_i\lambda_i=M\).  In particular, when \(\tau=t\) is an integer, this notation agrees with the Poissonized MDS success objective.
+
+\begin{theorem}[Gamma active-uniform theorem]
+\label{thm:gamma-active-uniform}
+Fix \(n\ge1\), \(1\le k\le n\), \(\tau>0\), and \(M>0\).  Then
+\[
+  \max_{\lambda_i\ge0,\ \sum_{i=1}^n\lambda_i=M}
+       \mathcal S_{n,k,\tau}(\lambda)
+  =\max_{q=k,\ldots,n}
+       \Pbb\left(\Bin(q,F_\tau(M/q))\ge k\right).
+\]
+The maximizing allocations are classified as follows.
+\begin{enumerate}
+\item If \(\tau>1\), every maximizer is uniform on its positive support.  More precisely, the complete set of maximizers consists of the permutations of
+\[
+  (\underbrace{M/q,\ldots,M/q}_{q\text{ coordinates}},0,\ldots,0)
+\]
+for support sizes \(q\) attaining the finite maximum above.
+\item If \(0<\tau<1\), the unique maximizing vector is
+\(\lambda_1=\cdots=\lambda_n=M/n\), for every \(k\).
+\item If \(\tau=1\) and \(k\ge2\), the unique maximizing vector is again full uniformity.
+\item If \(\tau=1\) and \(k=1\), every allocation has success probability \(1-e^{-M}\).
+\end{enumerate}
+For \(\tau>1\) and \(k=1\), the maximizing support has size one.  For \(k=n\), full uniformity is the unique maximizer for every \(\tau>0\).
+\end{theorem}
+
+\begin{theorem}[Poissonized active-uniform MDS success theorem]
+\label{thm:full-mds-active-uniform}
+Fix integers \(n\ge1\), \(1\le k\le n\), and \(t\ge1\), and let \(M>0\).  For independent
+\(B_i\sim\Bernoulli(\phi_t(\lambda_i))\),
+\[
+  \boxed{
+  \max_{\lambda_i\ge0,\ \sum_{i=1}^n\lambda_i=M}
+       \Pbb\left(\sum_{i=1}^n B_i\ge k\right)
+  =\max_{q=k,\ldots,n}
+       \Pbb\left(\Bin(q,\phi_t(M/q))\ge k\right).
+  }
+\]
+If \(t\ge2\), every maximizing allocation is active-uniform, and its support size attains the maximum on the right.  Conversely, every active-uniform allocation with such a support size is a maximizer.  If \(t=1\) and \(k\ge2\), full uniformity is the unique maximizer.  If \(t=k=1\), every allocation is a maximizer.
+\end{theorem}
+
+The Poissonized theorem follows from Theorem \ref{thm:gamma-active-uniform} by taking \(\tau=t\).  We prove the Gamma theorem below.  The proof uses pivotal probabilities to control the possible active levels and then excludes asymmetric local maxima by two feasible second variations.
+
+\begin{remark}[Gamma completion times]
+Let \(Y_1,\ldots,Y_n\) be independent unit-rate Gamma variables of common shape \(\tau\), and let \(p_i\ge0\), \(\sum_i p_i=1\).  Define \(T_i=Y_i/p_i\) when \(p_i>0\), and \(T_i=\infty\) otherwise.  For the \(k\)-th order statistic,
+\[
+  \Pbb(T_{(k)}\le M)=\mathcal S_{n,k,\tau}(Mp).
+\]
+Thus Theorem \ref{thm:gamma-active-uniform} also optimizes the probability of completing at least \(k\) independent Gamma requirements by a fixed deadline.  Integer shapes recover the Poisson threshold model.  Noninteger shapes describe a Gamma requirement rather than a fractional number of required reads.
+\end{remark}
+
+\subsection{Gamma tail-to-density ratios}
+
+Fix \(\tau>0\), put \(m=\tau-1\), and temporarily write \(F=F_\tau\), \(g=g_\tau\).  Define
+\[
+  P(z)=\frac{1-F(z)}{g(z)},
+  \qquad Q(z)=\frac{F(z)}{g(z)}.
+\]
+Changes of variables in the two Gamma integrals give, for every \(m>-1\),
+\begin{align}
+  P(z)&=\int_0^\infty e^{-u}
+                  \left(1+\frac uz\right)^m\,du,
+       \label{eq:mds-gamma-P-integral}\\
+  Q(z)&=z\int_0^1 e^{zv}(1-v)^m\,dv.
+       \label{eq:mds-gamma-Q-integral}
+\end{align}
+In particular, \(P,Q>0\) and \(Q',Q''>0\).  When \(m>0\), also \(P'<0\) and \(P''>0\), since
+\[
+  \frac{d^2}{dz^2}\left(1+\frac uz\right)^m
+  =\frac{mu}{z^3}\left(1+\frac uz\right)^{m-2}
+      \left(2+(m+1)\frac uz\right)>0
+  \qquad(u>0).
+\]
+Differentiation under these integrals is justified locally on \(z>0\) by an integrable dominating function.
+
+For \(m>0\), set
+\[
+  \eta(z)=-\frac{zP'(z)}{P(z)},
+  \qquad
+  \zeta(z)=\frac{zQ'(z)}{Q(z)}.
+\]
+Both functions are positive.  Since \(g'/g=m/z-1\),
+\[
+  zP'=(z-m)P-z,
+  \qquad
+  zQ'=(z-m)Q+z.
+\]
+Writing \(h=z-m+1\), differentiation yields
+\begin{equation}
+\label{eq:mds-gamma-riccati}
+  z\eta'=\eta^2+h\eta-m,
+  \qquad
+  z\zeta'=-\zeta^2+h\zeta+m.
+\end{equation}
+
+\begin{lemma}[Mixed Gamma tail-ratio bound]
+\label{lem:gamma-tail-ratio-bound}
+For every real \(m>0\) and \(z>0\),
+\[
+  \frac{3m}{5}<\eta(z)\zeta(z)<m.
+\]
+\end{lemma}
+
+\begin{proof}
+Put \(W=\eta\zeta\) and \(\Delta=\zeta-\eta\).  From \eqref{eq:mds-gamma-riccati},
+\[
+  zW'=2hW-(W+m)\Delta,
+  \qquad
+  z\Delta'=-\Delta^2-2W+h\Delta+2m.
+\]
+At a critical point of \(W\), the first identity gives
+\(\Delta=2hW/(W+m)\).  Differentiating the first identity and substituting this expression into the second gives
+\begin{equation}
+\label{eq:mds-gamma-critical-second-derivative}
+  \frac{z^2W''}{2W}
+  =z-\left(\frac{m^2}{W}-W\right)
+     -\frac{m-W}{m+W}(z-m+1)^2.
+\end{equation}
+If \(0<W\le3m/5\), then
+\[
+  \frac{m^2}{W}-W\ge\frac{16m}{15},
+  \qquad
+  \frac{m-W}{m+W}\ge\frac14.
+\]
+Consequently, at any critical point with \(W\le3m/5\),
+\[
+  \frac{z^2W''}{2W}
+  \le z-\frac{16m}{15}-\frac{(z-m+1)^2}{4}
+  =-\frac{(z-m-1)^2}{4}-\frac m{15}<0.
+\]
+On the other hand, the endpoint expansions of the Gamma integrals give
+\[
+  \eta(z)\longrightarrow m,
+  \qquad \zeta(z)\longrightarrow1
+  \quad(z\downarrow0),
+\]
+and
+\[
+  \eta(z)=\frac mz+O(z^{-2}),
+  \qquad \zeta(z)=z-m+o(1)
+  \quad(z\to\infty).
+\]
+For example, at zero one has
+\(P(z)\sim\Gamma(m+1)z^{-m}\) and \(Q(z)\sim z/(m+1)\); at infinity, \eqref{eq:mds-gamma-P-integral} gives \(P(z)=1+m/z+O(z^{-2})\).  Thus \(W(z)\to m\) at both ends.  If \(W\) reached \(3m/5\) or a smaller value, it would attain an interior minimum at or below that level.  This contradicts \eqref{eq:mds-gamma-critical-second-derivative}, proving the lower bound.
+
+For the upper bound, use the probability density on \((0,\infty)\) proportional to \(e^{-u}(1+u/z)^m\), and let \(V=u/(z+u)\).  Then
+\[
+  \eta=m\E[V],
+  \qquad
+  z\eta'=-m\E[V(1-V)]-m^2\Var(V)<0.
+\]
+Under the probability density on \((0,1)\) proportional to \(e^{zv}(1-v)^m\), one similarly has
+\[
+  \zeta=1+z\E[v],
+  \qquad
+  \zeta'=\E[v]+z\Var(v)>0.
+\]
+Equation \eqref{eq:mds-gamma-riccati} therefore implies
+\[
+  h<\frac m\eta-\eta,
+  \qquad
+  h>\zeta-\frac m\zeta.
+\]
+Combining these inequalities gives
+\(\eta+\zeta<m(1/\eta+1/\zeta)\), which is equivalent to \(\eta\zeta<m\).
+\end{proof}
+
+\begin{lemma}[Two slope monotonicities]
+\label{lem:scaled-tail-auxiliary-monotonicity}
+For \(\tau>1\), the functions
+\[
+  L_1(z)=\frac{-P'(z)}{Q'(z)},
+  \qquad
+  L_2(z)=\frac{(-P'(z))Q(z)^2}{Q'(z)P(z)^2}
+\]
+are respectively strictly decreasing and strictly increasing on \((0,\infty)\).
+\end{lemma}
+
+\begin{proof}
+The signs \(P'<0,P''>0,Q'>0,Q''>0\) show that \(L_1\) is strictly decreasing.  Also
+\[
+  L_2=\frac{\eta}{\zeta}\frac QP.
+\]
+Using \eqref{eq:mds-gamma-riccati} and Lemma \ref{lem:gamma-tail-ratio-bound},
+\[
+  z\frac{d}{dz}\log L_2
+  =(\eta+\zeta)\left(2-\frac m{\eta\zeta}\right)
+  >\frac{\eta+\zeta}{3}>0.
+\]
+This proves the second assertion.
+\end{proof}
+
+\subsection{Endpoint faces and pivotal probabilities}
+
+\begin{lemma}[Endpoint cases]
+\label{lem:mds-endpoint-cases}
+On the closed \(q\)-coordinate simplex with total mass \(M>0\), the following statements hold.
+\begin{enumerate}
+\item For \(\tau>1\) and \(k=1\), the maximizers are exactly the one-point allocations \((M,0,\ldots,0)\) and their permutations.
+\item For every \(\tau>0\) and \(k=q\), the unique maximizer is the barycenter \(\lambda_i=M/q\).
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+If \(\tau>1\), \(P\) is strictly decreasing, so the hazard \(g/(1-F)=1/P\) is strictly increasing.  Since \(F(0)=0\), integration of the hazard gives, for \(x,y>0\),
+\[
+  1-F(x+y)<(1-F(x))(1-F(y)).
+\]
+Indeed, the integral of the hazard on \([x,x+y]\) is strictly larger than its integral on \([0,y]\).  Iterating the inequality shows that
+\[
+  \mathcal S_{q,1,\tau}(\lambda)
+  =1-\prod_i(1-F(\lambda_i))\le F(M),
+\]
+with equality exactly when only one coordinate is positive.
+
+For \(k=q\), the objective is \(\prod_iF(\lambda_i)\).  Formula \eqref{eq:mds-gamma-Q-integral} gives \(Q'>0\) for every \(\tau>0\), so
+\[
+  (\log F)'=\frac gF=\frac1Q
+\]
+is strictly decreasing.  Strict Jensen's inequality therefore gives
+\[
+  \prod_{i=1}^qF(\lambda_i)\le F(M/q)^q,
+\]
+with equality only at the barycenter.  Boundary allocations have zero product, whereas the barycenter has positive product.
+\end{proof}
+
+\begin{lemma}[Support-shadow KKT equations]
+\label{lem:support-shadow-kkt-general}
+Let \(\tau>0\), \(1\le k\le q\), and \(\lambda_i>0\).  Set
+\[
+  R_i(\lambda)=\Pbb\left(\sum_{j\ne i}B_j=k-1\right).
+\]
+Then
+\[
+  \frac{\partial\mathcal S_{q,k,\tau}}{\partial\lambda_i}
+  =g_\tau(\lambda_i)R_i(\lambda)>0.
+\]
+At an interior stationary point under \(\sum_i\lambda_i=M\), these derivatives are equal for all active coordinates.
+\end{lemma}
+
+\begin{proof}
+Write \(\theta_i=F_\tau(\lambda_i)\) and \(Z_{-i}=\sum_{j\ne i}B_j\).  Conditioning on \(B_i\),
+\[
+  \mathcal S_{q,k,\tau}
+  =\theta_i\Pbb(Z_{-i}\ge k-1)
+    +(1-\theta_i)\Pbb(Z_{-i}\ge k).
+\]
+Hence \(\partial\mathcal S/\partial\theta_i=\Pbb(Z_{-i}=k-1)\).  The chain rule gives the asserted derivative.  Every active Bernoulli parameter lies in \((0,1)\), so the pivotal probability is positive.  The equality at a constrained stationary point is the Lagrange multiplier equation.
+\end{proof}
+
+\begin{lemma}[Pair-shadow reduction]
+\label{lem:pair-shadow-reduction}
+Let \(q\ge3\), \(2\le k\le q-1\), and \(\tau>0\), and work on a positive \(q\)-coordinate face.  For distinct \(i,j\), define
+\[
+  Z_{ij}=\sum_{\ell\ne i,j}B_\ell,
+  \quad
+  \beta_{ij}=\Pbb(Z_{ij}=k-1),
+  \quad
+  \gamma_{ij}=\Pbb(Z_{ij}=k-2),
+  \quad
+  \alpha_{ij}=1-\frac{\gamma_{ij}}{\beta_{ij}}.
+\]
+Then \(\beta_{ij},\gamma_{ij}>0\) and \(\alpha_{ij}<1\).  With all other coordinates fixed, the pair contribution to the objective, up to an additive constant, is
+\[
+  \beta_{ij}\bigl(F_\tau(\lambda_i)+F_\tau(\lambda_j)
+                -\alpha_{ij}F_\tau(\lambda_i)F_\tau(\lambda_j)\bigr).
+\]
+At an interior stationary point,
+\[
+  L_{\alpha_{ij}}(\lambda_i)=L_{\alpha_{ij}}(\lambda_j),
+  \qquad
+  L_\alpha(x)=\frac{g_\tau(x)}{1-\alpha F_\tau(x)}.
+\]
+\end{lemma}
+
+\begin{proof}
+The shadow \(Z_{ij}\) assigns positive probability to every integer from \(0\) through \(q-2\), proving the positivity assertions.  If \(Z_{ij}\ge k\), the pair does not affect success; if \(Z_{ij}\le k-3\), the pair cannot produce success.  When \(Z_{ij}=k-1\), at least one of the pair must succeed, and when \(Z_{ij}=k-2\), both must succeed.  Writing \(\theta_h=F_\tau(\lambda_h)\), the nonconstant contribution is therefore
+\[
+  \beta_{ij}(\theta_i+\theta_j-\theta_i\theta_j)
+  +\gamma_{ij}\theta_i\theta_j,
+\]
+which is the claimed expression.  The two active partial derivatives are
+\[
+  \beta_{ij}g_\tau(\lambda_i)(1-\alpha_{ij}\theta_j),
+  \qquad
+  \beta_{ij}g_\tau(\lambda_j)(1-\alpha_{ij}\theta_i).
+\]
+Their equality is equivalent to the marginal-ratio equation, since
+\(1-\alpha_{ij}\theta_h>0\).
+\end{proof}
+
+\subsection{Marginal-ratio and shadow monotonicity}
+
+\begin{lemma}[Marginal-ratio shape]
+\label{lem:general-marginal-ratio-shape}
+Let \(\tau>1\), put \(m=\tau-1\), and fix \(\alpha<1\).  Then
+\[
+  L_\alpha(x)=\frac{g_\tau(x)}{1-\alpha F_\tau(x)}
+\]
+is strictly unimodal on \((0,\infty)\).  Its unique maximizer \(x_*(\alpha)\) is strictly increasing in \(\alpha\), and
+\[
+  x_*(\alpha)<m\quad(\alpha<0),\qquad
+  x_*(0)=m,\qquad
+  x_*(\alpha)>m\quad(0<\alpha<1).
+\]
+\end{lemma}
+
+\begin{proof}
+Write \(g=g_\tau\), \(F=F_\tau\), \(u=g'/g=m/x-1\), and \(D=1-\alpha F>0\).  The derivative of \(L_\alpha\) has the sign of
+\[
+  N_\alpha=uD+\alpha g.
+\]
+The terms involving \(g'\) cancel when this expression is differentiated:
+\[
+  N_\alpha'=u'D=-\frac m{x^2}D<0.
+\]
+Moreover, \(N_\alpha(0+)=+\infty\) and
+\(N_\alpha(\infty)=-(1-\alpha)<0\).  Thus there is exactly one zero, with \(L_\alpha\) strictly increasing before it and strictly decreasing after it.
+
+At the zero of \(N_\alpha\),
+\[
+  \partial_\alpha N_\alpha=g-uF=\frac gD>0.
+\]
+Since \(N_\alpha'<0\), implicit differentiation shows that \(x_*(\alpha)\) is strictly increasing.  Finally, \(N_\alpha(m)=\alpha g(m)\), giving the stated comparison with \(m\).
+\end{proof}
+
+\begin{lemma}[Pair-shadow monotonicity]
+\label{lem:pair-shadow-monotonicity}
+Let \(W\) be a Poisson-binomial random variable with masses \(p_j\), extended by zero outside its support.  For \(0<\theta<1\), put
+\[
+  \beta(\theta)=(1-\theta)p_{k-1}+\theta p_{k-2},
+  \qquad
+  \gamma(\theta)=(1-\theta)p_{k-2}+\theta p_{k-3}.
+\]
+Wherever \(\beta(\theta)>0\), the function
+\(\alpha(\theta)=1-\gamma(\theta)/\beta(\theta)\)
+is nondecreasing.
+\end{lemma}
+
+\begin{proof}
+Direct differentiation gives
+\[
+  \alpha'(\theta)
+  =\frac{p_{k-2}^2-p_{k-1}p_{k-3}}{\beta(\theta)^2}\ge0.
+\]
+The last inequality is log-concavity of the Poisson-binomial mass sequence.  Its probability generating polynomial is a product of linear factors with nonpositive real zeros, so Newton's inequalities give the required coefficient inequality; see also \cite{Liggett1997}.
+\end{proof}
+
+\subsection{Exclusion of asymmetric critical patterns}
+
+Throughout this subsection, assume \(\tau>1\) and \(2\le k\le q-1\).
+
+\begin{proposition}[No three active levels]
+\label{prop:no-three-active-levels}
+At an interior stationary point of \(\mathcal S_{q,k,\tau}\), the active coordinates take at most two distinct values.
+\end{proposition}
+
+\begin{proof}
+Suppose that three coordinates satisfy \(x_1<x_2<x_3\).  For the pairs \(12\) and \(23\), Lemmas \ref{lem:pair-shadow-reduction} and \ref{lem:general-marginal-ratio-shape} imply
+\[
+  x_1<x_*(\alpha_{12})<x_2
+  <x_*(\alpha_{23})<x_3.
+\]
+After removing these three coordinates, let the remaining Bernoulli sum be \(W\).  The \(12\)-shadow is \(W+B_3\), whereas the \(23\)-shadow is \(W+B_1\).  Since \(F_\tau(x_3)>F_\tau(x_1)\), Lemma \ref{lem:pair-shadow-monotonicity} gives
+\(\alpha_{12}\ge\alpha_{23}\).  The increasing peak location then gives
+\(x_*(\alpha_{12})\ge x_*(\alpha_{23})\), a contradiction.
+\end{proof}
+
+\begin{proposition}[Two-level local maxima are one-small]
+\label{prop:two-level-one-small}
+If an interior local maximum has two distinct active values \(x<y\), then the smaller value occurs exactly once.
+\end{proposition}
+
+\begin{proof}
+For a pair consisting of one small and one large coordinate, the stationary equation gives
+\(L_{\alpha_{xy}}(x)=L_{\alpha_{xy}}(y)\), so
+\[
+  x<x_*(\alpha_{xy})<y.
+\]
+Suppose that two small coordinates exist.  The shadow of an \(xx\)-pair is obtained from the shadow of an \(xy\)-pair by replacing one small Bernoulli parameter by a large one.  Hence
+\[
+  \alpha_{xx}\ge\alpha_{xy},
+  \qquad x_*(\alpha_{xx})\ge x_*(\alpha_{xy})>x,
+\]
+and therefore \(L_{\alpha_{xx}}'(x)>0\).
+
+Split the two small coordinates into \(x+\varepsilon,x-\varepsilon\), holding all others fixed.  This is a feasible variation for \(|\varepsilon|<x\).  By the pair-shadow formula, its second derivative at zero is
+\[
+  2\beta_{xx}\bigl[
+       g_\tau'(x)(1-\alpha_{xx}F_\tau(x))
+       +\alpha_{xx}g_\tau(x)^2\bigr].
+\]
+The bracket equals
+\((1-\alpha_{xx}F_\tau(x))^2L_{\alpha_{xx}}'(x)>0\).
+The feasible variation thus increases the objective to second order, contradicting local maximality.
+\end{proof}
+
+\begin{lemma}[One-small critical equation]
+\label{lem:one-small-critical-equation}
+At a point \((x,y,\ldots,y)\) with \(0<x<y\), set
+\[
+  c=q-1,\qquad
+  a=\frac{q-k}{q-1},\qquad
+  b=\frac{k-1}{q-1},
+\]
+and let \(D_x,D_y\) be the partial derivatives with respect to the small coordinate and one large coordinate.  Then
+\[
+  \frac{D_y}{D_x}
+  =a\frac{P(x)}{P(y)}+b\frac{Q(x)}{Q(y)}.
+\]
+In particular, the stationary equation is \(K(x,y)=0\), where
+\[
+  K(x,y)=a\frac{P(x)}{P(y)}+b\frac{Q(x)}{Q(y)}-1.
+\]
+\end{lemma}
+
+\begin{proof}
+Write \(\theta_x=F_\tau(x)\), \(\theta_y=F_\tau(y)\).  The two pivotal probabilities are
+\[
+  R_x=\Pbb(\Bin(c,\theta_y)=k-1)
+\]
+and
+\[
+  R_y=(1-\theta_x)\Pbb(\Bin(c-1,\theta_y)=k-1)
+      +\theta_x\Pbb(\Bin(c-1,\theta_y)=k-2).
+\]
+The binomial coefficient ratios give
+\[
+  \frac{R_y}{R_x}
+  =a\frac{1-\theta_x}{1-\theta_y}
+    +b\frac{\theta_x}{\theta_y}.
+\]
+Since \(D_x=g_\tau(x)R_x\), \(D_y=g_\tau(y)R_y\), and
+\(P=(1-F_\tau)/g_\tau\), \(Q=F_\tau/g_\tau\), multiplication by \(g_\tau(y)/g_\tau(x)\) gives the asserted identity.
+\end{proof}
+
+\begin{proposition}[No asymmetric one-small local maximum]
+\label{prop:no-one-small-local-max}
+An asymmetric one-small stationary point is a strict local minimum along the feasible path on which its large coordinates remain equal.  In particular, it cannot be an interior local maximum of \(\mathcal S_{q,k,\tau}\).
+\end{proposition}
+
+\begin{proof}
+Use the notation of Lemma \ref{lem:one-small-critical-equation}.  At the stationary point, put
+\[
+  U=\frac{P(x)}{P(y)}>1,
+  \qquad
+  V=\frac{Q(x)}{Q(y)}<1,
+  \qquad
+  S=\frac{P(x)-P(y)}{Q(y)-Q(x)}.
+\]
+The equation \(aU+bV=1\), together with \(a+b=1\), is equivalent to
+\[
+  \frac ba=\frac{U-1}{1-V}
+          =S\frac{Q(y)}{P(y)}.
+\]
+Cauchy's mean-value theorem and the strict decrease of \(L_1\) in Lemma \ref{lem:scaled-tail-auxiliary-monotonicity} give
+\[
+  S=L_1(\xi)<L_1(x)
+  \qquad\text{for some }\xi\in(x,y).
+\]
+Applying the same theorem to \(1/P\) and \(-1/Q\), and using the strict increase of \(L_2\), gives
+\[
+  S\frac{Q(x)Q(y)}{P(x)P(y)}
+  =L_2(\widetilde\xi)<L_2(y)
+  \qquad\text{for some }\widetilde\xi\in(x,y).
+\]
+After substitution of \(b/a\), these inequalities become
+\[
+  aU\eta(x)>bV\zeta(x),
+  \qquad
+  aU\eta(y)>bV\zeta(y).
+\]
+Thus the partial derivatives of \(K\), with \(x,y\) regarded as independent variables, satisfy
+\[
+  K_x=\frac{-aU\eta(x)+bV\zeta(x)}x<0,
+  \qquad
+  K_y=\frac{aU\eta(y)-bV\zeta(y)}y>0.
+\]
+Along the fixed-mass path \(y=(M-x)/c\), define
+\(G(x)=\mathcal S_{q,k,\tau}(x,y,\ldots,y)\).  There are \(c\) large coordinates, so
+\[
+  G'=D_x-D_y=-D_xK.
+\]
+At the stationary point \(K=0\), and hence
+\[
+  G''=-D_x\left(K_x-\frac1cK_y\right)>0.
+\]
+This proves the asserted strict local minimum along the path and excludes an interior local maximum on the face.
+\end{proof}
+
+\subsection{Completion of the proof and shapes at or below one}
+
+\begin{proof}[Proof of Theorem \ref{thm:gamma-active-uniform}]
+The objective is continuous on the compact allocation simplex, so it attains its maximum.  A maximizing allocation has at least \(k\) positive coordinates: a smaller support has success probability zero, whereas the uniform allocation on \(k\) coordinates has positive success probability.
+
+First suppose \(\tau>1\), and let \(q\ge k\) be the positive support size of a maximizer.  The point is an interior local maximum on that face.  The endpoint cases \(k=1\) and \(k=q\) are covered by Lemma \ref{lem:mds-endpoint-cases}.  For \(2\le k\le q-1\), Proposition \ref{prop:no-three-active-levels} allows at most two active values.  If two values occur, Proposition \ref{prop:two-level-one-small} forces a one-small configuration, which Proposition \ref{prop:no-one-small-local-max} excludes.  Therefore all positive coordinates are equal to \(M/q\).
+
+Every active-uniform allocation on \(q\) coordinates has value
+\[
+  \Pbb\left(\Bin(q,F_\tau(M/q))\ge k\right),
+\]
+because its zero coordinates never recover.  Taking the maximum over \(q=k,\ldots,n\) proves the formula and the complete equality classification for \(\tau>1\).  The endpoint lemma also gives the asserted one-point optimum for \(k=1\).
+
+Now suppose \(0<\tau<1\), so \(-1<m<0\).  Formula \eqref{eq:mds-gamma-P-integral} gives \(P'>0\), while \(g'<0\).  Consequently,
+\[
+  g'(1-F)+g^2<0,
+\]
+since the hazard \(g/(1-F)=1/P\) is strictly decreasing.  For \(\alpha<1\),
+\[
+  L_\alpha'
+  =\frac{g'(1-\alpha F)+\alpha g^2}{(1-\alpha F)^2}<0.
+\]
+For \(\alpha\le0\), both terms in the numerator have the required sign.  For \(0<\alpha<1\), write that numerator as
+\[
+  (1-\alpha)g'+\alpha\bigl(g'(1-F)+g^2\bigr)<0.
+\]
+The derivative is also strictly negative at \(\alpha=1\).
+
+Thus, when \(2\le k\le q-1\), the pair-shadow stationary equations force all active coordinates to be equal.  For \(k=1\), the objective is \(1-\prod_i(1-F(\lambda_i))\); equality of its active derivatives is equality of the strictly decreasing hazards \(g(\lambda_i)/(1-F(\lambda_i))\), which again forces equal coordinates.  The case \(k=q\) is already covered by Lemma \ref{lem:mds-endpoint-cases}.
+
+No boundary allocation can maximize in this range of shapes.  Indeed, a boundary allocation with positive success has a positive support of size \(q\ge k\).  Activate a zero coordinate with mass \(\varepsilon\) and subtract this mass from one positive coordinate.  Its new recovery probability is
+\[
+  F_\tau(\varepsilon)
+  =\frac{\varepsilon^\tau}{\Gamma(\tau+1)}(1+O(\varepsilon)).
+\]
+The pivotal probability for the new coordinate tends to the strictly positive probability that exactly \(k-1\) of the original active coordinates recover.  The loss caused by the donor perturbation is \(O(\varepsilon)\), since that coordinate remains bounded away from zero.  Hence the gain is a positive multiple of \(\varepsilon^\tau\), up to \(o(\varepsilon^\tau)\), and it dominates the donor loss.  Every maximizer therefore has full support, and the preceding stationary-point argument proves that full uniformity is the unique maximizer.
+
+Finally, let \(\tau=1\).  For \(k=1\),
+\[
+  \mathcal S_{n,1,1}(\lambda)
+  =1-\prod_i e^{-\lambda_i}=1-e^{-M},
+\]
+so every allocation is optimal.  Suppose \(k\ge2\).  For every \(\alpha<1\),
+\[
+  L_\alpha(x)=\frac{e^{-x}}{1-\alpha+\alpha e^{-x}},
+  \qquad
+  L_\alpha'(x)
+  =-\frac{(1-\alpha)e^{-x}}
+          {(1-\alpha+\alpha e^{-x})^2}<0.
+\]
+The pair-shadow equations, together with the \(k=q\) endpoint, show that any maximizing positive face must be uniform.  If such a face has \(q<n\) coordinates, put \(p=1-e^{-M/q}\).  On activating one zero coordinate and taking the mass from one positive coordinate, the new-coordinate derivative and donor derivative are respectively
+\[
+  \Pbb(\Bin(q,p)=k-1),
+  \qquad
+  (1-p)\Pbb(\Bin(q-1,p)=k-1).
+\]
+Their ratio is
+\[
+  \frac{\binom q{k-1}}{\binom{q-1}{k-1}}
+  =\frac q{q-k+1}>1.
+\]
+The perturbation strictly improves the objective.  Thus a maximizer has full support and is uniquely uniform.
+
+In the cases \(0<\tau\le1\), the established full-uniform optimum is one of the active-uniform candidates, so it also proves the finite-maximum formula.  For \(k=n\), uniqueness for every \(\tau>0\) follows directly from Lemma \ref{lem:mds-endpoint-cases}.  This completes the proof.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:full-mds-active-uniform}]
+Apply Theorem \ref{thm:gamma-active-uniform} with \(\tau=t\), using \(F_t=\phi_t\).
+\end{proof}
+
+\begin{theorem}[Facewise active-uniform maximum]
+\label{thm:facewise-active-uniform-maximum}
+For \(M>0\), \(\tau>0\), and \(1\le k\le q\),
+\[
+  \max_{\lambda_i\ge0,\ \sum_{i=1}^q\lambda_i=M}
+       \mathcal S_{q,k,\tau}(\lambda)
+  =\max_{r=k,\ldots,q}
+       \Pbb\left(\Bin(r,F_\tau(M/r))\ge k\right).
+\]
+The maximizing allocations have exactly the classification in Theorem \ref{thm:gamma-active-uniform}, with \(n=q\).
+\end{theorem}
+
+\begin{proof}
+Apply Theorem \ref{thm:gamma-active-uniform} with \(n=q\), deleting any coordinates fixed to zero outside the face.
+\end{proof}
+
+\begin{remark}[Comparison with terminal-cloud minimization]
+The expected-cloud theorem in \cite{LongCloud2026} and Theorem \ref{thm:full-mds-active-uniform} have the same active-uniform form but optimize different objectives.  For the expected terminal cloud, the support size minimizes
+\[
+  (n-q)+q\psi_t(M/q).
+\]
+For MDS success, it maximizes
+\[
+  \Pbb\left(\Bin(q,\phi_t(M/q))\ge k\right).
+\]
+These support sizes need not agree.  The expected-cloud support size has an exact staircase \cite{LongCloud2026}.  A corresponding description of crossings, possible support jumps, and absence of re-entry for the MDS binomial-tail objective is a separate support-phase problem.
+\end{remark}
+
+\section{Support selection and local stability}
+\label{sec:mds-support}
+
+Theorem~\ref{thm:gamma-active-uniform} reduces the allocation problem to
+the finite family
+\begin{equation}\label{eq:mds-support-values}
+  V_q(M)=\Pbb\bigl(\Bin(q,F_\tau(M/q))\ge k\bigr),
+  \qquad k\le q\le n.
+\end{equation}
+The support selected by this binomial tail can differ from the support
+that minimizes the expected terminal cloud.  We give its small- and
+large-depth limits and a local test that eliminates unstable candidates.
+Throughout the asymptotic statements, \(n,k,\tau\) are fixed.
+
+\subsection{Small-depth support selection}
+
+\begin{proposition}[Small-depth expansion and tie-breaking]
+\label{prop:mds-small-depth}
+Let \(n\ge k\ge1\) and \(\tau>1\).  Uniformly over the finite set
+\(q\in\{k,\ldots,n\}\), as \(M\downarrow0\),
+\begin{equation}\label{eq:mds-small-depth}
+  V_q(M)
+  =\frac{\binom qk}{\Gamma(\tau+1)^kq^{\tau k}}M^{\tau k}
+   \left[
+     1-\frac{\tau k}{(\tau+1)q}M
+     +O\bigl(M^{\min\{2,\tau\}}\bigr)
+   \right].
+\end{equation}
+Put
+\begin{equation}\label{eq:mds-leading-coefficient}
+  c_{k,\tau}(q)=\frac{\binom qk}{q^{\tau k}},
+  \qquad
+  q_0=\max\operatorname*{arg\,max}_{k\le q\le n}c_{k,\tau}(q).
+\end{equation}
+There exists \(M_0>0\) such that \(q_0\) is the unique maximizing
+support size in~\eqref{eq:mds-support-values} whenever \(0<M<M_0\).
+Thus a tie between leading coefficients is resolved in favor of the
+larger support.
+\end{proposition}
+
+\begin{proof}
+Expanding the exponential in the defining Gamma integral gives
+\[
+  F_\tau(z)
+  =\frac{z^\tau}{\Gamma(\tau+1)}
+    \left[1-\frac{\tau}{\tau+1}z+O(z^2)\right].
+\]
+For fixed \(q\ge k\), the binomial tail at a small success probability
+\(p\) satisfies
+\[
+  \Pbb(\Bin(q,p)\ge k)=\binom qk p^k\bigl(1+O(p)\bigr).
+\]
+Substitute \(p=F_\tau(M/q)\).  The linear correction comes from
+\(F_\tau(M/q)^k\); the remaining relative errors have orders
+\(M^2\) and \(M^\tau\).  This proves~\eqref{eq:mds-small-depth},
+and finiteness of the set of supports makes the error uniform in \(q\).
+
+Any support with a smaller leading coefficient is eventually inferior
+to every support attaining the largest coefficient.  If two such
+coefficients tie and \(q_1<q_2\), then the linear terms in
+\eqref{eq:mds-small-depth} give
+\[
+  V_{q_2}(M)-V_{q_1}(M)
+  =\frac{c_{k,\tau}(q_1)}{\Gamma(\tau+1)^k}
+    \frac{\tau k}{\tau+1}
+    \left(\frac1{q_1}-\frac1{q_2}\right)M^{\tau k+1}
+    +o(M^{\tau k+1})>0
+\]
+for sufficiently small \(M>0\).  Here
+\(\min\{2,\tau\}>1\) is essential.  A final minimum over the
+finitely many comparison intervals proves the assertion.
+\end{proof}
+
+\begin{proposition}[Continuous localization of the leading support]
+\label{prop:mds-leading-localization}
+Let \(\tau>1\).  If \(k=1\), the coefficient
+\(c_{1,\tau}(q)=q^{1-\tau}\) is strictly decreasing, so \(q_0=1\).
+For \(k\ge2\), write
+\[
+  H_k=\sum_{j=1}^k\frac1j,
+  \qquad
+  \binom{x}{k}=\frac1{k!}\prod_{j=0}^{k-1}(x-j),\quad x\ge k.
+\]
+If \(H_k\le\tau\), the unique leading-coefficient maximizer is
+\(q_0=k\).  If \(H_k>\tau\), there is a unique \(x_{k,\tau}>k\)
+satisfying
+\begin{equation}\label{eq:mds-leading-critical}
+  \sum_{j=0}^{k-1}\frac{x_{k,\tau}}{x_{k,\tau}-j}=\tau k.
+\end{equation}
+Every integer maximizer of \(c_{k,\tau}\) lies in
+\begin{equation}\label{eq:mds-leading-neighbors}
+  \left\{
+    \kappa_{k,n}\bigl(\lfloor x_{k,\tau}\rfloor\bigr),
+    \kappa_{k,n}\bigl(\lceil x_{k,\tau}\rceil\bigr)
+  \right\},
+  \qquad
+  \kappa_{k,n}(r)=\min\{n,\max\{k,r\}\}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For real \(x\ge k\),
+\begin{equation}\label{eq:mds-leading-log-derivative}
+  \frac{d}{d\log x}\log c_{k,\tau}(x)
+  =D_{k,\tau}(x)
+  :=\sum_{j=0}^{k-1}\frac{x}{x-j}-\tau k.
+\end{equation}
+For \(k\ge2\),
+\[
+  D_{k,\tau}'(x)
+  =-\sum_{j=1}^{k-1}\frac{j}{(x-j)^2}<0,
+  \qquad
+  D_{k,\tau}(k)=k(H_k-\tau),
+  \qquad
+  \lim_{x\to\infty}D_{k,\tau}(x)=k(1-\tau)<0.
+\]
+These facts give the asserted monotonicity or the unique continuous
+maximum.  A function that increases up to one point and decreases
+afterward attains its maximum on an integer interval at one of the two
+integers adjacent to that point, with the indicated endpoint clipping.
+\end{proof}
+
+\begin{example}[The small-depth support can exceed the decoding threshold]
+\label{ex:mds-small-depth-twelve}
+Take \(k=10\), \(\tau=2\), and any fixed \(n\ge12\).  Exact evaluation
+of~\eqref{eq:mds-leading-log-derivative} gives
+\[
+  D_{10,2}(11)=\frac{5591}{2520}>0,
+  \qquad
+  D_{10,2}(12)=-\frac{1759}{2310}<0.
+\]
+The only possible integer leading-coefficient maximizers are therefore
+\(11\) and \(12\).  Their exact ratio is
+\[
+  \frac{c_{10,2}(12)}{c_{10,2}(11)}
+  =6\left(\frac{11}{12}\right)^{20}>1,
+\]
+where the last inequality is the integer comparison
+\(6\cdot11^{20}>12^{20}\).  Consequently the unique optimal support
+is \(q=12\) for all sufficiently small positive \(M\).  Relative to
+using only \(k=10\) coordinates, its leading coefficient is larger by
+the factor
+\[
+  \frac{c_{10,2}(12)}{c_{10,2}(10)}
+  =66\left(\frac56\right)^{20}>1.
+\]
+Thus the possibility of sacrificing coordinates does not imply that
+the smallest feasible support is optimal at small depth.
+\end{example}
+
+\subsection{Large-depth support selection}
+
+\begin{proposition}[Eventual full support]
+\label{prop:mds-large-depth}
+Let \(\tau>0\), \(n\ge k\ge1\), and \(k\le q\le n\).  Put
+\(r=q-k+1\).  As \(M\to\infty\),
+\begin{equation}\label{eq:mds-large-depth}
+  1-V_q(M)
+  \sim
+  \binom q{k-1}
+  \frac{(M/q)^{(\tau-1)r}}{\Gamma(\tau)^r}
+  e^{-rM/q}.
+\end{equation}
+If \(k\ge2\), there is \(M_1<\infty\) such that \(q=n\) is the
+unique maximizing support size for every \(M>M_1\).  In that range
+the unique maximizing allocation is \(\lambda_i=M/n\).
+\end{proposition}
+
+\begin{proof}
+The upper Gamma tail satisfies
+\[
+  1-F_\tau(z)\sim\frac{z^{\tau-1}e^{-z}}{\Gamma(\tau)}.
+\]
+For completeness, this follows by applying l'H\^opital's rule to
+\(\int_z^\infty s^{\tau-1}e^{-s}\,ds\) divided by
+\(z^{\tau-1}e^{-z}\); the ratio of their derivatives tends to one.
+Let \(u=1-F_\tau(M/q)\).  Failure on a \(q\)-point support means at
+least \(r\) unsuccessful coordinates, and hence
+\[
+  1-V_q(M)=\Pbb(\Bin(q,u)\ge r)
+  \sim\binom qr u^r.
+\]
+This proves~\eqref{eq:mds-large-depth} because
+\(\binom qr=\binom q{k-1}\).
+
+For \(k\ge2\), the exponential decay rate of failure,
+\[
+  \frac rq=1-\frac{k-1}{q},
+\]
+strictly increases with \(q\).  The failure probability at \(q=n\)
+is therefore smaller than that at every \(q<n\) for sufficiently
+large \(M\), regardless of the fixed polynomial factors in
+\eqref{eq:mds-large-depth}.  There are only finitely many supports.
+The allocation statement now follows from
+Theorem~\ref{thm:gamma-active-uniform}.
+\end{proof}
+
+The restriction \(k\ge2\) in the support conclusion matters.  For
+\(k=1\), Theorem~\ref{thm:gamma-active-uniform} gives one active
+coordinate when \(\tau>1\), full uniformity when \(0<\tau<1\), and
+the allocation-independent value \(1-e^{-M}\) when \(\tau=1\).
+
+\subsection{The constrained Hessian at an active barycenter}
+
+For \(\tau>1\), set \(m=\tau-1\) and define
+\begin{equation}\label{eq:mds-stability-elasticities}
+  \eta_\tau(z)=m-z+\frac{z g_\tau(z)}{1-F_\tau(z)},
+  \qquad
+  \zeta_\tau(z)=z-m+\frac{z g_\tau(z)}{F_\tau(z)}.
+\end{equation}
+These are the logarithmic derivatives
+\(-zP'(z)/P(z)\) and \(zQ'(z)/Q(z)\) of the Gamma tail-to-density
+ratios in Section~\ref{sec:mds-success-modules}.  The proof there gives
+\[
+  \eta_\tau\ \text{strictly decreasing from }m\text{ to }0,
+  \qquad
+  \zeta_\tau\ \text{strictly increasing from }1\text{ to }\infty.
+\]
+
+\begin{proposition}[Barycenter stability and its threshold]
+\label{prop:mds-barycenter-stability}
+Let \(\tau>1\) and \(2\le k\le q-1\).  At the barycenter of a
+positive \(q\)-face, write
+\[
+  z=M/q,\qquad p=F_\tau(z),\qquad
+  R=\Pbb(\Bin(q-1,p)=k-1),
+  \qquad
+  a=\frac{q-k}{q-1},\quad b=\frac{k-1}{q-1}.
+\]
+For every vector \(v\in\R^q\) with \(\sum_i v_i=0\),
+\begin{equation}\label{eq:mds-barycenter-hessian}
+  D^2\mathcal S_{q,k,\tau}(z,\ldots,z)[v,v]
+  =\frac{g_\tau(z)R}{z}
+    \bigl[a\eta_\tau(z)-b\zeta_\tau(z)\bigr]
+    \sum_{i=1}^q v_i^2.
+\end{equation}
+Consequently:
+\begin{enumerate}[label=(\roman*)]
+  \item If \((\tau-1)(q-k)\le k-1\), this barycenter is a strict
+  facewise local maximum for every \(M>0\).
+  \item If \((\tau-1)(q-k)>k-1\), there is a unique \(z_*>0\)
+  satisfying
+  \begin{equation}\label{eq:mds-stability-threshold}
+    (q-k)\eta_\tau(z_*)=(k-1)\zeta_\tau(z_*).
+  \end{equation}
+  The barycenter is a strict facewise local minimum for \(M<qz_*\)
+  and a strict facewise local maximum for \(M>qz_*\).
+\end{enumerate}
+In particular, a candidate with
+\((q-k)\eta_\tau(M/q)>(k-1)\zeta_\tau(M/q)\) cannot maximize
+the full allocation problem.
+\end{proposition}
+
+\begin{proof}
+Write
+\[
+  \beta=\Pbb(\Bin(q-2,p)=k-1),\qquad
+  \gamma=\Pbb(\Bin(q-2,p)=k-2).
+\]
+The pivotal derivative identity gives the diagonal entries of the
+Hessian as \(g_\tau'(z)R\).  Conditioning on a pair gives every
+off-diagonal entry as \(g_\tau(z)^2(\gamma-\beta)\).
+Since \(\sum_i v_i=0\),
+\[
+  D^2\mathcal S_{q,k,\tau}[v,v]
+  =\bigl[g_\tau'(z)R-g_\tau(z)^2(\gamma-\beta)\bigr]
+    \sum_i v_i^2.
+\]
+The elementary binomial ratios are
+\[
+  \frac\beta R=\frac{a}{1-p},\qquad
+  \frac\gamma R=\frac b p.
+\]
+Using \(g_\tau'/g_\tau=m/z-1\) and \(a+b=1\), the coefficient
+of \(\sum_i v_i^2\) becomes
+\[
+  g_\tau(z)R
+  \left[\frac mz-1+\frac{a g_\tau(z)}{1-p}
+                    -\frac{b g_\tau(z)}p\right]
+  =\frac{g_\tau(z)R}{z}
+    \bigl[a\eta_\tau(z)-b\zeta_\tau(z)\bigr],
+\]
+which proves~\eqref{eq:mds-barycenter-hessian}.
+
+The barycenter is stationary by permutation symmetry.  The function
+\[
+  (q-k)\eta_\tau(z)-(k-1)\zeta_\tau(z)
+\]
+is strictly decreasing, has limit
+\(m(q-k)-(k-1)\) at zero, and tends to \(-\infty\) at infinity.
+Its sign gives the alternatives above.  A definite constrained
+Hessian yields a strict local extremum on the positive face by the
+second-order Taylor expansion.  A strict facewise local minimum
+cannot be a global maximizer on the simplex.
+\end{proof}
+
+At \(M=qz_*\), the constrained Hessian vanishes and this test makes
+no local classification.  Nor does facewise local maximality by
+itself compare different support sizes.  The support-phase problem
+at intermediate depth still requires comparisons among the values
+\(V_q(M)\).
+
+\subsection{An obstruction to frozen-pair equalization}
+
+The full stationarity conditions in the active-uniform proof cannot
+be replaced by a rule that equalizes or collapses every unequal
+pair while holding its shadow fixed.
+
+\begin{example}[An unequal pair beats both equalization and collapse]
+\label{ex:mds-frozen-pair}
+Let \(F_2(x)=1-(1+x)e^{-x}\), and put
+\[
+  \alpha=\frac{9999}{10000},\qquad
+  J(x)=F_2(x)+F_2(13-x)-\alpha F_2(x)F_2(13-x).
+\]
+Then
+\begin{equation}\label{eq:mds-frozen-pair-signs}
+  J(3)-J(0)>\frac{12}{10^6},\qquad
+  J(3)-J(13/2)>\frac9{10^6}.
+\end{equation}
+Thus replacing \((3,10)\) by either \((0,13)\), \((13,0)\), or
+\((13/2,13/2)\) decreases this frozen-pair objective.  The shadow
+is realizable in an MDS problem: with \(q=3,k=2\), let the third
+coordinate have recovery probability \(10000/10001\).  Its
+pair-shadow parameter is exactly the displayed \(\alpha\).
+\end{example}
+
+\begin{proof}
+Put \(E=e^{-1/2}\).  Direct substitution gives
+\begin{align*}
+  J(3)-J(0)
+  &=\frac{1-4E^6-11E^{20}}{10000}
+    +(14-44\alpha)E^{26},\\
+  J(3)-J(13/2)
+  &=\frac{-4E^6-11E^{20}+15E^{13}}{10000}
+    +\frac{49\alpha}{4}E^{26}.
+\end{align*}
+Here is a rational certificate of both signs.  Set
+\[
+  L=\frac{6065306597126334}{10^{16}},\qquad
+  U=\frac{6065306597126335}{10^{16}},\qquad
+  S_j=\sum_{r=0}^j\frac{(-1/2)^r}{r!}.
+\]
+The alternating-series bounds and rational comparisons give
+\(L<S_{21}<E<S_{20}<U\).  Since \(14-44\alpha<0\), substitution
+of the appropriate endpoints in each signed term yields
+\begin{align*}
+  J(3)-J(0)
+  &>\frac{1-4U^6-11U^{20}}{10000}
+      +(14-44\alpha)U^{26}
+    >\frac{12}{10^6},\\
+  J(3)-J(13/2)
+  &>\frac{-4U^6-11U^{20}+15L^{13}}{10000}
+      +\frac{49\alpha}{4}L^{26}
+    >\frac9{10^6}.
+\end{align*}
+All quantities in the last comparisons are rational.  Symmetry gives
+\(J(13)=J(0)\).
+
+For the asserted shadow, its two relevant masses are
+\(\beta=10000/10001\) and \(\gamma=1/10001\), so
+\(1-\gamma/\beta=\alpha\).  Because \(F_2\) is continuous and
+strictly increasing from zero to one, this third-coordinate
+probability is realized by a finite positive intensity.
+\end{proof}
+
+This example concerns a single conditional pair comparison.  It does
+not require the fixed third coordinate to satisfy its own
+stationarity equation.  The structured variations in
+Section~\ref{sec:mds-success-modules} use those additional equations
+to exclude asymmetric local maxima of the full objective.
+
+\section{A sufficient criterion for a common recovery response}
+\label{subsec:common-recovery-criterion}
+
+The active-uniform proof uses a specific set of properties of the common
+recovery curve. We now state these properties as a sufficient criterion.
+The cardinality recovery rule and the unweighted budget are retained.
+
+\begin{proposition}[A common-response tail-ratio criterion]
+\label{prop:common-recovery-active-uniform}
+Let \(F\) be an absolutely continuous distribution function on
+\([0,\infty)\), with \(F(0)=0\) and \(\lim_{x\to\infty}F(x)=1\).
+Suppose its density \(g\) is positive and \(C^2\) on
+\((0,\infty)\), and satisfies
+\begin{equation}\label{eq:common-response-density-hypotheses}
+  g(0+)=0,\qquad \lim_{x\to\infty}g(x)=0,
+  \qquad (\log g)''(x)<0\quad(x>0).
+\end{equation}
+Define
+\[
+  P(x)=\frac{1-F(x)}{g(x)},\qquad
+  Q(x)=\frac{F(x)}{g(x)}.
+\]
+Assume that on \((0,\infty)\),
+\begin{equation}\label{eq:common-response-slope-hypotheses}
+  L_1(x)=\frac{-P'(x)}{Q'(x)}
+       \quad\hbox{is strictly decreasing},\qquad
+  L_2(x)=\frac{(-P'(x))Q(x)^2}{Q'(x)P(x)^2}
+       \quad\hbox{is strictly increasing}.
+\end{equation}
+For independent \(B_i\sim\Bernoulli(F(\lambda_i))\), every global
+maximizer of
+\[
+  \mathcal S_F(\lambda)
+  =\Pbb\left(\sum_{i=1}^n B_i\ge k\right),
+  \qquad \lambda_i\ge0,\quad\sum_i\lambda_i=M,
+\]
+is uniform on its positive support, for every \(n\ge1\),
+\(1\le k\le n\), and \(M>0\).  In particular,
+\begin{equation}\label{eq:common-response-active-uniform-value}
+  \max_{\lambda_i\ge0,\ \sum_i\lambda_i=M}\mathcal S_F(\lambda)
+  =\max_{q=k,\ldots,n}
+      \Pbb\bigl(\Bin(q,F(M/q))\ge k\bigr).
+\end{equation}
+The full set of maximizers consists of the permutations of the
+active-uniform allocations whose support sizes attain this finite
+maximum.  If \(k=1\), their support size is one; if \(k=n\), the
+unique maximizer is full uniformity.
+\end{proposition}
+
+\begin{proof}
+We establish the properties of the response that are needed by the
+pair-shadow argument, and then exclude the possible asymmetric
+stationary patterns.
+
+\medskip\noindent\emph{Tail ratios and endpoint faces.}
+Put \(u=(\log g)'\), so \(u'<0\).  Differentiation gives
+\begin{equation}\label{eq:common-response-tail-odes}
+  P'=-1-uP,\qquad Q'=1-uQ.
+\end{equation}
+In fact \(P'<0\) and \(Q'>0\).  To see the first assertion, it is
+immediate from~\eqref{eq:common-response-tail-odes} when \(u(x)\ge0\).
+If \(u(x)<0\), strict log-concavity gives
+\[
+  \frac{g(x+s)}{g(x)}<e^{u(x)s}\quad(s>0),
+  \qquad
+  P(x)=\int_0^\infty\frac{g(x+s)}{g(x)}\,ds<\frac{-1}{u(x)}.
+\]
+Again \(P'(x)<0\).  For \(Q'\), the case \(u(x)\le0\) is
+immediate.  If \(u(x)>0\), the corresponding tangent-line bound
+to the left gives
+\[
+  Q(x)=\int_0^x\frac{g(s)}{g(x)}\,ds
+       <\int_0^x e^{u(x)(s-x)}\,ds<\frac1{u(x)},
+\]
+so \(Q'(x)>0\).  Thus the quotients in
+\eqref{eq:common-response-slope-hypotheses} are well defined.
+
+The hazard \(g/(1-F)=1/P\) is strictly increasing, while
+\((\log F)'=g/F=1/Q\) is strictly decreasing.  The latter property
+and strict Jensen show that on a positive \(q\)-face the
+all-must-succeed objective \(\prod_iF(\lambda_i)\) is uniquely
+maximized at its barycenter.  For \(k=1\), let
+\(A(x)=-\log(1-F(x))\).  Since \(A(0)=0\) and \(A'\) is strictly
+increasing,
+\[
+  A(x+y)>A(x)+A(y)\quad(x,y>0).
+\]
+Merging any two positive coordinates therefore strictly increases
+the at-least-one-success probability.  This proves the stated
+\(k=1\) conclusion.
+
+\medskip\noindent\emph{Marginal-ratio shape.}
+For \(\alpha<1\), define
+\[
+  D_\alpha=1-\alpha F>0,
+  \qquad L_\alpha=\frac g{D_\alpha},
+  \qquad N_\alpha=uD_\alpha+\alpha g.
+\]
+Then
+\[
+  L_\alpha'=\frac g{D_\alpha^2}N_\alpha,
+  \qquad N_\alpha'=u'D_\alpha<0.
+\]
+The density assumptions imply
+\(L_\alpha(0+)=L_\alpha(\infty)=0\).  Because \(L_\alpha\) is
+positive in the interior, it has an interior maximum.  The strict
+decrease of \(N_\alpha\) makes this maximum unique; denote its
+location by \(x_*(\alpha)\).  At the critical point,
+\[
+  \partial_\alpha N_\alpha=g-uF=\frac g{D_\alpha}>0.
+\]
+The implicit-function theorem consequently shows that
+\(x_*(\alpha)\) is strictly increasing in \(\alpha\).
+
+\medskip\noindent\emph{Stationary-pattern exclusion.}
+The differentiation and conditioning in Lemmas
+\ref{lem:support-shadow-kkt-general} and \ref{lem:pair-shadow-reduction}
+use only \(F'=g>0\), \(0<F<1\), and independence. They therefore hold
+for the present response without modification. Lemma
+\ref{lem:pair-shadow-monotonicity} concerns only Bernoulli convolutions.
+Together with the marginal-ratio shape just proved, these statements
+supply precisely the hypotheses used in Propositions
+\ref{prop:no-three-active-levels} and \ref{prop:two-level-one-small}:
+three distinct active levels are impossible, and splitting two equal
+small coordinates gives positive second variation. Thus a nonuniform
+interior local maximum could only have the form \((x,y,\ldots,y)\),
+where \(0<x<y\).
+
+The binomial coefficient calculation in Lemma
+\ref{lem:one-small-critical-equation} also uses no Gamma identity.
+Writing \(a=(q-k)/(q-1)\), \(b=(k-1)/(q-1)\), it gives
+\[
+ \frac{D_y}{D_x}=1+K(x,y),\qquad
+ K(x,y)=a\frac{P(x)}{P(y)}+b\frac{Q(x)}{Q(y)}-1.
+\]
+At stationarity, put \(S=(P(x)-P(y))/(Q(y)-Q(x))\). Then
+\(b/a=S Q(y)/P(y)\). Cauchy's mean-value theorem and the two
+slope assumptions give
+\[
+ S<L_1(x),\qquad
+ S\frac{Q(x)Q(y)}{P(x)P(y)}<L_2(y).
+\]
+Consequently
+\[
+ K_x=\frac{aQ'(x)}{P(y)}[S-L_1(x)]<0,
+ \qquad
+ K_y=a\frac{P(x)(-P'(y))}{P(y)^2}
+       -b\frac{Q(x)Q'(y)}{Q(y)^2}>0.
+\]
+Along \(y=(M-x)/(q-1)\), the objective \(G\) satisfies
+\(G'=-D_xK\). At a stationary point,
+\[
+ G''=-D_x\left(K_x-\frac{K_y}{q-1}\right)>0.
+\]
+This is the same feasible-direction exclusion as in
+Proposition~\ref{prop:no-one-small-local-max}; it rules out the final
+asymmetric pattern.
+
+Finally, compactness gives a global maximizer.  Its positive support
+has size \(q\ge k\), because smaller supports have zero success
+probability while a \(k\)-point uniform allocation has positive
+success probability.  It is an interior local maximum on its
+positive face.  The endpoint cases and the preceding exclusions
+force that face's barycenter.  Evaluation on each possible support
+gives~\eqref{eq:common-response-active-uniform-value} and the complete
+equality description.
+\end{proof}
+
+The Gamma responses \(F_\tau\), \(\tau>1\), satisfy all these
+hypotheses by the tail-ratio inequalities proved in
+Section~\ref{sec:mds-success-modules}.  Strict log-concavity of the
+density supplies the marginal-ratio and level reductions; the two
+slope conditions in~\eqref{eq:common-response-slope-hypotheses}
+supply the final exclusion.  The criterion applies to a common
+response under an unweighted total budget.  It makes no optimizer
+claim for unequal response curves, unequal allocation costs, or a
+general upward-closed recovery family.
+
+\section{Perturbation bounds and finite support comparisons}\label{sec:perturbation}
+
+A coordinatewise uniform coupling gives a two-sided perturbation estimate.  It
+controls the effect of an approximate allocation or an approximate
+recovery curve without a new optimization argument.
+
+\begin{proposition}[Perturbation bound]
+\label{prop:recovery-perturbation}
+Let \(B_i\sim\Bernoulli(a_i)\) and
+\(\widetilde B_i\sim\Bernoulli(\widetilde a_i)\) be independent
+within each family, with \(a_i,\widetilde a_i\in[0,1]\).  For
+every event \(\mathcal A\subseteq\{0,1\}^n\),
+\[
+ \bigl|\Pbb(B\in\mathcal A)
+       -\Pbb(\widetilde B\in\mathcal A)\bigr|
+ \le \min\left\{1,\sum_{i=1}^n|a_i-\widetilde a_i|\right\}.
+\]
+Consequently, for any common recovery curve \(F\),
+\[
+ \bigl|\mathcal S_F(\lambda)-\mathcal S_F(\widetilde\lambda)\bigr|
+ \le \sum_i|F(\lambda_i)-F(\widetilde\lambda_i)|,
+ \qquad
+ \mathcal S_F(\lambda)
+ :=\Pbb\!\left(\sum_i\Bernoulli(F(\lambda_i))\ge k\right),
+\]
+where the Bernoulli variables are independent.  If \(F\) is
+\(L\)-Lipschitz, the right-hand side is at most
+\(L\|\lambda-\widetilde\lambda\|_1\).  For the Gamma curve
+\(F_\tau\) with \(\tau\ge1\), one can take
+\[
+ L_\tau=
+ \begin{cases}
+  1,&\tau=1,\\[2pt]
+  (\tau-1)^{\tau-1}e^{-(\tau-1)}/\Gamma(\tau),&\tau>1.
+ \end{cases}
+\]
+\end{proposition}
+
+\begin{proof}
+Take independent uniform \(U_i\) and set
+\(B_i=\1_{\{U_i\le a_i\}}\),
+\(\widetilde B_i=\1_{\{U_i\le\widetilde a_i\}}\).
+The two event indicators agree unless at least one coordinate
+differs.  The union bound gives the first inequality, and the
+remaining estimates follow by substitution and the Lipschitz
+property.  For \(\tau>1\), differentiating the Gamma density
+shows that its maximum occurs at \(\tau-1\); at \(\tau=1\),
+the density is \(e^{-x}\).
+\end{proof}
+
+\begin{remark}[A certified finite comparison]
+Suppose one of the active-uniform candidates has value exceeding
+every other candidate by a positive gap \(\delta\).  If every
+candidate allocation is perturbed by at most \(\varepsilon\) in
+\(\ell^1\), the winning candidate remains strictly best among
+these perturbed candidates whenever
+\(2L_\tau\varepsilon<\delta\).  The same conclusion holds for
+any candidate values known within a common error bound smaller
+than \(\delta/2\).  This is a gap between finitely many support
+comparisons; continuity prevents a positive objective gap from
+all nonuniform allocations arbitrarily close to a maximizer.
+For \(0<\tau<1\), the density is unbounded at zero, but the
+CDF perturbation bound in Proposition
+\ref{prop:recovery-perturbation} still applies.
+\end{remark}
+
+
+\section{Further questions and verification scope}
+The finite support curves \(V_q(M)\) in~\eqref{eq:mds-support-values}
+remain the main unresolved part of the optimization problem. For
+\(\tau>1\) and \(2\le k<n\), it remains to determine uniqueness of
+crossings, whether an optimal support can reappear after losing
+optimality, and whether transitions can skip support sizes. The
+small-budget classification, eventual full support, and local Hessian
+test do not resolve these global questions.
+
+Other directions are to identify further common responses satisfying
+Proposition~\ref{prop:common-recovery-active-uniform}, sharpen the mixed
+Gamma bound, and determine what replaces equal-positive-coordinate
+extremizers for heterogeneous responses or unequal costs. For integer
+thresholds \(t\ge2\), exact fixed-read optimization concerns coupled
+multinomial counts; a Poissonization sandwich transfers probability
+bounds, not coefficientwise optimizer classifications. Likewise,
+optimizing at each deadline does not justify interchanging optimization
+with integration to minimize expected completion time.
+
+The repository includes exact finite checks, symbolic identity checks,
+and explicitly labeled numerical diagnostics. They supplement the
+analytic proofs above and do not certify their infinite parameter
+ranges. No proof-assistant formalization is claimed. Stable statement
+labels and a dependency ledger are supplied to support subsequent
+independent auditing and formalization.
+
+\begin{thebibliography}{99}\raggedright
+
+\bibitem{Abbe2013} E. Abbe, S.-L. Huang, and E. Telatar,
+Proof of the outage probability conjecture for MISO channels,
+\emph{IEEE Trans. Inf. Theory} 59 (2013), 2596--2602;
+\href{https://arxiv.org/abs/1103.5478}{arXiv:1103.5478}.
+
+\bibitem{Abraham2026} H. Abraham, I. Feldman, and E. Yaakobi,
+Analyzing Collection Strategies: A Computational Perspective on the Coupon Collector Problem,
+\href{https://arxiv.org/abs/2601.12351}{arXiv:2601.12351} (2026).
+
+\bibitem{Anceaume2015} E. Anceaume, Y. Busnel, E. Schulte-Geers, and B. Sericola,
+Optimization results for a generalized coupon collector problem,
+\emph{J. Appl. Probab.} 53 (2016), 622--629;
+\href{https://arxiv.org/abs/1504.03878}{arXiv:1504.03878}.
+
+\bibitem{BarLevSabaryGabrysYaakobi2025}
+D. Bar-Lev, O. Sabary, R. Gabrys, and E. Yaakobi,
+``Cover your bases: How to minimize the sequencing coverage in DNA storage systems,''
+\emph{IEEE Transactions on Information Theory}, vol. 71, no. 1, pp. 192--218, 2025.
+\href{https://doi.org/10.1109/TIT.2024.3496587}{doi:10.1109/TIT.2024.3496587};
+\href{https://arxiv.org/abs/2305.05656}{arXiv:2305.05656}.
+
+\bibitem{Baricz2012} \'A. Baricz,
+Mills' ratio: reciprocal convexity and functional inequalities,
+\emph{Acta Universitatis Sapientiae Mathematica} 4 (2012), 26--35;
+\href{https://arxiv.org/abs/1010.3267}{arXiv:1010.3267}.
+
+\bibitem{FGT1992} P. Flajolet, D. Gardy, and L. Thimonier,
+Birthday paradox, coupon collectors, caching algorithms and self-organizing search,
+\emph{Discrete Applied Mathematics} 39 (1992), 207--229.
+
+\bibitem{Liggett1997}
+T. M. Liggett,
+``Ultra logconcave sequences and negative dependence,''
+\emph{Journal of Combinatorial Theory, Series A}, vol. 79, no. 2, pp. 315--325, 1997.
+
+\bibitem{LongCloud2026} C. D. Long,
+Nonuniform Coverage and the Terminal-Cloud Staircase,
+companion manuscript (2026),
+\href{https://github.com/long-mathematics/mds-coverage-optimization/blob/main/terminal_cloud_staircase.tex}{repository source}.
+
+\bibitem{Segura2014} J. Segura,
+Monotonicity properties and bounds for the chi-square and gamma distributions,
+\href{https://arxiv.org/abs/1406.6106}{arXiv:1406.6106} (2014).
+
+\bibitem{SunZhang2004} L. Sun and X. Zhang,
+Stochastic Comparisons of Order Statistics from Gamma Distributions,
+\emph{Chinese Journal of Applied Probability and Statistics} 20 (2004), 404--408.
+\end{thebibliography}
+\end{document}

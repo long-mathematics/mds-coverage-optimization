@@ -1,0 +1,29 @@
+cff-version: 1.2.0
+message: "Please cite the specific manuscript used; this repository contains two distinct papers."
+title: "MDS coverage optimization"
+type: software
+authors:
+  - family-names: Long
+    given-names: Christopher D.
+repository-code: "https://github.com/long-mathematics/mds-coverage-optimization"
+url: "https://github.com/long-mathematics/mds-coverage-optimization"
+license:
+  - MIT
+  - CC-BY-4.0
+date-released: 2026-10-11
+abstract: "Analytic manuscripts and reproducibility checks for Gamma/MDS active-uniform allocation and the expected terminal-cloud staircase. No proof-assistant certification is claimed."
+references:
+  - type: unpublished
+    title: "Active-Uniform Laws for Gamma Completion and MDS Recovery"
+    authors:
+      - family-names: Long
+        given-names: Christopher D.
+    year: 2026
+    url: "https://github.com/long-mathematics/mds-coverage-optimization/blob/main/gamma_mds_active_uniform.pdf"
+  - type: unpublished
+    title: "Nonuniform Coverage and the Terminal-Cloud Staircase"
+    authors:
+      - family-names: Long
+        given-names: Christopher D.
+    year: 2026
+    url: "https://github.com/long-mathematics/mds-coverage-optimization/blob/main/terminal_cloud_staircase.pdf"

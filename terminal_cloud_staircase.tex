@@ -1,0 +1,857 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\Poisson}{Poisson}
+\DeclareMathOperator{\Bernoulli}{Bernoulli}
+\DeclareMathOperator{\Multinomial}{Multinomial}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\supp}{supp}
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pbb}{\mathbb P}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\1}{\mathbf 1}
+
+\title{Nonuniform Coverage and the\\Terminal-Cloud Staircase}
+\author{Christopher D. Long}
+\date{October 11, 2026}
+\hypersetup{pdftitle={Nonuniform Coverage and the Terminal-Cloud Staircase},pdfauthor={Christopher D. Long}}
+\begin{document}
+\maketitle
+\begin{abstract}
+For independent Poisson read counts with a common recovery threshold, we minimize the expected number of unrecovered types under a fixed total read intensity. At threshold one, full uniformity is uniquely optimal. At higher thresholds, every minimizer is uniform on its positive support. We solve the remaining discrete optimization: the optimal support grows through an exact nondecreasing staircase with unique adjacent crossings and no skipped support sizes. A two-point collapse argument gives the optimizer classification, while the elasticity of a Poisson tail orders the phase boundaries. We also give concentration bounds, fixed-read transfer, and conservative guarantees under calibration uncertainty and random sampling environments. These bounds concern specified allocations; the expected-defect objective must be distinguished from the probability of recovering a prescribed number of types.
+\end{abstract}
+
+\section{Introduction}
+When recovering a type requires multiple observations, spreading a small
+read budget over every type can be inefficient. The expected number of
+unrecovered types can instead be reduced by leaving some types inactive
+and allocating equally among the rest. We prove this statement and
+completely determine how the optimal support changes with the budget.
+
+The central results are Theorems~\ref{thm:active-uniform-terminal-cloud}
+and~\ref{thm:terminal-cloud-staircase}. The first reduces a continuous
+simplex optimization to equal-positive-coordinate allocations. The
+second gives a unique crossing between each adjacent pair of supports,
+orders all these crossings, and localizes the optimum to the two
+integers surrounding a single scale \(M/\rho_t\).
+
+The coverage interpretation is motivated by DNA storage
+\cite{BarLevSabaryGabrysYaakobi2025}. Nonuniform coupon collection,
+caching, and self-organizing search share a classical probabilistic
+framework \cite{FGT1992}; stochastic first-copy optimization is treated
+in~\cite{Anceaume2015}. Multiple-copy computations for arbitrary
+sampling laws are developed in~\cite{Abraham2026}.
+
+Our companion paper~\cite{LongGamma2026} optimizes the probability of
+recovering at least \(k\) types and extends that optimizer theorem to
+all positive common Gamma shapes. It is not a proof dependency of the
+present staircase theorem. In particular, an expected-defect minimizer
+need not maximize MDS success: a support smaller than \(k\) cannot
+recover \(k\) types at all. The global support-phase problem for the
+MDS tail is not settled by the staircase proved here.
+
+Sections~\ref{sec:cloud-proofs} and~\ref{sec:cloud-examples} contain
+the extremal proofs and examples. The remaining sections give a compact
+coverage toolkit: exact independent-recovery probabilities,
+concentration, fixed-read transfer, and calibration guarantees.
+These probability identities and bounds are separated from the
+optimizer classification.
+
+\section{Model and principal results}
+Write \([n]=\{1,\ldots,n\}\) and
+\(\Delta_n=\{p\in[0,1]^n:\sum_i p_i=1\}\). Fix \(M>0\) and
+an integer threshold \(t\ge1\). Independent Poisson counts
+\(N_i\sim\Poisson(Mp_i)\) recover type \(i\) exactly when
+\(N_i\ge t\). Put \(\lambda_i=Mp_i\), and define
+\[
+ \phi_t(x)=1-e^{-x}\sum_{j=0}^{t-1}\frac{x^j}{j!},\qquad
+ \psi_t(x)=1-\phi_t(x),\qquad
+ U_{M,t}=\sum_{i=1}^n\1_{\{N_i<t\}}.
+\]
+The expected terminal low-count cloud is
+\[
+ \Lambda_t(M;p)=\E U_{M,t}=\sum_i\psi_t(Mp_i).
+\]
+An allocation is \emph{active-uniform} when all its positive coordinates
+are equal. At threshold one, strict convexity gives
+\[
+ \Lambda_1(M;p)=\sum_i e^{-Mp_i}\ge ne^{-M/n},
+\]
+with equality only at \(p_i=1/n\). For \(t\ge2\),
+\[
+ \psi_t''(x)=\frac{e^{-x}x^{t-2}}{(t-1)!}(x-(t-1)),
+\]
+so this Jensen argument cannot apply globally.
+\begin{theorem}[Active-uniform minimizers for the expected terminal cloud]\label{thm:active-uniform-terminal-cloud}
+Fix \(n\ge2\), \(M>0\), and \(t\ge2\).  For \(p\in\Delta_n\), define
+\[
+  \Lambda_t(M;p)=\sum_{i=1}^n \psi_t(Mp_i),
+  \qquad
+  \psi_t(\lambda)=e^{-\lambda}\sum_{r=0}^{t-1}\frac{\lambda^r}{r!}.
+\]
+For \(q=1,\ldots,n\), set
+\[
+  \mathcal L_q(M)=(n-q)+q\psi_t(M/q).
+\]
+Then
+\[
+  \boxed{\min_{p\in\Delta_n}\Lambda_t(M;p)=\min_{1\le q\le n}\mathcal L_q(M).}
+\]
+Moreover, every global minimizer is, up to permutation, uniform on its positive support.  More precisely, if \(p^*\) minimizes \(\Lambda_t(M;\cdot)\), then there exists \(q\in\{1,\ldots,n\}\) such that exactly \(q\) coordinates of \(p^*\) are equal to \(1/q\), and all remaining coordinates are zero.  Conversely, if \(q\) minimizes \(\mathcal L_q(M)\), then every vector with exactly \(q\) entries equal to \(1/q\) and the remaining entries equal to zero is a global minimizer.
+\end{theorem}
+
+\begin{theorem}[Exact support staircase for the expected terminal cloud]
+\label{thm:terminal-cloud-staircase}
+Fix \(n\ge2\), \(M>0\), and \(t\ge1\).  Let
+\[
+  \mathcal L_q(M)=(n-q)+q\psi_t(M/q),
+  \qquad 1\le q\le n.
+\]
+Equivalently, minimizing \(\mathcal L_q(M)\) is the same as maximizing
+\[
+  A_q(M)=q\phi_t(M/q).
+\]
+If \(t=1\), then \(q=n\) is the unique minimizer of \(\mathcal L_q(M)\) for every \(M>0\).
+
+Assume now that \(t\ge2\).  There is a unique number \(\rho_t>0\) satisfying
+\[
+  \phi_t(\rho_t)=\rho_t\phi_t'(\rho_t).
+\]
+Equivalently,
+\[
+  e^{\rho_t}
+  =
+  \sum_{r=0}^{t-1}\frac{\rho_t^r}{r!}
+  +\frac{\rho_t^t}{(t-1)!}.
+\]
+For each \(q=1,\ldots,n-1\), there is a unique phase boundary
+\[
+  \beta_q\in(q\rho_t,(q+1)\rho_t)
+\]
+defined by
+\[
+  q\phi_t(\beta_q/q)
+  =(q+1)\phi_t(\beta_q/(q+1)).
+\]
+Set \(\beta_0=0\) and \(\beta_n=+\infty\).  Then
+\[
+  \beta_0<\beta_1<\cdots<\beta_{n-1}<\beta_n,
+\]
+and
+\[
+  \arg\min_{1\le r\le n}\mathcal L_r(M)
+  =
+  \{q:\beta_{q-1}\le M\le\beta_q\}.
+\]
+Equivalently, away from the phase boundaries,
+\[
+  q^*(M)=q
+  \quad\Longleftrightarrow\quad
+  \beta_{q-1}<M<\beta_q.
+\]
+At \(M=\beta_q\), the only tie is between support sizes \(q\) and \(q+1\).  Thus the optimal active support size is a nondecreasing staircase in \(M\), and it changes by one coordinate at a time.
+\end{theorem}
+The case \(n=1\) is immediate. For \(n\ge2\), the following proofs
+establish both the complete optimizer classification and the global
+phase diagram without invoking any MDS success theorem.
+
+\section{Proofs of the allocation and staircase theorems}
+\label{sec:cloud-proofs}
+\subsection{Pairwise collapse}
+\begin{theorem}[Abstract two-point collapse principle]
+\label{thm:abstract-two-point-collapse}
+Let $f:[0,\infty)\to\mathbb R$ be continuous.  Suppose that for every $S>0$, the function
+\[
+  h_S(a)=f(a)+f(S-a),\qquad 0\le a\le S,
+\]
+attains its minimum only among the three points
+\[
+  0,\qquad S/2,\qquad S.
+\]
+Then, for every $n\ge1$ and $M>0$,
+\[
+  \min_{\lambda_i\ge0,\ \sum_i\lambda_i=M}\sum_{i=1}^n f(\lambda_i)
+  =\min_{1\le q\le n}\left\{(n-q)f(0)+qf(M/q)\right\}.
+\]
+Moreover, every global minimizer is active-uniform: up to permutation,
+\[
+  \lambda_1=\cdots=\lambda_q=M/q,
+  \qquad
+  \lambda_{q+1}=\cdots=\lambda_n=0
+\]
+for some $q\in\{1,\ldots,n\}$.
+\end{theorem}
+
+\begin{proof}
+Let $\lambda^*$ be a global minimizer.  If two positive coordinates of $\lambda^*$ are unequal, say $\lambda_i^*,\lambda_j^*>0$ and $\lambda_i^*\ne\lambda_j^*$, set $S=\lambda_i^*+\lambda_j^*$.  Holding all other coordinates fixed, the contribution of this pair is $h_S(\lambda_i^*)$.  Since $\lambda_i^*$ is neither $0$, nor $S/2$, nor $S$, the two-point hypothesis gives a replacement of the pair by one of $(0,S)$, $(S/2,S/2)$, or $(S,0)$ that strictly decreases the objective while preserving the total sum.  This contradicts minimality.  Hence all positive coordinates of $\lambda^*$ are equal.  If there are $q$ positive coordinates, their common value is $M/q$, and the objective value is $(n-q)f(0)+qf(M/q)$.  Taking the best $q$ gives the formula and the characterization of minimizers.
+\end{proof}
+
+\begin{lemma}[Two-point radial collapse]\label{lem:two-point-radial-collapse}
+Fix \(t\ge2\) and \(S>0\).  Define
+\[
+  h_S(a)=\psi_t(a)+\psi_t(S-a),\qquad 0\le a\le S.
+\]
+Then every minimum of \(h_S\) on \([0,S]\) occurs at one of
+\[
+  a=0,\qquad a=S/2,\qquad a=S.
+\]
+Equivalently, if \(0<a<S\) and \(a\ne S/2\), then there is a point
+\[
+  b\in\{0,S/2,S\}
+\]
+such that
+\[
+  h_S(b)<h_S(a).
+\]
+\end{lemma}
+
+\begin{proof}
+We have
+\[
+  \psi_t'(\lambda)=-e^{-\lambda}\frac{\lambda^{t-1}}{(t-1)!}.
+\]
+Set
+\[
+  g(\lambda)=e^{-\lambda}\frac{\lambda^{t-1}}{(t-1)!},\qquad \lambda>0.
+\]
+The normalizing factor cancels in the logarithmic ratio below.  On \((0,S)\),
+\[
+  h_S'(a)=-g(a)+g(S-a).
+\]
+By the symmetry \(h_S(a)=h_S(S-a)\), it is enough to study \(0<a\le S/2\).  Put
+\[
+  G(a)=\log\frac{g(a)}{g(S-a)}
+  =(t-1)\log\frac{a}{S-a}+S-2a.
+\]
+Then
+\[
+  G'(a)=(t-1)\left(\frac1a+\frac1{S-a}\right)-2
+        =(t-1)\frac{S}{a(S-a)}-2,
+\]
+and
+\[
+  G''(a)=-(t-1)\frac{S(S-2a)}{a^2(S-a)^2}<0
+  \qquad(0<a<S/2).
+\]
+Thus \(G\) is strictly concave on \((0,S/2)\).  Moreover,
+\[
+  \lim_{a\downarrow0}G(a)=-\infty,
+  \qquad
+  G(S/2)=0.
+\]
+The critical points of \(h_S\) in \((0,S/2]\) are exactly the zeros of \(G\).  Since \(G\) is strictly concave and the superlevel set \(\{a:G(a)\ge0\}\) is an interval containing \(S/2\), either \(G(a)<0\) for all \(0<a<S/2\), or there is a unique \(a_0\in(0,S/2)\) such that
+\[
+  G(a)<0\quad(0<a<a_0),
+  \qquad
+  G(a)>0\quad(a_0<a<S/2).
+\]
+In the first case, \(g(a)<g(S-a)\), so \(h_S'(a)>0\) on \((0,S/2)\); hence the minimum on \([0,S/2]\) occurs at \(0\).  In the second case, \(h_S'(a)>0\) on \((0,a_0)\) and \(h_S'(a)<0\) on \((a_0,S/2)\); hence \(h_S\) first increases and then decreases, and the minimum on \([0,S/2]\) occurs at one of the endpoints \(0\) or \(S/2\).  By symmetry, the minimum on the whole interval \([0,S]\) occurs at one of \(0,S/2,S\).
+
+If \(0<a<S\) and \(a\ne S/2\), then \(a\) is not one of the three possible minimizers.  Therefore its value is strictly larger than the minimum over the three-point set \(\{0,S/2,S\}\), proving the final assertion.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:active-uniform-terminal-cloud}]
+Apply Theorem~\ref{thm:abstract-two-point-collapse} to \(f=\psi_t\),
+using Lemma~\ref{lem:two-point-radial-collapse}. Since \(\psi_t(0)=1\),
+the active-uniform value with support \(q\) is
+\((n-q)+q\psi_t(M/q)\). The change of variables
+\(\lambda_i=Mp_i\) is a bijection between \(\Delta_n\) and the
+allocation simplex. This proves the minimum formula and both directions
+of the equality classification.
+\end{proof}
+
+\subsection{Ordering the support crossings}
+\begin{proof}[Proof of Theorem~\ref{thm:terminal-cloud-staircase}]
+Since
+\[
+  \mathcal L_q(M)=(n-q)+q\psi_t(M/q)=n-q\phi_t(M/q),
+\]
+minimizing \(\mathcal L_q(M)\) over \(q\) is equivalent to maximizing
+\[
+  A_q(M)=q\phi_t(M/q).
+\]
+For \(x>0\), define
+\[
+  a_t(x)=\frac{\phi_t(x)}{x}.
+\]
+Then
+\[
+  A_q(M)=M a_t(M/q).
+\]
+
+For \(t=1\),
+\[
+  a_1(x)=\frac{1-e^{-x}}{x},
+\]
+which is strictly decreasing on \((0,\infty)\).  Since \(M/q\) is strictly decreasing as \(q\) increases, \(A_q(M)=M a_1(M/q)\) is strictly increasing in \(q\).  Hence \(q=n\) is the unique maximizer of \(A_q(M)\), equivalently the unique minimizer of \(\mathcal L_q(M)\).
+
+Now assume \(t\ge2\).  We first prove that \(a_t\) has a single peak.  Since
+\[
+  \phi_t'(x)=e^{-x}\frac{x^{t-1}}{(t-1)!},
+\]
+set
+\[
+  s_t(x)=\frac{x\phi_t'(x)}{\phi_t(x)}.
+\]
+Using
+\[
+  \phi_t(x)=e^{-x}\sum_{r=t}^{\infty}\frac{x^r}{r!},
+\]
+we get
+\[
+  s_t(x)
+  =\frac{x^t/(t-1)!}{\sum_{r=t}^{\infty}x^r/r!}
+  =\frac{1}{(t-1)!\sum_{\ell=0}^{\infty}x^\ell/(t+\ell)!}.
+\]
+The denominator is strictly increasing in \(x\), so \(s_t\) is strictly decreasing on \((0,\infty)\).  Moreover,
+\[
+  \lim_{x\downarrow0}s_t(x)=t>1,
+  \qquad
+  \lim_{x\to\infty}s_t(x)=0.
+\]
+Hence there is a unique \(\rho_t>0\) such that \(s_t(\rho_t)=1\), which is exactly
+\[
+  \rho_t\phi_t'(\rho_t)=\phi_t(\rho_t).
+\]
+Multiplying this identity by \(e^{\rho_t}\) gives the displayed equivalent equation.
+
+Furthermore,
+\[
+  \frac{d}{d\log x}\log a_t(x)
+  =
+  x\frac{d}{dx}\log\frac{\phi_t(x)}{x}
+  =s_t(x)-1.
+\]
+Therefore \(a_t\) is strictly increasing on \((0,\rho_t)\) and strictly decreasing on \((\rho_t,\infty)\).
+
+We next prove that adjacent support sizes cross exactly once.  Fix \(0<c<1\), and define
+\[
+  D_c(x)=\log a_t(x)-\log a_t(cx).
+\]
+Then
+\[
+  D_c'(x)
+  =\frac{s_t(x)-1}{x}-c\frac{s_t(cx)-1}{cx}
+  =\frac{s_t(x)-s_t(cx)}{x}<0,
+\]
+because \(s_t\) is strictly decreasing and \(cx<x\).  Thus \(D_c\) is strictly decreasing.  Since \(a_t\) is maximized at \(\rho_t\),
+\[
+  D_c(\rho_t)>0,
+  \qquad
+  D_c(\rho_t/c)<0.
+\]
+Therefore \(D_c\) has a unique zero \(\xi(c)\in(\rho_t,\rho_t/c)\).
+
+For adjacent support sizes \(q\) and \(q+1\), take \(c=q/(q+1)\).  The equality
+\[
+  A_q(M)=A_{q+1}(M)
+\]
+is equivalent to
+\[
+  a_t(M/q)=a_t(M/(q+1)).
+\]
+Writing \(x=M/q\), this becomes \(a_t(x)=a_t(cx)\).  Hence the unique crossing is
+\[
+  \beta_q=q\xi\!\left(\frac{q}{q+1}\right).
+\]
+Since \(\xi(q/(q+1))\in(\rho_t,(q+1)\rho_t/q)\), we have
+\[
+  \beta_q\in(q\rho_t,(q+1)\rho_t).
+\]
+In particular,
+\[
+  \beta_q<(q+1)\rho_t<\beta_{q+1},
+\]
+so the phase boundaries are strictly ordered.
+
+Finally, the sign of the adjacent difference is
+\[
+  A_q(M)>A_{q+1}(M)
+  \quad\Longleftrightarrow\quad
+  M<\beta_q,
+\]
+and
+\[
+  A_q(M)<A_{q+1}(M)
+  \quad\Longleftrightarrow\quad
+  M>\beta_q.
+\]
+If \(\beta_{q-1}<M<\beta_q\), then
+\[
+  A_1(M)<\cdots<A_q(M)>A_{q+1}(M)>\cdots>A_n(M),
+\]
+so \(q\) is the unique maximizer of \(A_r(M)\), equivalently the unique minimizer of \(\mathcal L_r(M)\).  If \(M=\beta_q\), the same adjacent-sign argument gives the single tie
+\[
+  A_q(M)=A_{q+1}(M),
+\]
+with strict inequalities on both sides.  This proves the staircase description.
+\end{proof}
+\section{Consequences and examples}\label{sec:cloud-examples}
+\begin{corollary}[Full-support threshold for the expected terminal cloud]\label{cor:cloud-full-support}
+For \(t=1\), the globally uniform distribution \(p_i=1/n\) is the unique minimizer of \(\Lambda_t(M;p)\) for every \(M>0\).  For \(t\ge2\), with \(\beta_{n-1}\) as in Theorem \ref{thm:terminal-cloud-staircase}, the globally uniform distribution minimizes \(\Lambda_t(M;p)\) if and only if
+\[
+  M\ge \beta_{n-1}.
+\]
+It is the unique minimizer for \(M>\beta_{n-1}\), while at \(M=\beta_{n-1}\) it ties only with active-uniform laws of support size \(n-1\).
+\end{corollary}
+
+\begin{corollary}[Localization of the optimal support]\label{cor:cloud-localization}
+For \(t\ge2\), define the clipping map
+\[
+  \kappa(r)=\min\{n,\max\{1,r\}\}.
+\]
+Every optimal support size \(q\in\arg\min_{1\le r\le n}\mathcal L_r(M)\) satisfies
+\[
+  q\in
+  \left\{
+  \kappa\!\left(\left\lfloor\frac{M}{\rho_t}\right\rfloor\right),
+  \kappa\!\left(\left\lceil\frac{M}{\rho_t}\right\rceil\right)
+  \right\}.
+\]
+Thus the exact support search is localized to the nearest integer support sizes around \(M/\rho_t\), with only endpoint clipping by \(1\) and \(n\).
+\end{corollary}
+
+\begin{example}[Low read depth and deliberate sacrifice]
+Take \(n=2\), \(t=2\), and \(M=1\).  The two candidate active support sizes are
+\[
+  \mathcal L_1(1)=1+\psi_2(1)=1+2e^{-1}\approx1.7358,
+\]
+and
+\[
+  \mathcal L_2(1)=2\psi_2(1/2)=3e^{-1/2}\approx1.8196.
+\]
+Thus \(q^*=1\).  The expected two-read terminal cloud is minimized by sampling only one strand and leaving the other unprotected.  This illustrates why the higher-threshold objective is qualitatively different from the \(t=1\) case.
+\end{example}
+
+\begin{example}[Growth of the active support with read depth]
+Let \(n=10\) and \(t=2\).  The critical intensity \(\rho_2\) is the unique solution of
+\[
+  e^{\rho_2}=1+\rho_2+\rho_2^2,
+\]
+so
+\[
+  \rho_2\approx1.79328.
+\]
+The exact staircase theorem therefore predicts that the optimal support grows approximately like \(M/\rho_2\), clipped at \(n\).  Direct evaluation of
+\[
+  \mathcal L_q(M)=10-q+q\psi_2(M/q)
+\]
+gives the following representative minimizers:
+\[
+\begin{array}{c|c|c|c}
+M & q^* & \mathcal L_{q^*}(M) & \mathcal L_{10}(M)\\
+\hline
+5  & 3  & 8.5110 & 9.0980\\
+10 & 6  & 7.0220 & 7.3576\\
+20 & 10 & 4.0601 & 4.0601
+\end{array}
+\]
+At low read depth, the expected terminal cloud is minimized by protecting only a small active subset.  As read depth increases, the optimal active support expands through adjacent support sizes, and eventually the full uniform distribution becomes optimal for this objective.
+\end{example}
+
+\begin{remark}[Water-filling interpretation]
+Theorem \ref{thm:active-uniform-terminal-cloud} gives a precise sacrifice principle for the expected low-count cloud when \(t\ge2\).  At low read depth it may be better, for this objective, to protect only an active subset of strands and leave the rest unprotected.  This resembles classical water-filling in that an allocation problem collapses to an active set and an equalization rule on that active set, but the direction is reversed: here inactive coordinates are deliberately sacrificed because the hard threshold makes small intensities inefficient.  Theorem \ref{thm:terminal-cloud-staircase} completes this picture: the active support size is selected by an exact staircase with adjacent phase transitions, and the support is concentrated near \(M/\rho_t\).
+\end{remark}
+
+
+\section{Coverage probabilities and concentration}
+\label{sec:coverage-toolkit}
+We now fix \(p\); these statements evaluate or bound a specified
+allocation rather than classify an optimum. Read counts take values in
+\(\N=\{0,1,2,\ldots\}\). If a total \(N\sim\Poisson(M)\) of
+independent reads is assigned with probabilities \(p\), the joint
+probability generating function is
+\[
+ \E\prod_i z_i^{N_i}
+ =\exp\!\left(M\left(\sum_i p_i z_i-1\right)\right)
+ =\prod_i\exp(Mp_i(z_i-1)).
+\]
+Thus Poisson splitting gives independent counts of means \(Mp_i\).
+
+\begin{proposition}[Independent recovery and the Poisson-binomial tail]
+\label{thm:poissonized-identity}
+For recovery curves \(s_i:\N\to[0,1]\), assume explicitly that,
+conditional on the \emph{full} count vector, the reconstruction decisions
+are independent and type \(i\) succeeds with probability \(s_i(N_i)\).
+Then the recovery indicators are independent Bernoulli variables with
+parameters
+\[
+ \theta_i(M)=\E s_i(N_i)
+ =\sum_{r=0}^{\infty}s_i(r)e^{-Mp_i}\frac{(Mp_i)^r}{r!}.
+\]
+Recovery of at least \(k\) types has probability
+\[
+ P_{\rm succ}(M)=\Pbb\!\left(\sum_i B_i\ge k\right)
+ =\sum_{j=k}^n[u^j]\prod_i(1-\theta_i(M)+\theta_i(M)u).
+\]
+In particular, for \(s_i(r)=\1_{\{r\ge t\}}\), one has
+\(\theta_i(M)=\phi_t(Mp_i)\).
+\end{proposition}
+\begin{proof}
+For any recovery pattern, its conditional probability factors into
+functions of the individual counts. Taking expectations over the
+independent counts preserves this factorization and gives Bernoulli
+parameters \(\theta_i\). Multiplication of their generating functions
+gives the coefficient formula.
+\end{proof}
+
+\begin{proposition}[Exact dynamic program]\label{thm:dp}
+Let \(d_i(j)=\Pbb(\sum_{h=1}^iB_h=j)\), \(0\le j<k\).
+With \(d_0(0)=1\), all other initial entries zero, and \(d_i(-1)=0\),
+\[
+ d_i(j)=(1-\theta_i)d_{i-1}(j)+\theta_i d_{i-1}(j-1),\qquad
+ P_{\rm succ}=1-\sum_{j=0}^{k-1}d_n(j).
+\]
+This uses \(O(nk)\) arithmetic operations and \(O(k)\) memory.
+If every \(s_i\) is nondecreasing, \(P_{\rm succ}(M)\) is continuous
+and nondecreasing in \(M\); bisection is valid once a feasible target
+bracket has been established.
+\end{proposition}
+\begin{proof}
+Condition on \(B_i\) to obtain the recurrence, and retain only the
+previous row. A Poisson-increment coupling and the same independent
+uniform random variables for the Bernoulli decisions show monotonicity.
+Continuity of each Poisson expectation follows by dominated convergence
+under this coupling, or from its locally uniformly convergent series;
+the tail is a polynomial in the \(\theta_i\).
+\end{proof}
+
+\begin{proposition}[Terminal cloud and concentration]\label{thm:terminal-cloud}
+Under the common hard threshold, \(U_{M,t}\) is Poisson-binomial with
+\[
+ \Lambda=\E U_{M,t}=\sum_i\psi_t(Mp_i),\qquad
+ V=\Var(U_{M,t})=\sum_i\psi_t(Mp_i)(1-\psi_t(Mp_i)).
+\]
+An \([n,k]\) MDS code succeeds exactly when \(U_{M,t}\le n-k\).
+For every \(s>0\),
+\[
+ \Pbb(U_{M,t}\ge\Lambda+s),\quad
+ \Pbb(U_{M,t}\le\Lambda-s)
+ \ \le\ \exp\!\left(-\frac{s^2}{2V+2s/3}\right).
+\]
+If \(\Lambda<n-k\), a sufficient failure bound is
+\[
+ \Pbb(\mathrm{failure})
+ \le \exp\!\left(-\frac{(n-k-\Lambda)^2}
+                         {2V+2(n-k-\Lambda)/3}\right).
+\]
+For general independent recovery indicators, let
+\(\mu=\sum_i\theta_i\) and \(v=\sum_i\theta_i(1-\theta_i)\).
+If \(\mu>k\), then
+\[
+ \Pbb\!\left(\sum_i B_i<k\right)
+ \le\exp\!\left(-\frac{(\mu-k)^2}{2v+2(\mu-k)/3}\right).
+\]
+In particular, for \(0<\delta<1\), success probability is at least
+\(1-\delta\) whenever
+\[
+ \mu-k\ge\sqrt{2v\log(1/\delta)}+\frac23\log(1/\delta).
+\]
+\end{proposition}
+\begin{proof}
+The defect indicators are independent Bernoulli variables with
+parameters \(\psi_t(Mp_i)\), giving the moment formulas and recovery
+event. Apply Bernstein's inequality for independent centered variables
+bounded by one \cite[Chapter~2]{BoucheronLugosiMassart2013}. Apply it
+again to \(B_i-\theta_i\) for the general recovery bound. If
+\(L=\log(1/\delta)\) and \(a\ge\sqrt{2vL}+2L/3\), direct expansion
+gives \(a^2\ge L(2v+2a/3)\), proving the sufficient margin condition.
+\end{proof}
+
+\begin{remark}[Expected cloud is not success probability]
+Minimizing \(\Lambda\) need not maximize \(\Pbb(U_{M,t}\le n-k)\).
+For \(n=2,t=2,M=1\), the expected-cloud optimum has support one,
+whereas recovery of both types requires positive allocation to both.
+The separate MDS theorem in~\cite{LongGamma2026} optimizes the binomial
+tail over active supports; its support-phase diagram is a different
+problem. Concentration bounds above can be useful for a chosen law,
+but do not identify an exact success-probability optimizer.
+\end{remark}
+
+\section{Fixed-read transfer}
+\label{sec:fixed-read}
+With exactly \(m\in\N\) reads, the counts are
+\(C^{(m)}\sim\Multinomial(m;p)\). For an increasing count event
+\(A\subseteq\N^n\), put
+\(P_m(A)=\Pbb(C^{(m)}\in A)\) and
+\(\Pi_\lambda(A)=\Pbb(Z^{(\lambda)}\in A)\), where
+\(Z_i^{(\lambda)}\sim\Poisson(\lambda p_i)\) independently.
+
+\begin{theorem}[De-Poissonization sandwich]\label{thm:depoissonization}
+For every \(m\ge1\) and \(0<\varepsilon<1\),
+\begin{align*}
+ P_m(A)&\ge\Pi_{(1-\varepsilon)m}(A)
+        -e^{-m[-\log(1-\varepsilon)-\varepsilon]},\\
+ P_m(A)&\le\Pi_{(1+\varepsilon)m}(A)
+        +e^{-m[\varepsilon-\log(1+\varepsilon)]}.
+\end{align*}
+\end{theorem}
+\begin{proof}
+Construct all \(C^{(j)}\) from successive prefixes of one infinite
+sequence of independent reads. For an independent
+\(T_\lambda\sim\Poisson(\lambda)\), the vector
+\(C^{(T_\lambda)}\) has the law of \(Z^{(\lambda)}\).
+Monotonicity of \(A\) gives
+\[
+ \Pi_{(1-\varepsilon)m}(A)\le P_m(A)+\Pbb(T_{(1-\varepsilon)m}>m),
+\]
+\[
+ P_m(A)\le\Pi_{(1+\varepsilon)m}(A)+\Pbb(T_{(1+\varepsilon)m}<m).
+\]
+The Poisson exponential moment
+\(\E e^{uT_\lambda}=e^{\lambda(e^u-1)}\), with
+\(u=\log(m/\lambda)\), bounds the corresponding upper or lower tail
+by \(\exp[-m\log(m/\lambda)+m-\lambda]\).
+Substitution of the two means proves the inequalities.
+\end{proof}
+
+\begin{corollary}[Monotone recovery rules]\label{cor:monotone-transfer}
+The sandwich applies to the hard-threshold MDS event
+\(\{c:\#\{i:c_i\ge t\}\ge k\}\). More generally, it applies to
+an upward-closed family of recovered sets with nondecreasing recovery
+curves \(s_i\), under the full-count conditional-independence assumption
+of Proposition~\ref{thm:poissonized-identity}.
+\end{corollary}
+\begin{proof}
+Use independent \(U_i\sim\mathrm{Unif}[0,1]\) for the reconstruction
+randomness. For each fixed \(u\),
+\[
+ c\longmapsto\1\{\{i:u_i\le s_i(c_i)\}\text{ is recoverable}\}
+\]
+is increasing. The preceding prefix argument applies with the same
+\(U_i\) at every prefix and the same Poisson-tail error bounds.
+\end{proof}
+
+\begin{remark}[Scope of transfer]
+The inequalities hold for each fixed sampling law, not as an exact
+optimizer classification for multinomial counts. First-copy
+optimization is known~\cite{Anceaume2015}; higher-threshold fixed-read
+optimization requires a separate argument. Nor do arbitrary
+upward-closed recovery rules inherit the active-uniform theorem merely
+because their probabilities can be computed under independent recovery.
+If extra reads can reduce a recovery probability, the monotone-prefix
+argument does not apply.
+\end{remark}
+
+\section{Bias, random environments, and calibration}
+\label{sec:random-environments}
+\begin{theorem}[Uniform benchmark and perturbative bias penalty]\label{thm:uniform-penalty}
+Work in the Poissonized fixed-\(p\) model with hard threshold \(t=1\).  Then, for every probability vector \(p=(p_1,\ldots,p_n)\) and every \(M>0\),
+\[
+  \Lambda_1(M;p)=\sum_{i=1}^n e^{-Mp_i}
+  \ge n e^{-M/n}.
+\]
+Equality holds if and only if \(p_i=1/n\) for every \(i\).
+
+Moreover, suppose
+\[
+  p_i=\frac{1+\varepsilon_i}{n},
+  \qquad \sum_{i=1}^n\varepsilon_i=0,
+  \qquad \varepsilon_i>-1.
+\]
+Let
+\[
+  \alpha=\frac{M}{n},\qquad
+  \sigma_2=\frac1n\sum_{i=1}^n\varepsilon_i^2,
+\]
+\[
+  \sigma_3=\frac1n\sum_{i=1}^n|\varepsilon_i|^3,
+  \qquad
+  \delta_\infty=\max_i|\varepsilon_i|.
+\]
+Then
+\[
+  \Lambda_1(M;p)
+  =n e^{-\alpha}\left(1+\frac{\alpha^2}{2}\sigma_2+R\right),
+\]
+where
+\[
+  |R|\le \frac{\alpha^3}{6}e^{\alpha\delta_\infty}\sigma_3.
+\]
+\end{theorem}
+
+\begin{proof}
+The function \(f(x)=e^{-Mx}\) is strictly convex on \([0,\infty)\).  Jensen's inequality gives
+\[
+  \frac1n\sum_{i=1}^n e^{-Mp_i}
+  \ge e^{-M(\frac1n\sum_i p_i)}=e^{-M/n}.
+\]
+Thus \(\Lambda_1(M;p)\ge n e^{-M/n}\).  Strict convexity gives equality if and only if all \(p_i\) are equal, hence iff \(p_i=1/n\) for every \(i\).
+
+For the expansion, write \(\alpha=M/n\).  Then
+\[
+  e^{-Mp_i}=e^{-\alpha}e^{-\alpha\varepsilon_i},
+\]
+so
+\[
+  \Lambda_1(M;p)=e^{-\alpha}\sum_{i=1}^n e^{-\alpha\varepsilon_i}.
+\]
+Taylor's formula gives
+\[
+  e^{-x}=1-x+\frac{x^2}{2}+\rho(x),
+  \qquad |\rho(x)|\le \frac{|x|^3}{6}e^{|x|}.
+\]
+Taking \(x=\alpha\varepsilon_i\), summing over \(i\), and using \(\sum_i\varepsilon_i=0\), gives
+\[
+  \sum_i e^{-\alpha\varepsilon_i}
+  =n+\frac{\alpha^2}{2}\sum_i\varepsilon_i^2+\sum_i\rho_i,
+\]
+with
+\[
+  |\rho_i|\le \frac{\alpha^3}{6}e^{\alpha\delta_\infty}|\varepsilon_i|^3.
+\]
+After factoring out \(n e^{-\alpha}\), the stated expansion and remainder bound follow.
+\end{proof}
+
+
+
+\begin{proposition}[Conditional environments and a two-stage guarantee]
+\label{thm:random-environment}
+Let \(P=(P_1,\ldots,P_n)\) be a random probability vector. Conditional
+on \(P\), suppose counts are independent Poisson variables of means
+\(MP_i\). Put \(q_M(P)=\Pbb(\mathrm{success}\mid P)\).
+Then the Poisson-binomial identity and concentration bounds above apply
+conditionally, with parameters \(\phi_t(MP_i)\). The unconditional
+success probability is \(\E q_M(P)\). If
+\[
+ \Pbb(q_M(P)\ge1-\delta)\ge1-\eta,
+\]
+then success probability is at least \((1-\eta)(1-\delta)\).
+\end{proposition}
+\begin{proof}
+Condition on the entire environment, apply the fixed-law identities,
+and take expectation. On the displayed good event, the conditional
+success probability is at least \(1-\delta\); elsewhere it is
+nonnegative.
+\end{proof}
+
+\begin{proposition}[Annealed one-read bias penalty]\label{thm:annealed-jensen}
+If \(\E P_i=1/n\) for every \(i\), then
+\[
+ \E\Lambda_1(M;P)\ge ne^{-M/n},
+\]
+with equality exactly when \(P_i=1/n\) for every \(i\) almost surely.
+Write \(P_i=(1+\varepsilon_i)/n\), \(\alpha=M/n\), and suppose
+\(|\varepsilon_i|\le L\) almost surely. Then
+\[
+ \E\Lambda_1(M;P)
+ =ne^{-\alpha}\left[1+\frac{\alpha^2}{2n}\sum_i\E\varepsilon_i^2
+                         +R_{\rm ann}\right],
+\]
+\[
+ |R_{\rm ann}|\le\frac{\alpha^3e^{\alpha L}}{6n}
+                         \sum_i\E|\varepsilon_i|^3.
+\]
+\end{proposition}
+\begin{proof}
+Apply strict Jensen to \(e^{-MP_i}\) coordinatewise and sum.
+For the expansion, use \(\sum_i\varepsilon_i=0\) almost surely and
+\(e^{-x}=1-x+x^2/2+\rho(x)\),
+\(|\rho(x)|\le |x|^3e^{|x|}/6\), then take expectations.
+\end{proof}
+
+\begin{theorem}[Conservative calibration guarantee]\label{thm:plugin}
+For a fixed true law \(p\), let \(0\le\ell_i\le p_i\).
+Let \(\underline q_\ell(M)\) be the probability of at least \(k\)
+successes for independent Bernoulli variables with parameters
+\(\phi_t(M\ell_i)\). Then the true Poissonized success probability
+\(q_p(M)\) satisfies \(q_p(M)\ge\underline q_\ell(M)\).
+
+Suppose independent calibration data produce nonnegative simultaneous
+lower bounds \(\widehat\ell_i\) such that
+\(\Pbb(\widehat\ell_i\le p_i\text{ for all }i)\ge1-\eta\).
+If a calibration-dependent depth \(M(\widehat\ell)\) is chosen with
+\[
+ \underline q_{\widehat\ell}\bigl(M(\widehat\ell)\bigr)\ge1-\delta
+\]
+for every realized calibration vector, then the joint probability of
+success over calibration and subsequent sequencing is at least
+\((1-\eta)(1-\delta)\).
+\end{theorem}
+\begin{proof}
+Monotonicity of \(\phi_t\) gives
+\(\phi_t(M\ell_i)\le\phi_t(Mp_i)\). Coupling the corresponding
+Bernoulli indicators by the same independent uniform variables gives
+coordinatewise domination and hence the deterministic bound. Conditional
+on good calibration, that bound applies at the selected depth; averaging
+over calibration gives the two-stage probability guarantee.
+\end{proof}
+
+\begin{remark}[Feasibility and decision rules]
+A calibration vector with fewer than \(k\) positive lower bounds cannot
+yield a positive certified success probability, so feasibility of the
+depth-selection rule is a genuine assumption. Lower bounds are not
+renormalized, since renormalization could destroy coordinatewise
+conservativeness. A theorem valid pointwise in an environment does not
+permit a fixed allocation to be replaced silently by an adaptive
+allocation depending on the realized environment. In particular,
+\(\max_p\E H(p,\mathcal E)\le\E\max_pH(p,\mathcal E)\), and equality
+needs an additional argument.
+\end{remark}
+
+\section{Further questions and verification scope}
+The expected-cloud allocation and staircase problems above are solved
+for the common integer threshold under Poissonization. They do not
+settle the companion MDS support-phase problem, exact higher-threshold
+fixed-read optimization, heterogeneous recovery costs, or risk-sensitive
+objectives such as a terminal-cloud moment-generating function.
+Independent reconstruction given the full counts, and monotonicity
+when transferring between read budgets, remain essential hypotheses.
+
+The repository records statement-level dependencies and finite exact
+and numerical checks. These support reproducibility and future
+formalization but do not replace the analytic proofs; no
+proof-assistant certification is claimed. The original comprehensive
+source is preserved separately as an archive rather than included as
+a third active paper.
+
+\begin{thebibliography}{99}\raggedright
+
+\bibitem{Abraham2026} H. Abraham, I. Feldman, and E. Yaakobi,
+Analyzing Collection Strategies: A Computational Perspective on the Coupon Collector Problem,
+\href{https://arxiv.org/abs/2601.12351}{arXiv:2601.12351} (2026).
+
+\bibitem{Anceaume2015} E. Anceaume, Y. Busnel, E. Schulte-Geers, and B. Sericola,
+Optimization results for a generalized coupon collector problem,
+\emph{J. Appl. Probab.} 53 (2016), 622--629;
+\href{https://arxiv.org/abs/1504.03878}{arXiv:1504.03878}.
+
+\bibitem{BarLevSabaryGabrysYaakobi2025}
+D. Bar-Lev, O. Sabary, R. Gabrys, and E. Yaakobi,
+``Cover your bases: How to minimize the sequencing coverage in DNA storage systems,''
+\emph{IEEE Transactions on Information Theory}, vol. 71, no. 1, pp. 192--218, 2025.
+\href{https://doi.org/10.1109/TIT.2024.3496587}{doi:10.1109/TIT.2024.3496587};
+\href{https://arxiv.org/abs/2305.05656}{arXiv:2305.05656}.
+
+\bibitem{BoucheronLugosiMassart2013}
+S. Boucheron, G. Lugosi, and P. Massart,
+\emph{Concentration Inequalities: A Nonasymptotic Theory of Independence}.
+Oxford University Press, 2013.
+
+\bibitem{FGT1992} P. Flajolet, D. Gardy, and L. Thimonier,
+Birthday paradox, coupon collectors, caching algorithms and self-organizing search,
+\emph{Discrete Applied Mathematics} 39 (1992), 207--229.
+
+\bibitem{LongGamma2026} C. D. Long,
+Active-Uniform Laws for Gamma Completion and MDS Recovery,
+companion manuscript (2026),
+\href{https://github.com/long-mathematics/mds-coverage-optimization/blob/main/gamma_mds_active_uniform.tex}{repository source}.
+\end{thebibliography}
+\end{document}
