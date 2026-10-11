@@ -1,0 +1,22 @@
+{
+  "all_checks_passed": true,
+  "identities": 15,
+  "residuals": {
+    "L2_log_derivative": "0",
+    "cloud_curvature_t2": "0",
+    "cloud_curvature_t3": "0",
+    "cloud_curvature_t4": "0",
+    "cloud_curvature_t5": "0",
+    "cloud_curvature_t6": "0",
+    "cloud_curvature_t7": "0",
+    "constrained_Hessian": "0",
+    "critical_second_derivative": "0",
+    "difference_Riccati": "0",
+    "marginal_numerator_cancellation": "0",
+    "normalized_two_point_derivative": "0",
+    "pair_shadow_derivative": "0",
+    "product_Riccati": "0",
+    "three_fifths_square_completion": "0"
+  },
+  "scope": "Finite exact symbolic identities; no continuum or optimizer certification."
+}

@@ -1,0 +1,26 @@
+{
+  "all_checks_passed": true,
+  "frozen_pair_example": {
+    "E_enclosure": "L < S_21 < exp(-1/2) < S_20 < U; alternating-series theorem.",
+    "E_lower": "3032653298563167/5000000000000000",
+    "E_upper": "1213061319425267/2000000000000000",
+    "J_3_minus_J_0_lower_bound": "12/1000000",
+    "J_3_minus_J_6_5_lower_bound": "9/1000000",
+    "alpha": "9999/10000",
+    "conclusion": "Frozen-pair maxima need not occur at the midpoint or endpoints.",
+    "feasible_shadow_theta": "10000/10001",
+    "rational_enclosure_comparisons_verified": true,
+    "scope": "This does not contradict the active-uniform global theorem.",
+    "verified": true
+  },
+  "small_depth_example": {
+    "conclusion": "The unique small-depth optimal support is q=12 for n>=12, k=10, tau=2.",
+    "scope": "Uses the proved unimodal localization and small-depth expansion.",
+    "values": {
+      "C_12_over_C_11": "672749994932560009201/638959998741245853696",
+      "D_10_2_at_11": "5591/2520",
+      "D_10_2_at_12": "-1759/2310"
+    },
+    "verified": true
+  }
+}

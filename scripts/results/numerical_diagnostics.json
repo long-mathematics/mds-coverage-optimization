@@ -1,0 +1,22 @@
+{
+  "all_checks_passed": true,
+  "allocation_tail_comparisons": 3840,
+  "allocation_vectors": 960,
+  "cloud_adjacent_crossings": 28,
+  "cloud_allocation_vectors": 256,
+  "cloud_phase_interiors": 32,
+  "failures": [],
+  "gamma_ratio_cases": 56,
+  "gamma_ratio_max": "0.999979154232403586",
+  "gamma_ratio_min": "0.638603338781648523",
+  "largest_positive_excess": "2.0391576e-56",
+  "precision_decimal_digits": 55,
+  "rho_values": {
+    "2": "1.793282132900761007558",
+    "3": "3.383634282853181326234",
+    "5": "6.322505551033348213118",
+    "8": "10.44703068132582643466"
+  },
+  "scope": "Deterministic finite numerical diagnostics, not proofs.",
+  "seed": 20261011
+}

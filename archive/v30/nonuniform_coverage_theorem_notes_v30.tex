@@ -1,0 +1,4106 @@
+\documentclass[11pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern,microtype}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{enumitem}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\title{Active-Uniform Laws for Coverage and Gamma Completion}
+\author{Christopher D. Long}
+\date{Version 30\\October 11, 2026}
+\hypersetup{pdftitle={Active-Uniform Laws for Coverage and Gamma Completion},pdfauthor={Christopher D. Long}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{proposition}{Proposition}
+\newtheorem{conjecture}{Conjecture}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{example}{Example}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\DeclareMathOperator{\Poisson}{Poisson}
+\DeclareMathOperator{\Bernoulli}{Bernoulli}
+\DeclareMathOperator{\Multinomial}{Multinomial}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\Bin}{Bin}
+\DeclareMathOperator{\supp}{supp}
+
+\newcommand{\E}{\mathbb E}
+\newcommand{\Pbb}{\mathbb P}
+\newcommand{\N}{\mathbb N}
+\newcommand{\R}{\mathbb R}
+\newcommand{\1}{\mathbf 1}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We study how a fixed sampling budget should be allocated among independently recoverable types. For Poisson read counts with a common integer recovery threshold, the probability of recovering at least \(k\) of \(n\) types is maximized by an allocation that is uniform on its positive support. Our main theorem extends this principle to independent Gamma completion requirements of every positive common shape and classifies all maximizers. For shape greater than one, every maximizer is active-uniform; for shape below one, full uniformity is uniquely optimal. At shape one, full uniformity is uniquely optimal when \(k\ge2\), while every allocation ties when \(k=1\). The proof combines Poisson-binomial shadow equations with a real-parameter Gamma tail-ratio inequality and a direct second variation. We also prove an exact support staircase for the expected low-count cloud in the integer-threshold model, derive small- and large-budget support laws and local stability criteria for the success objective, and give a sufficient criterion for other common recovery curves. A separate crossing argument orders the rate mass of the first completed clocks in general exchangeable scale families. The coverage framework further includes fixed-read transfer bounds, random molecular environments, empirical guarantees, general recovery families, and nonuniform motif-subset decoding.
+
+\end{abstract}
+
+\clearpage
+\begingroup\small
+\tableofcontents
+\endgroup
+\clearpage
+
+\section{Introduction}
+
+DNA storage systems encode information into synthetic strands and retrieve it by sequencing a sample of molecules. Foundational implementations include \cite{ChurchGaoKosuri2012,Goldman2013,YazdiGabrysMilenkovic2017,Organick2018}. A basic allocation question is how to distribute read intensity among the strands when a prescribed number of successfully reconstructed strands suffices for decoding. This problem connects DNA coverage depth with nonuniform coupon collection and the completion of independent random requirements.
+
+In the Poissonized model, strand \(i\) receives an independent read count \(N_i\) of mean \(\lambda_i\). For an integer threshold \(t\ge1\), its recovery probability is
+\[
+ \phi_t(\lambda_i)=\Pbb(\Poisson(\lambda_i)\ge t).
+\]
+An outer \([n,k]\) MDS code succeeds when at least \(k\) strands recover. Thus, under a total intensity constraint \(\sum_i\lambda_i=M\), the objective is the Poisson-binomial tail
+\[
+ \Pbb\!\left(\sum_{i=1}^n B_i\ge k\right),
+ \qquad B_i\sim\Bernoulli(\phi_t(\lambda_i))
+ \quad\text{independently}.
+\]
+An allocation is \emph{active-uniform} if its positive coordinates are equal. Theorem \ref{thm:full-mds-active-uniform} proves
+\[
+ \max_{\lambda_i\ge0,\ \sum_i\lambda_i=M}
+ \Pbb\!\left(\sum_i B_i\ge k\right)
+ =\max_{q=k,\ldots,n}
+ \Pbb\!\left(\Bin(q,\phi_t(M/q))\ge k\right).
+\]
+For \(t\ge2\), every maximizer has this form, with a support size attaining the finite maximum. For \(t=1,k\ge2\), full uniformity is uniquely optimal; for \(t=k=1\), every allocation has the same value.
+
+\subsection{The Gamma completion theorem}
+The principal result is the more general Theorem \ref{thm:gamma-active-uniform}. Let \(Y_1,\ldots,Y_n\) be independent unit-rate Gamma requirements with a common shape \(\tau>0\). If \(p_i\) is the rate assigned to type \(i\), its completion time is \(Y_i/p_i\), with value \(\infty\) when \(p_i=0\). Writing \(F_\tau\) for the Gamma distribution function, the deadline success probability is
+\[
+ \Pbb(T_{(k)}\le M)
+ =\Pbb\!\left(\sum_i\Bernoulli(F_\tau(Mp_i))\ge k\right),
+ \qquad \sum_i p_i=1,
+\]
+where the Bernoulli variables are independent. For \(\tau>1\), every optimizer is active-uniform. For \(0<\tau<1\), full uniformity is uniquely optimal; the shape-one cases are as above. Integer shapes recover the Poisson threshold model because \(F_t=\phi_t\). Noninteger shapes describe continuous random requirements, independently of a read-count interpretation.
+
+The proof first conditions on all but two recovery indicators. Two adjacent masses of the remaining Poisson-binomial sum determine the pair-shadow stationarity equation. Log-concavity of Bernoulli convolutions \cite{Liggett1997} and a marginal-ratio calculation restrict an asymmetric local maximum to one small coordinate and equal larger coordinates. A Gamma tail-ratio inequality, proved for all real \(\tau>1\) by a Riccati minimum argument, then gives a strictly positive second variation in a feasible direction. This excludes the final asymmetric pattern. The proof also yields the common-recovery-curve criterion in Proposition \ref{prop:common-recovery-active-uniform}.
+
+\subsection{Expected clouds, support selection, and completed labels}
+A second allocation problem minimizes the expected number of types below the integer threshold:
+\[
+ \Lambda_t(\lambda)=\sum_i\psi_t(\lambda_i),
+ \qquad \psi_t(\lambda)=\Pbb(\Poisson(\lambda)<t).
+\]
+This objective is separable. Theorem \ref{thm:active-uniform-terminal-cloud} gives active-uniform minimizers, and Theorem \ref{thm:terminal-cloud-staircase} proves an exact nondecreasing staircase for their support sizes. The MDS success objective is nonseparable and can select a different support. Section \ref{sec:mds-support} proves its small-budget and large-budget laws and an exact local stability test. The global crossing and support-phase structure of that objective remains a separate question.
+
+Section \ref{sec:completion-races} considers a different observable of the same clock construction: the total rate mass carried by the first \(C\) completed labels. Along rays from the uniform rate vector, this mass increases in increasing-convex order for general exchangeable positive requirements with atomless pairwise ratios. This extension of the crossing method for residual-mass order connects Gamma completion to size-biased permutations and caching while retaining the distinction between completed-label composition and deadline success.
+
+\subsection{Related work and scope}
+Flajolet, Gardy and Thimonier \cite{FGT1992} developed a common framework for coupon collection, caching, and self-organizing search under nonuniform sampling. Anceaume, Busnel, Schulte-Geers and Sericola \cite{Anceaume2015} proved stochastic optimality of equal non-null drawing probabilities for collecting a prescribed number of distinct types. Their result supplies the first-copy benchmark, including fixed-read optimality. Bar-Lev, Sabary, Gabrys and Yaakobi \cite{BarLevSabaryGabrysYaakobi2025} study the DNA coverage model directly; the uniform-allocation theorem in their arXiv version is explicitly for the first-copy case. Abraham, Feldman and Yaakobi \cite{Abraham2026} give computational methods for collecting \(t\) copies of any \(k\) among \(n\) types under arbitrary sampling probabilities.
+
+The equal-positive-coordinates geometry also occurs in the MISO outage theorem of Abbe, Huang and Telatar \cite{Abbe2013}. Their objective is a weighted-exponential sum tail, whereas ours counts completed Gamma requirements. Gamma order-statistic comparisons \cite{SunZhang2004}, Mills-ratio inequalities \cite{Baricz2012}, and differential-equation bounds for incomplete Gamma functions \cite{Segura2014} provide related background. The mixed tail-ratio estimate used here is proved directly in Section \ref{sec:mds-success-modules}.
+
+The clock perspective connects with radial LRU extremality and residual-mass transform order \cite{LongLRU2026,LongRank2026}, as well as siblings' coupon-collector deficits and transforms \cite{Doumas2026,LongSiblings2026,LongTransforms2026}. Weighted-threshold collection \cite{Muller2026} is another natural recovery-family model. These objectives have distinct symmetry and stopping-time structures. In particular, the active-uniform theorem concerns a common recovery curve and an unweighted budget; general recovery-family identities do not by themselves imply the same optimizer classification.
+
+The remaining sections develop fixed-law coverage identities, concentration and fixed-read transfer, random molecular environments, empirical plug-in guarantees, and motif-subset posterior and decoding formulae. These extensions preserve the broader coverage calculus while keeping the allocation theorems and their hypotheses explicit.
+
+\section{Model and notation}
+
+Let \([n]=\{1,\ldots,n\}\).  For \(d\ge1\), write
+\[
+  \Delta_d=\left\{(x_1,\ldots,x_d)\in[0,1]^d:\sum_{i=1}^d x_i=1\right\}
+\]
+for the probability simplex on \(d\) coordinates.  A DNA storage system contains \(n\) designed strands.  Reads are assigned to strands according to a sampling distribution
+\[
+  p=(p_1,\ldots,p_n),\qquad p_i\ge 0,
+  \qquad \sum_{i=1}^n p_i=1.
+\]
+The distribution \(p\) is allowed to be nonuniform. The fixed-law coverage identities take \(p\) as given; the allocation theorems optimize over \(p\), equivalently over \(\lambda_i=Mp_i\). Section \ref{sec:random-environments} treats a random molecular environment.
+
+We use two read-count models.
+
+\begin{definition}[Fixed-read model]
+For \(m\in \N\), let
+\[
+  C^{(m)}=(C_1^{(m)},\ldots,C_n^{(m)})
+\]
+be the count vector from exactly \(m\) independent reads, each assigned to strand \(i\) with probability \(p_i\).  Thus
+\[
+  C^{(m)}\sim \Multinomial(m;p_1,\ldots,p_n).
+\]
+\end{definition}
+
+\begin{definition}[Poissonized model]
+For mean read depth \(M\ge 0\), let the total number of reads be
+\[
+  N\sim \Poisson(M).
+\]
+Conditional on \(N\), the \(N\) reads are independent and are assigned according to \(p\).  Let
+\[
+  N_i=\#\{\text{reads assigned to strand }i\}.
+\]
+Then, by Poisson splitting,
+\[
+  N_i\sim \Poisson(Mp_i),\qquad i=1,\ldots,n,
+\]
+independently.
+\end{definition}
+
+The main hard-threshold recovery model is the following.  Fix an integer \(t\ge 1\).  Strand \(i\) is recovered if and only if it receives at least \(t\) reads:
+\[
+  \text{strand }i\text{ recovered}\quad \Longleftrightarrow\quad N_i\ge t.
+\]
+This is the deterministic threshold model.  We also record a more general strand-wise recovery function in Theorem \ref{thm:poissonized-identity}; the hard-threshold model is the main case used in the terminal-cloud results.
+
+An outer \([n,k]\) MDS code is assumed.  Hence the stored information is recoverable if and only if at least \(k\) of the \(n\) strands are recovered; see \cite{MacWilliamsSloane1977} for standard background on MDS codes.
+
+For an integer \(t\ge1\), define the Poisson upper-tail and lower-tail functions
+\[
+  \phi_t(\lambda)
+  =\Pbb(\Poisson(\lambda)\ge t)
+  =1-e^{-\lambda}\sum_{r=0}^{t-1}\frac{\lambda^r}{r!},
+\]
+\[
+  \psi_t(\lambda)
+  =\Pbb(\Poisson(\lambda)<t)
+  =e^{-\lambda}\sum_{r=0}^{t-1}\frac{\lambda^r}{r!}.
+\]
+
+Thus \(\phi_t(\lambda)+\psi_t(\lambda)=1\).
+
+The continuous-shape extension in Section \ref{sec:mds-success-modules} uses a separate parameter \(\tau>0\), with Gamma distribution and density \(F_\tau,g_\tau\). The equality \(F_t=\phi_t\) identifies the integer-shape case. Unless a Gamma shape is explicitly introduced, the read-count, terminal-cloud, and de-Poissonization statements retain the integer threshold \(t\). A general intensity response \(F(\lambda)\) also differs from a count-based reconstruction curve \(s_i(r)\): the latter induces the Poisson transform \(\E[s_i(\Poisson(\lambda))]\).
+
+\begin{remark}[Scope of the model]
+The first results below deliberately analyze a clean \emph{quenched} coverage-depth model.  Conditional on a fixed sampling law \(p\), reads are independent draws from \(p\), reads are assumed to be assigned to their originating strands without ambiguity, and an outer \([n,k]\) MDS code is used, so that any \(k\) recovered strands suffice.  Synthesis bias, PCR stochasticity, storage dilution, and other molecular effects enter this first layer only through the sampling law \(p\).  Section \ref{sec:random-environments} then allows \(p\) itself to be random.
+
+The hard-threshold rule \(N_i\ge t\) is the main deterministic recovery model.  It matches the standard coverage-depth idealization in which a cluster is usable once it has enough reads.  A more realistic strand-recovery curve \(s_i(r)\) can be incorporated in Theorem \ref{thm:poissonized-identity} and Theorem \ref{thm:dp}; however, the de-Poissonization sandwich in Theorem \ref{thm:depoissonization} is stated for increasing count events, and therefore applies most directly to deterministic monotone recovery rules such as \(N_i\ge t\).
+
+This paper does not model barcode misassignment or clustering errors explicitly. Strandwise effects can be represented by empirical recovery functions when the stated conditional-independence assumptions hold. Joint reconstruction failures require a joint readout kernel; marginal recovery functions alone need not describe their success probability. The purpose here is to isolate the nonuniform coverage-depth component and the terminal low-count cloud that it creates.
+
+The monotonicity assumptions used below are intentional.  The fixed-read de-Poissonization arguments rely on success being an increasing function of the count vector, either through the hard threshold \(N_i\ge t\) or through nondecreasing recovery curves \(s_i(r)\).  If additional reads can degrade reconstruction, for example through interference, decoder saturation, or an explicitly nonmonotone consensus procedure, then the monotone coupling used in Theorems \ref{thm:depoissonization} and \ref{thm:general-recovery-curves} does not apply without further modification.
+
+\end{remark}
+
+\section{Fixed nonuniform sampling}
+
+\begin{theorem}[Poissonized coverage identity]\label{thm:poissonized-identity}
+Fix a probability vector \(p=(p_1,\ldots,p_n)\), a mean read depth \(M\ge0\), and strand-recovery functions
+\[
+  s_i:\N\to[0,1],\qquad i=1,\ldots,n.
+\]
+In the Poissonized model, let \(B_i\) indicate successful reconstruction of strand \(i\). Assume that, conditional on the entire count vector, the indicators are independent and
+\[
+ \Pbb(B_i=1\mid N_1,\ldots,N_n)=s_i(N_i)
+ \quad\text{almost surely}.
+\]
+Define
+\[
+  \theta_i(M)
+  =\sum_{r=0}^{\infty}s_i(r)e^{-Mp_i}\frac{(Mp_i)^r}{r!}.
+\]
+Let an outer \([n,k]\) MDS code be used.  Then
+\[
+  \Pbb_{p,M}(\mathrm{success})
+  =\Pbb\left(\sum_{i=1}^n B_i\ge k\right),
+\]
+where \(B_1,\ldots,B_n\) are independent Bernoulli random variables with
+\[
+  B_i\sim \Bernoulli(\theta_i(M)).
+\]
+Equivalently,
+\[
+  \Pbb_{p,M}(\mathrm{success})
+  =\sum_{j=k}^{n}[u^j]\prod_{i=1}^n
+  \bigl(1-\theta_i(M)+\theta_i(M)u\bigr).
+\]
+In the hard-threshold model \(s_i(r)=\1_{\{r\ge t\}}\),
+\[
+  \theta_i(M)=\phi_t(Mp_i)
+  =1-e^{-Mp_i}\sum_{r=0}^{t-1}\frac{(Mp_i)^r}{r!}.
+\]
+\end{theorem}
+
+\begin{proof}
+Conditional on the total read count \(N\), the vector \((N_1,\ldots,N_n)\) is multinomial.  Since \(N\sim\Poisson(M)\), Poisson splitting gives independent counts
+\[
+  N_i\sim\Poisson(Mp_i),\qquad i=1,\ldots,n.
+\]
+For completeness, this follows from the joint probability generating function:
+\[
+\begin{aligned}
+  \E\left[\prod_{i=1}^n z_i^{N_i}\right]
+  &=\E\left[\left(\sum_{i=1}^n p_i z_i\right)^N\right]  \\
+  &=\exp\left(M\left(\sum_{i=1}^n p_i z_i-1\right)\right)  \\
+  &=\prod_{i=1}^n \exp\left(Mp_i(z_i-1)\right).
+\end{aligned}
+\]
+This factorization is the product of the probability generating functions of independent random variables with laws \(\Poisson(Mp_i)\).
+
+Let \(A_i\) be the event that strand \(i\) is reconstructed.  By the recovery-function assumption,
+\[
+  \Pbb(A_i\mid N_i=r)=s_i(r).
+\]
+Therefore
+\[
+\begin{aligned}
+  \Pbb(A_i)
+  &=\sum_{r=0}^{\infty}\Pbb(A_i\mid N_i=r)\Pbb(N_i=r) \\
+  &=\sum_{r=0}^{\infty}s_i(r)e^{-Mp_i}\frac{(Mp_i)^r}{r!}
+  =\theta_i(M).
+\end{aligned}
+\]
+The independence of the counts, together with the assumed conditional independence of reconstruction decisions, implies that the indicators \(B_i=\1_{A_i}\) are independent Bernoulli random variables with parameters \(\theta_i(M)\).
+
+An \([n,k]\) MDS code recovers the stored information from any \(k\) reconstructed strands.  Thus success is exactly the event \(\sum_i B_i\ge k\), proving the first identity.  The coefficient formula follows from the probability generating function
+\[
+  \E\left[u^{\sum_i B_i}\right]
+  =\prod_{i=1}^n(1-\theta_i(M)+\theta_i(M)u).
+\]
+For the hard threshold, \(s_i(r)=\1_{\{r\ge t\}}\), so \(\theta_i(M)=\Pbb(\Poisson(Mp_i)\ge t)=\phi_t(Mp_i)\).  This completes the proof.
+\end{proof}
+
+\begin{theorem}[Fixed-read de-Poissonization sandwich]\label{thm:depoissonization}
+Let \(A\subseteq\N^n\) be an increasing event: if \(c\in A\) and \(c'\ge c\) coordinatewise, then \(c'\in A\).  Define
+\[
+  P_m(A)=\Pbb(C^{(m)}\in A),
+\]
+where \(C^{(m)}\sim\Multinomial(m;p_1,\ldots,p_n)\), and
+\[
+  \Pi_\lambda(A)=\Pbb(Z^{(\lambda)}\in A),
+\]
+where \(Z_i^{(\lambda)}\sim\Poisson(\lambda p_i)\) independently.  Then for every fixed-read count \(m\in\N\) and every \(0<\varepsilon<1\),
+\[
+  \Pi_{(1-\varepsilon)m}(A)
+  -\exp\{-m[-\log(1-\varepsilon)-\varepsilon]\}
+  \le P_m(A),
+\]
+and
+\[
+  P_m(A)
+  \le \Pi_{(1+\varepsilon)m}(A)
+  +\exp\{-m[\varepsilon-\log(1+\varepsilon)]\}.
+\]
+\end{theorem}
+
+\begin{proof}
+Let \((\xi_r)_{r\ge1}\) be independent \([n]\)-valued random variables with \(\Pbb(\xi_r=i)=p_i\).  Define
+\[
+  C_i^{(m)}=\sum_{r=1}^m\1_{\{\xi_r=i\}}.
+\]
+Thus \(C^{(m)}\sim\Multinomial(m;p)\).  If \(T_\lambda\sim\Poisson(\lambda)\), independent of the \(\xi_r\)'s, then \(C^{(T_\lambda)}\) has independent Poisson coordinates with means \(\lambda p_i\).
+
+Set \(\lambda_-=(1-\varepsilon)m\).  If \(T_{\lambda_-}\le m\), then
+\[
+  C^{(T_{\lambda_-})}\le C^{(m)}
+\]
+coordinatewise.  Since \(A\) is increasing,
+\[
+  C^{(T_{\lambda_-})}\in A \text{ and } T_{\lambda_-}\le m
+  \quad\Longrightarrow\quad C^{(m)}\in A.
+\]
+Therefore
+\[
+  \Pi_{\lambda_-}(A)\le P_m(A)+\Pbb(T_{\lambda_-}>m),
+\]
+so
+\[
+  P_m(A)\ge \Pi_{\lambda_-}(A)-\Pbb(T_{\lambda_-}>m).
+\]
+The Chernoff upper tail bound for \(T\sim\Poisson(\lambda_-)\) gives
+\[
+  \Pbb(T\ge m)
+  \le \exp\left[-\left(m\log\frac{m}{\lambda_-}-m+\lambda_-\right)\right].
+\]
+Since \(\lambda_-=(1-\varepsilon)m\), the exponent equals
+\[
+  m[-\log(1-\varepsilon)-\varepsilon].
+\]
+This proves the lower sandwich bound.
+
+Now set \(\lambda_+=(1+\varepsilon)m\).  If \(T_{\lambda_+}\ge m\), then
+\[
+  C^{(m)}\le C^{(T_{\lambda_+})}
+\]
+coordinatewise.  Hence
+\[
+  \{C^{(m)}\in A\}
+  \subseteq \{T_{\lambda_+}<m\}\cup\{C^{(T_{\lambda_+})}\in A\}.
+\]
+Thus
+\[
+  P_m(A)\le \Pbb(T_{\lambda_+}<m)+\Pi_{\lambda_+}(A).
+\]
+For \(T\sim\Poisson(\lambda_+)\), Chernoff's lower tail bound gives
+\[
+  \Pbb(T\le m)
+  \le \exp\left[-\left(\lambda_+-m+m\log\frac{m}{\lambda_+}\right)\right].
+\]
+Since \(\lambda_+=(1+\varepsilon)m\), this exponent is
+\[
+  m[\varepsilon-\log(1+\varepsilon)].
+\]
+The upper sandwich follows.
+\end{proof}
+
+\begin{corollary}[Fixed-read hard-threshold coverage sandwich]\label{cor:fixed-read-sandwich}
+For the hard-threshold success event
+\[
+  A_{k,t}=\{c\in\N^n:\#\{i:c_i\ge t\}\ge k\},
+\]
+let
+\[
+  P_m^{(k,t)}=\Pbb(C^{(m)}\in A_{k,t})
+\]
+be the fixed-read success probability for an integer fixed-read count \(m\).  Let
+\[
+  \Pi_{\lambda}^{(k,t)}=
+  \Pbb\left(\sum_{i=1}^n B_i^{(\lambda)}\ge k\right),
+\]
+where the \(B_i^{(\lambda)}\) are independent Bernoulli variables with
+\[
+  \Pbb(B_i^{(\lambda)}=1)=\phi_t(\lambda p_i).
+\]
+Then, for every \(0<\varepsilon<1\),
+\[
+  \Pi_{(1-\varepsilon)m}^{(k,t)}
+  -\exp\{-m[-\log(1-\varepsilon)-\varepsilon]\}
+  \le P_m^{(k,t)},
+\]
+\[
+  P_m^{(k,t)}
+  \le
+  \Pi_{(1+\varepsilon)m}^{(k,t)}
+  +\exp\{-m[\varepsilon-\log(1+\varepsilon)]\}.
+\]
+Thus every Poissonized hard-threshold read-depth guarantee transfers to the fixed-read model after an arbitrarily small multiplicative slack in the read depth, up to the displayed Poisson-tail errors.
+\end{corollary}
+
+\begin{proof}
+The event \(A_{k,t}\) is increasing in the count vector.  The Poissonized success probability at mean \(\lambda\) is exactly \(\Pi_\lambda^{(k,t)}\), by Poisson splitting and Theorem \ref{thm:poissonized-identity}.  The result is therefore Theorem \ref{thm:depoissonization} applied to \(A_{k,t}\).
+\end{proof}
+
+
+\begin{remark}[Fixed-read optimization versus fixed-read transfer]
+The preceding result transfers read-depth guarantees. In the Poissonized model the strand-recovery indicators are independent, and this independence is essential in the active-uniform MDS proof below. With exactly \(m\) reads the count vector is multinomial, so the strand events are coupled. Exact fixed-read optimization requires a separate argument; a multinomial KKT--Hessian analysis is one possible approach. For the hard-threshold success probabilities \(S_\ell(p)\) after exactly \(\ell\) reads,
+\[
+ \Pbb_{p,M}(\mathrm{success})
+ =e^{-M}\sum_{\ell\ge0}\frac{M^\ell}{\ell!}S_\ell(p).
+\]
+A maximum statement for this generating function does not imply coefficientwise maxima. The first-copy case \(t=1\) has its own stochastic optimization theorem \cite{Anceaume2015}; the higher-threshold fixed-read allocation question remains separate.
+\end{remark}
+
+\begin{theorem}[Poisson-binomial dynamic program]\label{thm:dp}
+Let
+\[
+  S_M=\sum_{i=1}^n B_i(M),
+  \qquad B_i(M)\sim\Bernoulli(\theta_i(M))
+\]
+be independent, with \(\theta_i(M)\) as in Theorem \ref{thm:poissonized-identity}.  For an \([n,k]\) MDS outer code,
+\[
+  P_{\mathrm{succ}}(M)=\Pbb(S_M\ge k).
+\]
+This probability can be computed exactly from \(\theta_1(M),\ldots,\theta_n(M)\) in \(O(nk)\) arithmetic operations and \(O(k)\) memory.
+
+More explicitly, define \(d_i(j)\) for \(0\le i\le n\) and \(0\le j\le k-1\) by
+\[
+  d_i(j)=\Pbb\left(\sum_{h=1}^i B_h(M)=j\right).
+\]
+Initialize \(d_0(0)=1\) and \(d_0(j)=0\) for \(j\ge1\).  Then
+\[
+  d_i(j)=(1-\theta_i(M))d_{i-1}(j)+\theta_i(M)d_{i-1}(j-1),
+\]
+where \(d_{i-1}(-1)=0\).  Finally,
+\[
+  P_{\mathrm{succ}}(M)=1-\sum_{j=0}^{k-1}d_n(j).
+\]
+If each \(s_i(r)\) is nondecreasing in \(r\), then \(P_{\mathrm{succ}}(M)\) is nondecreasing in \(M\). Since each \(\theta_i(M)\) is continuous in \(M\) and the Poisson-binomial tail is a polynomial in the \(\theta_i(M)\)'s, \(P_{\mathrm{succ}}(M)\) is continuous. For a target \(\rho\), bisection applies once a finite bracket \([M_-,M_+]\) with \(P_{\mathrm{succ}}(M_-)<\rho\le P_{\mathrm{succ}}(M_+)\) is available. Attainability must be checked: limited support or recovery curves bounded away from one can prevent a target from being reached.
+\end{theorem}
+
+\begin{proof}
+Let \(S_i=\sum_{h=1}^iB_h(M)\).  Since \(S_0=0\), the initialization is clear.  For \(i\ge1\), condition on \(B_i(M)\):
+\[
+\begin{aligned}
+  d_i(j)&=\Pbb(S_{i-1}+B_i(M)=j) \\
+  &=(1-\theta_i(M))d_{i-1}(j)+\theta_i(M)d_{i-1}(j-1).
+\end{aligned}
+\]
+Thus the recurrence computes \(\Pbb(S_M=j)\) for \(0\le j\le k-1\).  Failure is \(S_M\le k-1\), so
+\[
+  P_{\mathrm{succ}}(M)=1-\sum_{j=0}^{k-1}d_n(j).
+\]
+The recurrence has \(n\) stages and \(k\) states per stage, and only the previous stage is needed, giving \(O(nk)\) arithmetic operations and \(O(k)\) memory.
+
+For monotonicity, assume each \(s_i\) is nondecreasing.  If \(0\le M_1\le M_2\), couple
+\[
+  N_i(M_2)=N_i(M_1)+N_i',
+\]
+where \(N_i(M_1)\sim\Poisson(M_1p_i)\) and \(N_i'\sim\Poisson((M_2-M_1)p_i)\) independently.  Then \(N_i(M_2)\ge N_i(M_1)\) almost surely, so
+\[
+  s_i(N_i(M_2))\ge s_i(N_i(M_1))
+\]
+almost surely, and \(\theta_i(M_2)\ge\theta_i(M_1)\).  Coupling Bernoulli variables by independent uniforms shows \(S_{M_1}\le S_{M_2}\) almost surely.  Hence \(\Pbb(S_{M_1}\ge k)\le\Pbb(S_{M_2}\ge k)\).
+\end{proof}
+
+\begin{remark}[Computational variants]
+The dynamic program above computes the lower tail \(\Pbb(S_M\le k-1)\) in \(O(nk)\) operations.  When the redundancy \(n-k\) is much smaller than \(k\), it is often preferable to work with the terminal defect count
+\[
+  U_{M,t}=\#\{i:N_i<t\}.
+\]
+Then success is \(U_{M,t}\le n-k\), and the analogous Poisson-binomial dynamic program has cost \(O(n(n-k+1))\).  For very large systems, the concentration bounds and terminal-cloud estimates below provide faster analytic surrogates for the exact dynamic program.
+\end{remark}
+
+\begin{theorem}[Concentration read-depth bound]\label{thm:concentration}
+In the Poissonized fixed-\(p\) model, let
+\[
+  S_M=\sum_{i=1}^nB_i(M),
+  \qquad B_i(M)\sim\Bernoulli(\theta_i(M))
+\]
+be independent.  Set
+\[
+  \mu(M)=\E S_M=\sum_{i=1}^n\theta_i(M),
+\]
+\[
+  v(M)=\Var(S_M)=\sum_{i=1}^n\theta_i(M)(1-\theta_i(M)).
+\]
+If \(\mu(M)>k\), then
+\[
+  \Pbb(S_M<k)
+  \le
+  \exp\left(
+  -\frac{(\mu(M)-k)^2}{2v(M)+\frac23(\mu(M)-k)}
+  \right).
+\]
+Consequently, for \(0<\delta<1\), if
+\[
+  \mu(M)-k
+  \ge
+  \sqrt{2v(M)\log(1/\delta)}+\frac23\log(1/\delta),
+\]
+then
+\[
+  \Pbb(S_M\ge k)\ge1-\delta.
+\]
+\end{theorem}
+
+\begin{proof}
+Write \(\theta_i=\theta_i(M)\), \(S=S_M\), \(\mu=\mu(M)\), and \(v=v(M)\).  Let
+\[
+  X_i=B_i-\theta_i.
+\]
+Then \(X_i\) are independent, mean-zero, satisfy \(|X_i|\le1\), and
+\[
+  \sum_i\Var(X_i)=v.
+\]
+Bernstein's inequality \cite[Chapter~2]{BoucheronLugosiMassart2013} gives, for \(a>0\),
+\[
+  \Pbb\left(\sum_i X_i\le -a\right)
+  \le
+  \exp\left(-\frac{a^2}{2v+\frac23a}\right).
+\]
+Taking \(a=\mu-k>0\), the event \(S<k\) is contained in \(\{S-\mu\le-(\mu-k)\}\), proving the first bound.
+
+Let \(L=\log(1/\delta)\).  If
+\[
+  a:=\mu-k\ge \sqrt{2vL}+\frac23L,
+\]
+then
+\[
+  \frac{a^2}{2v+\frac23a}\ge L.
+\]
+Indeed, the left side is increasing in \(a>0\), and at \(a_0=\sqrt{2vL}+\frac23L\) the inequality follows by direct expansion.  Therefore \(\Pbb(S<k)\le e^{-L}=\delta\).
+\end{proof}
+
+\section{Terminal-cloud formulation}
+
+\begin{theorem}[Terminal low-count cloud]\label{thm:terminal-cloud}
+Work in the Poissonized fixed-\(p\) hard-threshold model.  Let
+\[
+  N_i\sim\Poisson(Mp_i),\qquad i=1,\ldots,n,
+\]
+independently.  Fix \(t\ge1\), and define defect indicators
+\[
+  D_i=\1_{\{N_i<t\}},
+\]
+with terminal defect cloud
+\[
+  U_{M,t}=\sum_{i=1}^nD_i.
+\]
+Set
+\[
+  \Lambda_t(M;p)=\E U_{M,t}
+  =\sum_{i=1}^n\psi_t(Mp_i),
+\]
+\[
+  V_t(M;p)=\Var(U_{M,t})
+  =\sum_{i=1}^n\psi_t(Mp_i)(1-\psi_t(Mp_i)).
+\]
+For an \([n,k]\) MDS outer code, decoding succeeds iff
+\[
+  U_{M,t}\le n-k.
+\]
+Moreover, for every \(s>0\),
+\[
+  \Pbb(U_{M,t}\ge \Lambda_t(M;p)+s)
+  \le
+  \exp\left(-\frac{s^2}{2V_t(M;p)+\frac23s}\right),
+\]
+and
+\[
+  \Pbb(U_{M,t}\le \Lambda_t(M;p)-s)
+  \le
+  \exp\left(-\frac{s^2}{2V_t(M;p)+\frac23s}\right).
+\]
+Consequently, if \(\Lambda_t(M;p)<n-k\), then
+\[
+  \Pbb(\mathrm{failure})
+  \le
+  \exp\left(
+  -\frac{(n-k-\Lambda_t(M;p))^2}{2V_t(M;p)+\frac23(n-k-\Lambda_t(M;p))}
+  \right).
+\]
+For \(t=1\),
+\[
+  \Lambda_1(M;p)=\sum_{i=1}^n e^{-Mp_i}.
+\]
+\end{theorem}
+
+\begin{proof}
+The indicators \(D_i\) are independent Bernoulli random variables with
+\[
+  \Pbb(D_i=1)=\Pbb(\Poisson(Mp_i)<t)=\psi_t(Mp_i).
+\]
+Therefore
+\[
+  \E U_{M,t}=\sum_i\psi_t(Mp_i)=\Lambda_t(M;p),
+\]
+\[
+  \Var(U_{M,t})=\sum_i\psi_t(Mp_i)(1-\psi_t(Mp_i))=V_t(M;p).
+\]
+The number of recovered strands is \(n-U_{M,t}\).  An \([n,k]\) MDS code succeeds exactly when \(n-U_{M,t}\ge k\), equivalently \(U_{M,t}\le n-k\).
+
+For concentration, apply Bernstein's inequality to the centered independent variables
+\[
+  X_i=D_i-\psi_t(Mp_i).
+\]
+They are mean-zero, satisfy \(|X_i|\le1\), and have total variance \(V_t(M;p)\).  This gives the two stated tail bounds.  Taking \(s=n-k-\Lambda_t(M;p)>0\) gives the failure bound.  Finally, for \(t=1\), \(\psi_1(\lambda)=e^{-\lambda}\), so \(\Lambda_1(M;p)=\sum_i e^{-Mp_i}\).
+\end{proof}
+
+\begin{theorem}[Uniform benchmark and perturbative bias penalty]\label{thm:uniform-penalty}
+Work in the Poissonized fixed-\(p\) model with hard threshold \(t=1\).  Then, for every probability vector \(p=(p_1,\ldots,p_n)\) and every \(M>0\),
+\[
+  \Lambda_1(M;p)=\sum_{i=1}^n e^{-Mp_i}
+  \ge n e^{-M/n}.
+\]
+Equality holds if and only if \(p_i=1/n\) for every \(i\).
+
+Moreover, suppose
+\[
+  p_i=\frac{1+\varepsilon_i}{n},
+  \qquad \sum_{i=1}^n\varepsilon_i=0,
+  \qquad \varepsilon_i>-1.
+\]
+Let
+\[
+  \alpha=\frac{M}{n},\qquad
+  \sigma_2=\frac1n\sum_{i=1}^n\varepsilon_i^2,
+\]
+\[
+  \sigma_3=\frac1n\sum_{i=1}^n|\varepsilon_i|^3,
+  \qquad
+  \delta_\infty=\max_i|\varepsilon_i|.
+\]
+Then
+\[
+  \Lambda_1(M;p)
+  =n e^{-\alpha}\left(1+\frac{\alpha^2}{2}\sigma_2+R\right),
+\]
+where
+\[
+  |R|\le \frac{\alpha^3}{6}e^{\alpha\delta_\infty}\sigma_3.
+\]
+\end{theorem}
+
+\begin{proof}
+The function \(f(x)=e^{-Mx}\) is strictly convex on \([0,\infty)\).  Jensen's inequality gives
+\[
+  \frac1n\sum_{i=1}^n e^{-Mp_i}
+  \ge e^{-M(\frac1n\sum_i p_i)}=e^{-M/n}.
+\]
+Thus \(\Lambda_1(M;p)\ge n e^{-M/n}\).  Strict convexity gives equality if and only if all \(p_i\) are equal, hence iff \(p_i=1/n\) for every \(i\).
+
+For the expansion, write \(\alpha=M/n\).  Then
+\[
+  e^{-Mp_i}=e^{-\alpha}e^{-\alpha\varepsilon_i},
+\]
+so
+\[
+  \Lambda_1(M;p)=e^{-\alpha}\sum_{i=1}^n e^{-\alpha\varepsilon_i}.
+\]
+Taylor's formula gives
+\[
+  e^{-x}=1-x+\frac{x^2}{2}+\rho(x),
+  \qquad |\rho(x)|\le \frac{|x|^3}{6}e^{|x|}.
+\]
+Taking \(x=\alpha\varepsilon_i\), summing over \(i\), and using \(\sum_i\varepsilon_i=0\), gives
+\[
+  \sum_i e^{-\alpha\varepsilon_i}
+  =n+\frac{\alpha^2}{2}\sum_i\varepsilon_i^2+\sum_i\rho_i,
+\]
+with
+\[
+  |\rho_i|\le \frac{\alpha^3}{6}e^{\alpha\delta_\infty}|\varepsilon_i|^3.
+\]
+After factoring out \(n e^{-\alpha}\), the stated expansion and remainder bound follow.
+\end{proof}
+
+
+\subsection{The one-read benchmark and the higher-threshold transition}
+
+\begin{proposition}[Why the one-read threshold is special]\label{prop:tge2-not-uniform}
+The uniform-minimization statement in Theorem \ref{thm:uniform-penalty} is specific to the one-read threshold \(t=1\).  For \(t\ge2\), the function
+\[
+  \psi_t(\lambda)=e^{-\lambda}\sum_{r=0}^{t-1}\frac{\lambda^r}{r!}
+\]
+is not globally convex.  More precisely, for \(t\ge2\),
+\[
+  \psi_t''(\lambda)=
+  \frac{e^{-\lambda}\lambda^{t-2}}{(t-1)!}\bigl(\lambda-(t-1)\bigr).
+\]
+Consequently \(\psi_t\) is concave on \((0,t-1)\) and convex on \((t-1,\infty)\).  Thus the Jensen argument used for \(t=1\) does not extend to all read depths.  In fact, uniform sampling need not minimize the expected low-count cloud \(\Lambda_t(M;p)\) for \(t\ge2\).
+\end{proposition}
+
+\begin{proof}
+For \(t\ge1\), differentiating
+\[
+  \psi_t(\lambda)=e^{-\lambda}\sum_{r=0}^{t-1}\frac{\lambda^r}{r!}
+\]
+gives
+\[
+  \psi_t'(\lambda)=-e^{-\lambda}\frac{\lambda^{t-1}}{(t-1)!}.
+\]
+Differentiating once more yields, for \(t\ge2\),
+\[
+  \psi_t''(\lambda)=
+  \frac{e^{-\lambda}\lambda^{t-2}}{(t-1)!}\bigl(\lambda-(t-1)\bigr).
+\]
+The sign assertion follows immediately.
+
+The failure of global minimization by the uniform law can already be seen for \(n=2\), \(t=2\), and \(M=1\).  At the uniform law \(p=(1/2,1/2)\),
+\[
+  \Lambda_2(1;p)=2e^{-1/2}\left(1+\frac12\right)=3e^{-1/2}\approx1.8196.
+\]
+At the nonuniform law \(p=(1,0)\),
+\[
+  \Lambda_2(1;p)=e^{-1}(1+1)+1=1+2e^{-1}\approx1.7358.
+\]
+Therefore \(\Lambda_2(1;(1,0))<\Lambda_2(1;(1/2,1/2))\), so uniform sampling does not globally minimize the expected two-read low-count cloud.
+\end{proof}
+
+\begin{remark}
+The preceding proposition does not say that uniform sampling is irrelevant for \(t\ge2\).  It says only that the particular objective \(\E U_{M,t}=\Lambda_t(M;p)\) is no longer globally minimized by Jensen.  The optimal distribution may depend on the read-depth regime, on the code redundancy \(n-k\), and on whether the objective is expected defect count, full-recovery probability, MDS success probability, or posterior information.
+\end{remark}
+
+\subsection{Radial collapse and active-uniform terminal-cloud minimizers}
+
+The next lemma is the two-point radial collapse mechanism behind the higher-threshold optimization.  It says that, when two coordinates have a fixed total read intensity, the best way to reduce the expected low-count contribution is always one of three radial endpoints: put all intensity on one coordinate, put all intensity on the other, or split it equally.
+
+\begin{lemma}[Two-point radial collapse]\label{lem:two-point-radial-collapse}
+Fix \(t\ge2\) and \(S>0\).  Define
+\[
+  h_S(a)=\psi_t(a)+\psi_t(S-a),\qquad 0\le a\le S.
+\]
+Then every minimum of \(h_S\) on \([0,S]\) occurs at one of
+\[
+  a=0,\qquad a=S/2,\qquad a=S.
+\]
+Equivalently, if \(0<a<S\) and \(a\ne S/2\), then there is a point
+\[
+  b\in\{0,S/2,S\}
+\]
+such that
+\[
+  h_S(b)<h_S(a).
+\]
+\end{lemma}
+
+\begin{proof}
+We have
+\[
+  \psi_t'(\lambda)=-e^{-\lambda}\frac{\lambda^{t-1}}{(t-1)!}.
+\]
+Set
+\[
+  g(\lambda)=e^{-\lambda}\lambda^{t-1},\qquad \lambda>0.
+\]
+The positive factor \((t-1)!^{-1}\) is irrelevant for locating critical points.  On \((0,S)\),
+\[
+  h_S'(a)=-g(a)+g(S-a).
+\]
+By the symmetry \(h_S(a)=h_S(S-a)\), it is enough to study \(0<a\le S/2\).  Put
+\[
+  G(a)=\log\frac{g(a)}{g(S-a)}
+  =(t-1)\log\frac{a}{S-a}+S-2a.
+\]
+Then
+\[
+  G'(a)=(t-1)\left(\frac1a+\frac1{S-a}\right)-2
+        =(t-1)\frac{S}{a(S-a)}-2,
+\]
+and
+\[
+  G''(a)=-(t-1)\frac{S(S-2a)}{a^2(S-a)^2}<0
+  \qquad(0<a<S/2).
+\]
+Thus \(G\) is strictly concave on \((0,S/2)\).  Moreover,
+\[
+  \lim_{a\downarrow0}G(a)=-\infty,
+  \qquad
+  G(S/2)=0.
+\]
+The critical points of \(h_S\) in \((0,S/2]\) are exactly the zeros of \(G\).  Since \(G\) is strictly concave and the superlevel set \(\{a:G(a)\ge0\}\) is an interval containing \(S/2\), either \(G(a)<0\) for all \(0<a<S/2\), or there is a unique \(a_0\in(0,S/2)\) such that
+\[
+  G(a)<0\quad(0<a<a_0),
+  \qquad
+  G(a)>0\quad(a_0<a<S/2).
+\]
+In the first case, \(g(a)<g(S-a)\), so \(h_S'(a)>0\) on \((0,S/2)\); hence the minimum on \([0,S/2]\) occurs at \(0\).  In the second case, \(h_S'(a)>0\) on \((0,a_0)\) and \(h_S'(a)<0\) on \((a_0,S/2)\); hence \(h_S\) first increases and then decreases, and the minimum on \([0,S/2]\) occurs at one of the endpoints \(0\) or \(S/2\).  By symmetry, the minimum on the whole interval \([0,S]\) occurs at one of \(0,S/2,S\).
+
+If \(0<a<S\) and \(a\ne S/2\), then \(a\) is not one of the three possible minimizers.  Therefore its value is strictly larger than the minimum over the three-point set \(\{0,S/2,S\}\), proving the final assertion.
+\end{proof}
+
+\begin{theorem}[Active-uniform minimizers for the expected terminal cloud]\label{thm:active-uniform-terminal-cloud}
+Fix \(n\ge2\), \(M>0\), and \(t\ge2\).  For \(p\in\Delta_n\), define
+\[
+  \Lambda_t(M;p)=\sum_{i=1}^n \psi_t(Mp_i),
+  \qquad
+  \psi_t(\lambda)=e^{-\lambda}\sum_{r=0}^{t-1}\frac{\lambda^r}{r!}.
+\]
+For \(q=1,\ldots,n\), set
+\[
+  \mathcal L_q(M)=(n-q)+q\psi_t(M/q).
+\]
+Then
+\[
+  \boxed{\min_{p\in\Delta_n}\Lambda_t(M;p)=\min_{1\le q\le n}\mathcal L_q(M).}
+\]
+Moreover, every global minimizer is, up to permutation, uniform on its positive support.  More precisely, if \(p^*\) minimizes \(\Lambda_t(M;\cdot)\), then there exists \(q\in\{1,\ldots,n\}\) such that exactly \(q\) coordinates of \(p^*\) are equal to \(1/q\), and all remaining coordinates are zero.  Conversely, if \(q\) minimizes \(\mathcal L_q(M)\), then every vector with exactly \(q\) entries equal to \(1/q\) and the remaining entries equal to zero is a global minimizer.
+\end{theorem}
+
+\begin{proof}
+Write
+\[
+  \lambda_i=Mp_i.
+\]
+Then \(\lambda_i\ge0\), \(\sum_i\lambda_i=M\), and
+\[
+  \Lambda_t(M;p)=\sum_{i=1}^n\psi_t(\lambda_i).
+\]
+Thus we minimize the continuous separable symmetric function
+\[
+  F(\lambda)=\sum_{i=1}^n\psi_t(\lambda_i)
+\]
+over the compact simplex
+\[
+  \Delta_{n,M}=\{\lambda\in[0,\infty)^n:\sum_i\lambda_i=M\}.
+\]
+A minimizer exists.
+
+Let \(\lambda^*\in\Delta_{n,M}\) be a global minimizer.  We first show that all positive coordinates of \(\lambda^*\) are equal.  Suppose not.  Then there exist indices \(i\ne j\) such that
+\[
+  \lambda_i^*>0,
+  \qquad
+  \lambda_j^*>0,
+  \qquad
+  \lambda_i^*\ne\lambda_j^*.
+\]
+Set
+\[
+  S=\lambda_i^*+\lambda_j^*.
+\]
+Holding all other coordinates fixed, the contribution of coordinates \(i,j\) is
+\[
+  h_S(\lambda_i^*)=\psi_t(\lambda_i^*)+\psi_t(S-\lambda_i^*).
+\]
+Since both coordinates are positive and unequal, \(\lambda_i^*\) is neither \(0\), nor \(S\), nor \(S/2\).  By Lemma \ref{lem:two-point-radial-collapse}, replacing this pair by one of
+\[
+  (0,S),\qquad (S,0),\qquad (S/2,S/2)
+\]
+strictly decreases the pair contribution.  This replacement preserves nonnegativity and the total sum \(M\), while strictly decreasing \(F\), contradicting the global minimality of \(\lambda^*\).
+
+Thus all positive coordinates of \(\lambda^*\) are equal.  If there are exactly \(q\) positive coordinates, their common value is \(M/q\).  Therefore, up to permutation,
+\[
+  \lambda^*=\left(\frac{M}{q},\ldots,\frac{M}{q},0,\ldots,0\right),
+\]
+with exactly \(q\) positive entries.  Its objective value is
+\[
+  q\psi_t(M/q)+(n-q)\psi_t(0).
+\]
+Since \(\psi_t(0)=1\), this equals
+\[
+  (n-q)+q\psi_t(M/q)=\mathcal L_q(M).
+\]
+Consequently every global minimizer has the active-uniform form, and the minimum value is \(\min_q \mathcal L_q(M)\).  Conversely, if \(q\) minimizes \(\mathcal L_q(M)\), then any vector with exactly \(q\) nonzero coordinates equal to \(1/q\) has objective value \(\mathcal L_q(M)=\min_r \mathcal L_r(M)\), and hence is a global minimizer.  Returning from \(\lambda_i=Mp_i\) to \(p_i\) proves the theorem.
+\end{proof}
+
+\begin{corollary}[One-dimensional active-support optimization]\label{cor:q-optimization}
+For fixed \(n,M,t\ge2\), define
+\[
+  \mathcal Q^*(M,t,n)=\arg\min_{1\le q\le n}\bigl\{(n-q)+q\psi_t(M/q)\bigr\}.
+\]
+Then the minimizers of \(p\mapsto\Lambda_t(M;p)\) are precisely the active-uniform laws with support size \(q\in\mathcal Q^*(M,t,n)\).  In particular, computing a terminal-cloud minimizer requires only the one-dimensional discrete search over \(q=1,\ldots,n\).
+\end{corollary}
+
+\begin{theorem}[Exact support staircase for the expected terminal cloud]
+\label{thm:terminal-cloud-staircase}
+Fix \(n\ge2\), \(M>0\), and \(t\ge1\).  Let
+\[
+  \mathcal L_q(M)=(n-q)+q\psi_t(M/q),
+  \qquad 1\le q\le n.
+\]
+Equivalently, minimizing \(\mathcal L_q(M)\) is the same as maximizing
+\[
+  A_q(M)=q\phi_t(M/q).
+\]
+If \(t=1\), then \(q=n\) is the unique minimizer of \(\mathcal L_q(M)\) for every \(M>0\).
+
+Assume now that \(t\ge2\).  There is a unique number \(\rho_t>0\) satisfying
+\[
+  \phi_t(\rho_t)=\rho_t\phi_t'(\rho_t).
+\]
+Equivalently,
+\[
+  e^{\rho_t}
+  =
+  \sum_{r=0}^{t-1}\frac{\rho_t^r}{r!}
+  +\frac{\rho_t^t}{(t-1)!}.
+\]
+For each \(q=1,\ldots,n-1\), there is a unique phase boundary
+\[
+  \beta_q\in(q\rho_t,(q+1)\rho_t)
+\]
+defined by
+\[
+  q\phi_t(\beta_q/q)
+  =(q+1)\phi_t(\beta_q/(q+1)).
+\]
+Set \(\beta_0=0\) and \(\beta_n=+\infty\).  Then
+\[
+  \beta_0<\beta_1<\cdots<\beta_{n-1}<\beta_n,
+\]
+and
+\[
+  \arg\min_{1\le r\le n}\mathcal L_r(M)
+  =
+  \{q:\beta_{q-1}\le M\le\beta_q\}.
+\]
+Equivalently, away from the phase boundaries,
+\[
+  q^*(M)=q
+  \quad\Longleftrightarrow\quad
+  \beta_{q-1}<M<\beta_q.
+\]
+At \(M=\beta_q\), the only tie is between support sizes \(q\) and \(q+1\).  Thus the optimal active support size is a nondecreasing staircase in \(M\), and it changes by one coordinate at a time.
+\end{theorem}
+
+\begin{proof}
+Since
+\[
+  \mathcal L_q(M)=(n-q)+q\psi_t(M/q)=n-q\phi_t(M/q),
+\]
+minimizing \(\mathcal L_q(M)\) over \(q\) is equivalent to maximizing
+\[
+  A_q(M)=q\phi_t(M/q).
+\]
+For \(x>0\), define
+\[
+  a_t(x)=\frac{\phi_t(x)}{x}.
+\]
+Then
+\[
+  A_q(M)=M a_t(M/q).
+\]
+
+For \(t=1\),
+\[
+  a_1(x)=\frac{1-e^{-x}}{x},
+\]
+which is strictly decreasing on \((0,\infty)\).  Since \(M/q\) is strictly decreasing as \(q\) increases, \(A_q(M)=M a_1(M/q)\) is strictly increasing in \(q\).  Hence \(q=n\) is the unique maximizer of \(A_q(M)\), equivalently the unique minimizer of \(\mathcal L_q(M)\).
+
+Now assume \(t\ge2\).  We first prove that \(a_t\) has a single peak.  Since
+\[
+  \phi_t'(x)=e^{-x}\frac{x^{t-1}}{(t-1)!},
+\]
+set
+\[
+  s_t(x)=\frac{x\phi_t'(x)}{\phi_t(x)}.
+\]
+Using
+\[
+  \phi_t(x)=e^{-x}\sum_{r=t}^{\infty}\frac{x^r}{r!},
+\]
+we get
+\[
+  s_t(x)
+  =\frac{x^t/(t-1)!}{\sum_{r=t}^{\infty}x^r/r!}
+  =\frac{1}{(t-1)!\sum_{\ell=0}^{\infty}x^\ell/(t+\ell)!}.
+\]
+The denominator is strictly increasing in \(x\), so \(s_t\) is strictly decreasing on \((0,\infty)\).  Moreover,
+\[
+  \lim_{x\downarrow0}s_t(x)=t>1,
+  \qquad
+  \lim_{x\to\infty}s_t(x)=0.
+\]
+Hence there is a unique \(\rho_t>0\) such that \(s_t(\rho_t)=1\), which is exactly
+\[
+  \rho_t\phi_t'(\rho_t)=\phi_t(\rho_t).
+\]
+Multiplying this identity by \(e^{\rho_t}\) gives the displayed equivalent equation.
+
+Furthermore,
+\[
+  \frac{d}{d\log x}\log a_t(x)
+  =
+  x\frac{d}{dx}\log\frac{\phi_t(x)}{x}
+  =s_t(x)-1.
+\]
+Therefore \(a_t\) is strictly increasing on \((0,\rho_t)\) and strictly decreasing on \((\rho_t,\infty)\).
+
+We next prove that adjacent support sizes cross exactly once.  Fix \(0<c<1\), and define
+\[
+  D_c(x)=\log a_t(x)-\log a_t(cx).
+\]
+Then
+\[
+  D_c'(x)
+  =\frac{s_t(x)-1}{x}-c\frac{s_t(cx)-1}{cx}
+  =\frac{s_t(x)-s_t(cx)}{x}<0,
+\]
+because \(s_t\) is strictly decreasing and \(cx<x\).  Thus \(D_c\) is strictly decreasing.  Since \(a_t\) is maximized at \(\rho_t\),
+\[
+  D_c(\rho_t)>0,
+  \qquad
+  D_c(\rho_t/c)<0.
+\]
+Therefore \(D_c\) has a unique zero \(\xi(c)\in(\rho_t,\rho_t/c)\).
+
+For adjacent support sizes \(q\) and \(q+1\), take \(c=q/(q+1)\).  The equality
+\[
+  A_q(M)=A_{q+1}(M)
+\]
+is equivalent to
+\[
+  a_t(M/q)=a_t(M/(q+1)).
+\]
+Writing \(x=M/q\), this becomes \(a_t(x)=a_t(cx)\).  Hence the unique crossing is
+\[
+  \beta_q=q\xi\!\left(\frac{q}{q+1}\right).
+\]
+Since \(\xi(q/(q+1))\in(\rho_t,(q+1)\rho_t/q)\), we have
+\[
+  \beta_q\in(q\rho_t,(q+1)\rho_t).
+\]
+In particular,
+\[
+  \beta_q<(q+1)\rho_t<\beta_{q+1},
+\]
+so the phase boundaries are strictly ordered.
+
+Finally, the sign of the adjacent difference is
+\[
+  A_q(M)>A_{q+1}(M)
+  \quad\Longleftrightarrow\quad
+  M<\beta_q,
+\]
+and
+\[
+  A_q(M)<A_{q+1}(M)
+  \quad\Longleftrightarrow\quad
+  M>\beta_q.
+\]
+If \(\beta_{q-1}<M<\beta_q\), then
+\[
+  A_1(M)<\cdots<A_q(M)>A_{q+1}(M)>\cdots>A_n(M),
+\]
+so \(q\) is the unique maximizer of \(A_r(M)\), equivalently the unique minimizer of \(\mathcal L_r(M)\).  If \(M=\beta_q\), the same adjacent-sign argument gives the single tie
+\[
+  A_q(M)=A_{q+1}(M),
+\]
+with strict inequalities on both sides.  This proves the staircase description.
+\end{proof}
+
+\begin{corollary}[Full-support threshold for the expected terminal cloud]
+For \(t=1\), the globally uniform distribution \(p_i=1/n\) is the unique minimizer of \(\Lambda_t(M;p)\) for every \(M>0\).  For \(t\ge2\), with \(\beta_{n-1}\) as in Theorem \ref{thm:terminal-cloud-staircase}, the globally uniform distribution minimizes \(\Lambda_t(M;p)\) if and only if
+\[
+  M\ge \beta_{n-1}.
+\]
+It is the unique minimizer for \(M>\beta_{n-1}\), while at \(M=\beta_{n-1}\) it ties only with active-uniform laws of support size \(n-1\).
+\end{corollary}
+
+\begin{corollary}[Localization of the optimal support]
+For \(t\ge2\), define the clipping map
+\[
+  \kappa(r)=\min\{n,\max\{1,r\}\}.
+\]
+Every optimal support size \(q\in\arg\min_{1\le r\le n}\mathcal L_r(M)\) satisfies
+\[
+  q\in
+  \left\{
+  \kappa\!\left(\left\lfloor\frac{M}{\rho_t}\right\rfloor\right),
+  \kappa\!\left(\left\lceil\frac{M}{\rho_t}\right\rceil\right)
+  \right\}.
+\]
+Thus the exact support search is localized to the nearest integer support sizes around \(M/\rho_t\), with only endpoint clipping by \(1\) and \(n\).
+\end{corollary}
+
+\begin{example}[Low read depth and deliberate sacrifice]
+Take \(n=2\), \(t=2\), and \(M=1\).  The two candidate active support sizes are
+\[
+  \mathcal L_1(1)=1+\psi_2(1)=1+2e^{-1}\approx1.7358,
+\]
+and
+\[
+  \mathcal L_2(1)=2\psi_2(1/2)=3e^{-1/2}\approx1.8196.
+\]
+Thus \(q^*=1\).  The expected two-read terminal cloud is minimized by sampling only one strand and leaving the other unprotected.  This illustrates why the higher-threshold objective is qualitatively different from the \(t=1\) case.
+\end{example}
+
+\begin{example}[Growth of the active support with read depth]
+Let \(n=10\) and \(t=2\).  The critical intensity \(\rho_2\) is the unique solution of
+\[
+  e^{\rho_2}=1+\rho_2+\rho_2^2,
+\]
+so
+\[
+  \rho_2\approx1.79328.
+\]
+The exact staircase theorem therefore predicts that the optimal support grows approximately like \(M/\rho_2\), clipped at \(n\).  Direct evaluation of
+\[
+  \mathcal L_q(M)=10-q+q\psi_2(M/q)
+\]
+gives the following representative minimizers:
+\[
+\begin{array}{c|c|c|c}
+M & q^* & \mathcal L_{q^*}(M) & \mathcal L_{10}(M)\\
+\hline
+5  & 3  & 8.5110 & 9.0980\\
+10 & 6  & 7.0220 & 7.3576\\
+20 & 10 & 4.0601 & 4.0601
+\end{array}
+\]
+At low read depth, the expected terminal cloud is minimized by protecting only a small active subset.  As read depth increases, the optimal active support expands through adjacent support sizes, and eventually the full uniform distribution becomes optimal for this objective.
+\end{example}
+
+\begin{remark}[Water-filling interpretation]
+Theorem \ref{thm:active-uniform-terminal-cloud} gives a precise sacrifice principle for the expected low-count cloud when \(t\ge2\).  At low read depth it may be better, for this objective, to protect only an active subset of strands and leave the rest unprotected.  This resembles classical water-filling in that an allocation problem collapses to an active set and an equalization rule on that active set, but the direction is reversed: here inactive coordinates are deliberately sacrificed because the hard threshold makes small intensities inefficient.  Theorem \ref{thm:terminal-cloud-staircase} completes this picture: the active support size is selected by an exact staircase with adjacent phase transitions, and the support is concentrated near \(M/\rho_t\).
+\end{remark}
+
+\subsection{Terminal-cloud minimization versus MDS success optimization}
+
+The active-uniform theorem optimizes the expected terminal defect count
+\[
+  \Lambda_t(M;p)=\E U_{M,t}.
+\]
+This is not the same objective as the actual MDS success probability
+\[
+  \Pbb(U_{M,t}\le n-k).
+\]
+A distribution can reduce the expected number of low-count strands by sacrificing some coordinates, while still performing poorly for a code that requires too many recovered strands.  For example, in the preceding \(n=2,t=2,M=1\) example, the active support size \(q=1\) minimizes \(\Lambda_2\), but it cannot give full recovery if \(k=2\), because one strand is never sampled.  Thus terminal-cloud minimization and MDS success optimization must be kept separate.
+
+The natural MDS-success analogue is to characterize
+\[
+  \max_{p\in\Delta_n}\Pbb\left(\sum_{i=1}^n \Bernoulli(\phi_t(Mp_i))\ge k\right).
+\]
+This is proved in Section \ref{sec:mds-success-modules}: the optimum is active-uniform, but the optimal active support size is selected by the binomial-tail objective rather than by the expected-cloud objective.
+
+\newpage
+\begin{theorem}[Abstract two-point collapse principle]
+\label{thm:abstract-two-point-collapse}
+Let $f:[0,\infty)\to\mathbb R$ be continuous.  Suppose that for every $S>0$, the function
+\[
+  h_S(a)=f(a)+f(S-a),\qquad 0\le a\le S,
+\]
+attains its minimum only among the three points
+\[
+  0,\qquad S/2,\qquad S.
+\]
+Then, for every $n\ge1$ and $M>0$,
+\[
+  \min_{\lambda_i\ge0,\ \sum_i\lambda_i=M}\sum_{i=1}^n f(\lambda_i)
+  =\min_{1\le q\le n}\left\{(n-q)f(0)+qf(M/q)\right\}.
+\]
+Moreover, every global minimizer is active-uniform: up to permutation,
+\[
+  \lambda_1=\cdots=\lambda_q=M/q,
+  \qquad
+  \lambda_{q+1}=\cdots=\lambda_n=0
+\]
+for some $q\in\{1,\ldots,n\}$.
+\end{theorem}
+
+\begin{proof}
+Let $\lambda^*$ be a global minimizer.  If two positive coordinates of $\lambda^*$ are unequal, say $\lambda_i^*,\lambda_j^*>0$ and $\lambda_i^*\ne\lambda_j^*$, set $S=\lambda_i^*+\lambda_j^*$.  Holding all other coordinates fixed, the contribution of this pair is $h_S(\lambda_i^*)$.  Since $\lambda_i^*$ is neither $0$, nor $S/2$, nor $S$, the two-point hypothesis gives a replacement of the pair by one of $(0,S)$, $(S/2,S/2)$, or $(S,0)$ that strictly decreases the objective while preserving the total sum.  This contradicts minimality.  Hence all positive coordinates of $\lambda^*$ are equal.  If there are $q$ positive coordinates, their common value is $M/q$, and the objective value is $(n-q)f(0)+qf(M/q)$.  Taking the best $q$ gives the formula and the characterization of minimizers.
+\end{proof}
+
+\section{MDS success-probability optimization}
+\label{sec:mds-success-modules}
+
+The expected terminal cloud is a separable objective, whereas MDS success depends on the entire distribution of the number of recovered strands. Nevertheless, its maximum is attained by an active-uniform allocation. We prove this assertion together with a complete description of the maximizing allocations, including the constant-objective exception. The argument applies to a common Gamma recovery curve of any positive shape; the Poisson threshold model is its integer-shape specialization.
+
+For \(\tau>0\), define
+\[
+  g_\tau(x)=\frac{x^{\tau-1}e^{-x}}{\Gamma(\tau)},
+  \qquad
+  F_\tau(x)=\frac{1}{\Gamma(\tau)}
+       \int_0^x s^{\tau-1}e^{-s}\,ds
+  \quad(x>0),
+\]
+and set \(F_\tau(0)=0\).  Thus \(F_\tau\) is the distribution function of a unit-rate Gamma random variable with shape \(\tau\).  For every integer \(t\ge1\), integration by parts gives
+\[
+  F_t(x)=1-e^{-x}\sum_{j=0}^{t-1}\frac{x^j}{j!}
+        =\phi_t(x).
+\]
+For a \(q\)-coordinate allocation, write
+\[
+  \mathcal S_{q,k,\tau}(\lambda_1,\ldots,\lambda_q)
+  =\Pbb\left(\sum_{i=1}^q B_i\ge k\right),
+  \qquad B_i\sim\Bernoulli(F_\tau(\lambda_i))
+\]
+with independent Bernoulli variables.  The constraint is
+\(\lambda_i\ge0\), \(\sum_i\lambda_i=M\).  In particular, when \(\tau=t\) is an integer, this notation agrees with the Poissonized MDS success objective.
+
+\begin{theorem}[Gamma active-uniform theorem]
+\label{thm:gamma-active-uniform}
+Fix \(n\ge1\), \(1\le k\le n\), \(\tau>0\), and \(M>0\).  Then
+\[
+  \max_{\lambda_i\ge0,\ \sum_{i=1}^n\lambda_i=M}
+       \mathcal S_{n,k,\tau}(\lambda)
+  =\max_{q=k,\ldots,n}
+       \Pbb\left(\Bin(q,F_\tau(M/q))\ge k\right).
+\]
+The maximizing allocations are classified as follows.
+\begin{enumerate}
+\item If \(\tau>1\), every maximizer is uniform on its positive support.  More precisely, the complete set of maximizers consists of the permutations of
+\[
+  (\underbrace{M/q,\ldots,M/q}_{q\text{ coordinates}},0,\ldots,0)
+\]
+for support sizes \(q\) attaining the finite maximum above.
+\item If \(0<\tau<1\), the unique maximizing vector is
+\(\lambda_1=\cdots=\lambda_n=M/n\), for every \(k\).
+\item If \(\tau=1\) and \(k\ge2\), the unique maximizing vector is again full uniformity.
+\item If \(\tau=1\) and \(k=1\), every allocation has success probability \(1-e^{-M}\).
+\end{enumerate}
+For \(\tau>1\) and \(k=1\), the maximizing support has size one.  For \(k=n\), full uniformity is the unique maximizer for every \(\tau>0\).
+\end{theorem}
+
+\begin{theorem}[Poissonized active-uniform MDS success theorem]
+\label{thm:full-mds-active-uniform}
+Fix integers \(n\ge1\), \(1\le k\le n\), and \(t\ge1\), and let \(M>0\).  For independent
+\(B_i\sim\Bernoulli(\phi_t(\lambda_i))\),
+\[
+  \boxed{
+  \max_{\lambda_i\ge0,\ \sum_{i=1}^n\lambda_i=M}
+       \Pbb\left(\sum_{i=1}^n B_i\ge k\right)
+  =\max_{q=k,\ldots,n}
+       \Pbb\left(\Bin(q,\phi_t(M/q))\ge k\right).
+  }
+\]
+If \(t\ge2\), every maximizing allocation is active-uniform, and its support size attains the maximum on the right.  Conversely, every active-uniform allocation with such a support size is a maximizer.  If \(t=1\) and \(k\ge2\), full uniformity is the unique maximizer.  If \(t=k=1\), every allocation is a maximizer.
+\end{theorem}
+
+The Poissonized theorem follows from Theorem \ref{thm:gamma-active-uniform} by taking \(\tau=t\).  We prove the Gamma theorem below.  The proof uses pivotal probabilities to control the possible active levels and then excludes asymmetric local maxima by two feasible second variations.
+
+\begin{remark}[Gamma completion times]
+Let \(Y_1,\ldots,Y_n\) be independent unit-rate Gamma variables of common shape \(\tau\), and let \(p_i\ge0\), \(\sum_i p_i=1\).  Define \(T_i=Y_i/p_i\) when \(p_i>0\), and \(T_i=\infty\) otherwise.  For the \(k\)-th order statistic,
+\[
+  \Pbb(T_{(k)}\le M)=\mathcal S_{n,k,\tau}(Mp).
+\]
+Thus Theorem \ref{thm:gamma-active-uniform} also optimizes the probability of completing at least \(k\) independent Gamma requirements by a fixed deadline.  Integer shapes recover the Poisson threshold model.  Noninteger shapes describe a Gamma requirement rather than a fractional number of required reads.
+\end{remark}
+
+\subsection{Gamma tail-to-density ratios}
+
+Fix \(\tau>0\), put \(m=\tau-1\), and temporarily write \(F=F_\tau\), \(g=g_\tau\).  Define
+\[
+  P(z)=\frac{1-F(z)}{g(z)},
+  \qquad Q(z)=\frac{F(z)}{g(z)}.
+\]
+Changes of variables in the two Gamma integrals give, for every \(m>-1\),
+\begin{align}
+  P(z)&=\int_0^\infty e^{-u}
+                  \left(1+\frac uz\right)^m\,du,
+       \label{eq:mds-gamma-P-integral}\\
+  Q(z)&=z\int_0^1 e^{zv}(1-v)^m\,dv.
+       \label{eq:mds-gamma-Q-integral}
+\end{align}
+In particular, \(P,Q>0\) and \(Q',Q''>0\).  When \(m>0\), also \(P'<0\) and \(P''>0\), since
+\[
+  \frac{d^2}{dz^2}\left(1+\frac uz\right)^m
+  =\frac{mu}{z^3}\left(1+\frac uz\right)^{m-2}
+      \left(2+(m+1)\frac uz\right)>0
+  \qquad(u>0).
+\]
+Differentiation under these integrals is justified locally on \(z>0\) by an integrable dominating function.
+
+For \(m>0\), set
+\[
+  \eta(z)=-\frac{zP'(z)}{P(z)},
+  \qquad
+  \zeta(z)=\frac{zQ'(z)}{Q(z)}.
+\]
+Both functions are positive.  Since \(g'/g=m/z-1\),
+\[
+  zP'=(z-m)P-z,
+  \qquad
+  zQ'=(z-m)Q+z.
+\]
+Writing \(h=z-m+1\), differentiation yields
+\begin{equation}
+\label{eq:mds-gamma-riccati}
+  z\eta'=\eta^2+h\eta-m,
+  \qquad
+  z\zeta'=-\zeta^2+h\zeta+m.
+\end{equation}
+
+\begin{lemma}[Mixed Gamma tail-ratio bound]
+\label{lem:gamma-tail-ratio-bound}
+For every real \(m>0\) and \(z>0\),
+\[
+  \frac{3m}{5}<\eta(z)\zeta(z)<m.
+\]
+\end{lemma}
+
+\begin{proof}
+Put \(W=\eta\zeta\) and \(\Delta=\zeta-\eta\).  From \eqref{eq:mds-gamma-riccati},
+\[
+  zW'=2hW-(W+m)\Delta,
+  \qquad
+  z\Delta'=-\Delta^2-2W+h\Delta+2m.
+\]
+At a critical point of \(W\), the first identity gives
+\(\Delta=2hW/(W+m)\).  Differentiating the first identity and substituting this expression into the second gives
+\begin{equation}
+\label{eq:mds-gamma-critical-second-derivative}
+  \frac{z^2W''}{2W}
+  =z-\left(\frac{m^2}{W}-W\right)
+     -\frac{m-W}{m+W}(z-m+1)^2.
+\end{equation}
+If \(0<W\le3m/5\), then
+\[
+  \frac{m^2}{W}-W\ge\frac{16m}{15},
+  \qquad
+  \frac{m-W}{m+W}\ge\frac14.
+\]
+Consequently, at any critical point with \(W\le3m/5\),
+\[
+  \frac{z^2W''}{2W}
+  \le z-\frac{16m}{15}-\frac{(z-m+1)^2}{4}
+  =-\frac{(z-m-1)^2}{4}-\frac m{15}<0.
+\]
+On the other hand, the endpoint expansions of the Gamma integrals give
+\[
+  \eta(z)\longrightarrow m,
+  \qquad \zeta(z)\longrightarrow1
+  \quad(z\downarrow0),
+\]
+and
+\[
+  \eta(z)=\frac mz+O(z^{-2}),
+  \qquad \zeta(z)=z-m+o(1)
+  \quad(z\to\infty).
+\]
+For example, at zero one has
+\(P(z)\sim\Gamma(m+1)z^{-m}\) and \(Q(z)\sim z/(m+1)\); at infinity, \eqref{eq:mds-gamma-P-integral} gives \(P(z)=1+m/z+O(z^{-2})\).  Thus \(W(z)\to m\) at both ends.  If \(W\) reached \(3m/5\) or a smaller value, it would attain an interior minimum at or below that level.  This contradicts \eqref{eq:mds-gamma-critical-second-derivative}, proving the lower bound.
+
+For the upper bound, use the probability density on \((0,\infty)\) proportional to \(e^{-u}(1+u/z)^m\), and let \(V=u/(z+u)\).  Then
+\[
+  \eta=m\E[V],
+  \qquad
+  z\eta'=-m\E[V(1-V)]-m^2\Var(V)<0.
+\]
+Under the probability density on \((0,1)\) proportional to \(e^{zv}(1-v)^m\), one similarly has
+\[
+  \zeta=1+z\E[v],
+  \qquad
+  \zeta'=\E[v]+z\Var(v)>0.
+\]
+Equation \eqref{eq:mds-gamma-riccati} therefore implies
+\[
+  h<\frac m\eta-\eta,
+  \qquad
+  h>\zeta-\frac m\zeta.
+\]
+Combining these inequalities gives
+\(\eta+\zeta<m(1/\eta+1/\zeta)\), which is equivalent to \(\eta\zeta<m\).
+\end{proof}
+
+\begin{lemma}[Two slope monotonicities]
+\label{lem:scaled-tail-auxiliary-monotonicity}
+For \(\tau>1\), the functions
+\[
+  L_1(z)=\frac{-P'(z)}{Q'(z)},
+  \qquad
+  L_2(z)=\frac{(-P'(z))Q(z)^2}{Q'(z)P(z)^2}
+\]
+are respectively strictly decreasing and strictly increasing on \((0,\infty)\).
+\end{lemma}
+
+\begin{proof}
+The signs \(P'<0,P''>0,Q'>0,Q''>0\) show that \(L_1\) is strictly decreasing.  Also
+\[
+  L_2=\frac{\eta}{\zeta}\frac QP.
+\]
+Using \eqref{eq:mds-gamma-riccati} and Lemma \ref{lem:gamma-tail-ratio-bound},
+\[
+  z\frac{d}{dz}\log L_2
+  =(\eta+\zeta)\left(2-\frac m{\eta\zeta}\right)
+  >\frac{\eta+\zeta}{3}>0.
+\]
+This proves the second assertion.
+\end{proof}
+
+\subsection{Endpoint faces and pivotal probabilities}
+
+\begin{lemma}[Endpoint cases]
+\label{lem:mds-endpoint-cases}
+On the closed \(q\)-coordinate simplex with total mass \(M>0\), the following statements hold.
+\begin{enumerate}
+\item For \(\tau>1\) and \(k=1\), the maximizers are exactly the one-point allocations \((M,0,\ldots,0)\) and their permutations.
+\item For every \(\tau>0\) and \(k=q\), the unique maximizer is the barycenter \(\lambda_i=M/q\).
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+If \(\tau>1\), \(P\) is strictly decreasing, so the hazard \(g/(1-F)=1/P\) is strictly increasing.  Since \(F(0)=0\), integration of the hazard gives, for \(x,y>0\),
+\[
+  1-F(x+y)<(1-F(x))(1-F(y)).
+\]
+Indeed, the integral of the hazard on \([x,x+y]\) is strictly larger than its integral on \([0,y]\).  Iterating the inequality shows that
+\[
+  \mathcal S_{q,1,\tau}(\lambda)
+  =1-\prod_i(1-F(\lambda_i))\le F(M),
+\]
+with equality exactly when only one coordinate is positive.
+
+For \(k=q\), the objective is \(\prod_iF(\lambda_i)\).  Formula \eqref{eq:mds-gamma-Q-integral} gives \(Q'>0\) for every \(\tau>0\), so
+\[
+  (\log F)'=\frac gF=\frac1Q
+\]
+is strictly decreasing.  Strict Jensen's inequality therefore gives
+\[
+  \prod_{i=1}^qF(\lambda_i)\le F(M/q)^q,
+\]
+with equality only at the barycenter.  Boundary allocations have zero product, whereas the barycenter has positive product.
+\end{proof}
+
+\begin{lemma}[Support-shadow KKT equations]
+\label{lem:support-shadow-kkt-general}
+Let \(\tau>0\), \(1\le k\le q\), and \(\lambda_i>0\).  Set
+\[
+  R_i(\lambda)=\Pbb\left(\sum_{j\ne i}B_j=k-1\right).
+\]
+Then
+\[
+  \frac{\partial\mathcal S_{q,k,\tau}}{\partial\lambda_i}
+  =g_\tau(\lambda_i)R_i(\lambda)>0.
+\]
+At an interior stationary point under \(\sum_i\lambda_i=M\), these derivatives are equal for all active coordinates.
+\end{lemma}
+
+\begin{proof}
+Write \(\theta_i=F_\tau(\lambda_i)\) and \(Z_{-i}=\sum_{j\ne i}B_j\).  Conditioning on \(B_i\),
+\[
+  \mathcal S_{q,k,\tau}
+  =\theta_i\Pbb(Z_{-i}\ge k-1)
+    +(1-\theta_i)\Pbb(Z_{-i}\ge k).
+\]
+Hence \(\partial\mathcal S/\partial\theta_i=\Pbb(Z_{-i}=k-1)\).  The chain rule gives the asserted derivative.  Every active Bernoulli parameter lies in \((0,1)\), so the pivotal probability is positive.  The equality at a constrained stationary point is the Lagrange multiplier equation.
+\end{proof}
+
+\begin{lemma}[Pair-shadow reduction]
+\label{lem:pair-shadow-reduction}
+Let \(q\ge3\), \(2\le k\le q-1\), and \(\tau>0\), and work on a positive \(q\)-coordinate face.  For distinct \(i,j\), define
+\[
+  Z_{ij}=\sum_{\ell\ne i,j}B_\ell,
+  \quad
+  \beta_{ij}=\Pbb(Z_{ij}=k-1),
+  \quad
+  \gamma_{ij}=\Pbb(Z_{ij}=k-2),
+  \quad
+  \alpha_{ij}=1-\frac{\gamma_{ij}}{\beta_{ij}}.
+\]
+Then \(\beta_{ij},\gamma_{ij}>0\) and \(\alpha_{ij}<1\).  With all other coordinates fixed, the pair contribution to the objective, up to an additive constant, is
+\[
+  \beta_{ij}\bigl(F_\tau(\lambda_i)+F_\tau(\lambda_j)
+                -\alpha_{ij}F_\tau(\lambda_i)F_\tau(\lambda_j)\bigr).
+\]
+At an interior stationary point,
+\[
+  L_{\alpha_{ij}}(\lambda_i)=L_{\alpha_{ij}}(\lambda_j),
+  \qquad
+  L_\alpha(x)=\frac{g_\tau(x)}{1-\alpha F_\tau(x)}.
+\]
+\end{lemma}
+
+\begin{proof}
+The shadow \(Z_{ij}\) assigns positive probability to every integer from \(0\) through \(q-2\), proving the positivity assertions.  If \(Z_{ij}\ge k\), the pair does not affect success; if \(Z_{ij}\le k-3\), the pair cannot produce success.  When \(Z_{ij}=k-1\), at least one of the pair must succeed, and when \(Z_{ij}=k-2\), both must succeed.  Writing \(\theta_h=F_\tau(\lambda_h)\), the nonconstant contribution is therefore
+\[
+  \beta_{ij}(\theta_i+\theta_j-\theta_i\theta_j)
+  +\gamma_{ij}\theta_i\theta_j,
+\]
+which is the claimed expression.  The two active partial derivatives are
+\[
+  \beta_{ij}g_\tau(\lambda_i)(1-\alpha_{ij}\theta_j),
+  \qquad
+  \beta_{ij}g_\tau(\lambda_j)(1-\alpha_{ij}\theta_i).
+\]
+Their equality is equivalent to the marginal-ratio equation, since
+\(1-\alpha_{ij}\theta_h>0\).
+\end{proof}
+
+\subsection{Marginal-ratio and shadow monotonicity}
+
+\begin{lemma}[Marginal-ratio shape]
+\label{lem:general-marginal-ratio-shape}
+Let \(\tau>1\), put \(m=\tau-1\), and fix \(\alpha<1\).  Then
+\[
+  L_\alpha(x)=\frac{g_\tau(x)}{1-\alpha F_\tau(x)}
+\]
+is strictly unimodal on \((0,\infty)\).  Its unique maximizer \(x_*(\alpha)\) is strictly increasing in \(\alpha\), and
+\[
+  x_*(\alpha)<m\quad(\alpha<0),\qquad
+  x_*(0)=m,\qquad
+  x_*(\alpha)>m\quad(0<\alpha<1).
+\]
+\end{lemma}
+
+\begin{proof}
+Write \(g=g_\tau\), \(F=F_\tau\), \(u=g'/g=m/x-1\), and \(D=1-\alpha F>0\).  The derivative of \(L_\alpha\) has the sign of
+\[
+  N_\alpha=uD+\alpha g.
+\]
+The terms involving \(g'\) cancel when this expression is differentiated:
+\[
+  N_\alpha'=u'D=-\frac m{x^2}D<0.
+\]
+Moreover, \(N_\alpha(0+)=+\infty\) and
+\(N_\alpha(\infty)=-(1-\alpha)<0\).  Thus there is exactly one zero, with \(L_\alpha\) strictly increasing before it and strictly decreasing after it.
+
+At the zero of \(N_\alpha\),
+\[
+  \partial_\alpha N_\alpha=g-uF=\frac gD>0.
+\]
+Since \(N_\alpha'<0\), implicit differentiation shows that \(x_*(\alpha)\) is strictly increasing.  Finally, \(N_\alpha(m)=\alpha g(m)\), giving the stated comparison with \(m\).
+\end{proof}
+
+\begin{lemma}[Pair-shadow monotonicity]
+\label{lem:pair-shadow-monotonicity}
+Let \(W\) be a Poisson-binomial random variable with masses \(p_j\), extended by zero outside its support.  For \(0<\theta<1\), put
+\[
+  \beta(\theta)=(1-\theta)p_{k-1}+\theta p_{k-2},
+  \qquad
+  \gamma(\theta)=(1-\theta)p_{k-2}+\theta p_{k-3}.
+\]
+Wherever \(\beta(\theta)>0\), the function
+\(\alpha(\theta)=1-\gamma(\theta)/\beta(\theta)\)
+is nondecreasing.
+\end{lemma}
+
+\begin{proof}
+Direct differentiation gives
+\[
+  \alpha'(\theta)
+  =\frac{p_{k-2}^2-p_{k-1}p_{k-3}}{\beta(\theta)^2}\ge0.
+\]
+The last inequality is log-concavity of the Poisson-binomial mass sequence.  Its probability generating polynomial is a product of linear factors with nonpositive real zeros, so Newton's inequalities give the required coefficient inequality; see also \cite{Liggett1997}.
+\end{proof}
+
+\subsection{Exclusion of asymmetric critical patterns}
+
+Throughout this subsection, assume \(\tau>1\) and \(2\le k\le q-1\).
+
+\begin{proposition}[No three active levels]
+\label{prop:no-three-active-levels}
+At an interior stationary point of \(\mathcal S_{q,k,\tau}\), the active coordinates take at most two distinct values.
+\end{proposition}
+
+\begin{proof}
+Suppose that three coordinates satisfy \(x_1<x_2<x_3\).  For the pairs \(12\) and \(23\), Lemmas \ref{lem:pair-shadow-reduction} and \ref{lem:general-marginal-ratio-shape} imply
+\[
+  x_1<x_*(\alpha_{12})<x_2
+  <x_*(\alpha_{23})<x_3.
+\]
+After removing these three coordinates, let the remaining Bernoulli sum be \(W\).  The \(12\)-shadow is \(W+B_3\), whereas the \(23\)-shadow is \(W+B_1\).  Since \(F_\tau(x_3)>F_\tau(x_1)\), Lemma \ref{lem:pair-shadow-monotonicity} gives
+\(\alpha_{12}\ge\alpha_{23}\).  The increasing peak location then gives
+\(x_*(\alpha_{12})\ge x_*(\alpha_{23})\), a contradiction.
+\end{proof}
+
+\begin{proposition}[Two-level local maxima are one-small]
+\label{prop:two-level-one-small}
+If an interior local maximum has two distinct active values \(x<y\), then the smaller value occurs exactly once.
+\end{proposition}
+
+\begin{proof}
+For a pair consisting of one small and one large coordinate, the stationary equation gives
+\(L_{\alpha_{xy}}(x)=L_{\alpha_{xy}}(y)\), so
+\[
+  x<x_*(\alpha_{xy})<y.
+\]
+Suppose that two small coordinates exist.  The shadow of an \(xx\)-pair is obtained from the shadow of an \(xy\)-pair by replacing one small Bernoulli parameter by a large one.  Hence
+\[
+  \alpha_{xx}\ge\alpha_{xy},
+  \qquad x_*(\alpha_{xx})\ge x_*(\alpha_{xy})>x,
+\]
+and therefore \(L_{\alpha_{xx}}'(x)>0\).
+
+Split the two small coordinates into \(x+\varepsilon,x-\varepsilon\), holding all others fixed.  This is a feasible variation for \(|\varepsilon|<x\).  By the pair-shadow formula, its second derivative at zero is
+\[
+  2\beta_{xx}\bigl[
+       g_\tau'(x)(1-\alpha_{xx}F_\tau(x))
+       +\alpha_{xx}g_\tau(x)^2\bigr].
+\]
+The bracket equals
+\((1-\alpha_{xx}F_\tau(x))^2L_{\alpha_{xx}}'(x)>0\).
+The feasible variation thus increases the objective to second order, contradicting local maximality.
+\end{proof}
+
+\begin{lemma}[One-small critical equation]
+\label{lem:one-small-critical-equation}
+At a point \((x,y,\ldots,y)\) with \(0<x<y\), set
+\[
+  c=q-1,\qquad
+  a=\frac{q-k}{q-1},\qquad
+  b=\frac{k-1}{q-1},
+\]
+and let \(D_x,D_y\) be the partial derivatives with respect to the small coordinate and one large coordinate.  Then
+\[
+  \frac{D_y}{D_x}
+  =a\frac{P(x)}{P(y)}+b\frac{Q(x)}{Q(y)}.
+\]
+In particular, the stationary equation is \(K(x,y)=0\), where
+\[
+  K(x,y)=a\frac{P(x)}{P(y)}+b\frac{Q(x)}{Q(y)}-1.
+\]
+\end{lemma}
+
+\begin{proof}
+Write \(\theta_x=F_\tau(x)\), \(\theta_y=F_\tau(y)\).  The two pivotal probabilities are
+\[
+  R_x=\Pbb(\Bin(c,\theta_y)=k-1)
+\]
+and
+\[
+  R_y=(1-\theta_x)\Pbb(\Bin(c-1,\theta_y)=k-1)
+      +\theta_x\Pbb(\Bin(c-1,\theta_y)=k-2).
+\]
+The binomial coefficient ratios give
+\[
+  \frac{R_y}{R_x}
+  =a\frac{1-\theta_x}{1-\theta_y}
+    +b\frac{\theta_x}{\theta_y}.
+\]
+Since \(D_x=g_\tau(x)R_x\), \(D_y=g_\tau(y)R_y\), and
+\(P=(1-F_\tau)/g_\tau\), \(Q=F_\tau/g_\tau\), multiplication by \(g_\tau(y)/g_\tau(x)\) gives the asserted identity.
+\end{proof}
+
+\begin{proposition}[No asymmetric one-small local maximum]
+\label{prop:no-one-small-local-max}
+An asymmetric one-small stationary point is a strict local minimum along the feasible path on which its large coordinates remain equal.  In particular, it cannot be an interior local maximum of \(\mathcal S_{q,k,\tau}\).
+\end{proposition}
+
+\begin{proof}
+Use the notation of Lemma \ref{lem:one-small-critical-equation}.  At the stationary point, put
+\[
+  U=\frac{P(x)}{P(y)}>1,
+  \qquad
+  V=\frac{Q(x)}{Q(y)}<1,
+  \qquad
+  S=\frac{P(x)-P(y)}{Q(y)-Q(x)}.
+\]
+The equation \(aU+bV=1\), together with \(a+b=1\), is equivalent to
+\[
+  \frac ba=\frac{U-1}{1-V}
+          =S\frac{Q(y)}{P(y)}.
+\]
+Cauchy's mean-value theorem and the strict decrease of \(L_1\) in Lemma \ref{lem:scaled-tail-auxiliary-monotonicity} give
+\[
+  S=L_1(\xi)<L_1(x)
+  \qquad\text{for some }\xi\in(x,y).
+\]
+Applying the same theorem to \(1/P\) and \(-1/Q\), and using the strict increase of \(L_2\), gives
+\[
+  S\frac{Q(x)Q(y)}{P(x)P(y)}
+  =L_2(\widetilde\xi)<L_2(y)
+  \qquad\text{for some }\widetilde\xi\in(x,y).
+\]
+After substitution of \(b/a\), these inequalities become
+\[
+  aU\eta(x)>bV\zeta(x),
+  \qquad
+  aU\eta(y)>bV\zeta(y).
+\]
+Thus the partial derivatives of \(K\), with \(x,y\) regarded as independent variables, satisfy
+\[
+  K_x=\frac{-aU\eta(x)+bV\zeta(x)}x<0,
+  \qquad
+  K_y=\frac{aU\eta(y)-bV\zeta(y)}y>0.
+\]
+Along the fixed-mass path \(y=(M-x)/c\), define
+\(G(x)=\mathcal S_{q,k,\tau}(x,y,\ldots,y)\).  There are \(c\) large coordinates, so
+\[
+  G'=D_x-D_y=-D_xK.
+\]
+At the stationary point \(K=0\), and hence
+\[
+  G''=-D_x\left(K_x-\frac1cK_y\right)>0.
+\]
+This proves the asserted strict local minimum along the path and excludes an interior local maximum on the face.
+\end{proof}
+
+\subsection{Completion of the proof and shapes at or below one}
+
+\begin{proof}[Proof of Theorem \ref{thm:gamma-active-uniform}]
+The objective is continuous on the compact allocation simplex, so it attains its maximum.  A maximizing allocation has at least \(k\) positive coordinates: a smaller support has success probability zero, whereas the uniform allocation on \(k\) coordinates has positive success probability.
+
+First suppose \(\tau>1\), and let \(q\ge k\) be the positive support size of a maximizer.  The point is an interior local maximum on that face.  The endpoint cases \(k=1\) and \(k=q\) are covered by Lemma \ref{lem:mds-endpoint-cases}.  For \(2\le k\le q-1\), Proposition \ref{prop:no-three-active-levels} allows at most two active values.  If two values occur, Proposition \ref{prop:two-level-one-small} forces a one-small configuration, which Proposition \ref{prop:no-one-small-local-max} excludes.  Therefore all positive coordinates are equal to \(M/q\).
+
+Every active-uniform allocation on \(q\) coordinates has value
+\[
+  \Pbb\left(\Bin(q,F_\tau(M/q))\ge k\right),
+\]
+because its zero coordinates never recover.  Taking the maximum over \(q=k,\ldots,n\) proves the formula and the complete equality classification for \(\tau>1\).  The endpoint lemma also gives the asserted one-point optimum for \(k=1\).
+
+Now suppose \(0<\tau<1\), so \(-1<m<0\).  Formula \eqref{eq:mds-gamma-P-integral} gives \(P'>0\), while \(g'<0\).  Consequently,
+\[
+  g'(1-F)+g^2<0,
+\]
+since the hazard \(g/(1-F)=1/P\) is strictly decreasing.  For \(\alpha<1\),
+\[
+  L_\alpha'
+  =\frac{g'(1-\alpha F)+\alpha g^2}{(1-\alpha F)^2}<0.
+\]
+For \(\alpha\le0\), both terms in the numerator have the required sign.  For \(0<\alpha<1\), write that numerator as
+\[
+  (1-\alpha)g'+\alpha\bigl(g'(1-F)+g^2\bigr)<0.
+\]
+The derivative is also strictly negative at \(\alpha=1\).
+
+Thus, when \(2\le k\le q-1\), the pair-shadow stationary equations force all active coordinates to be equal.  For \(k=1\), the objective is \(1-\prod_i(1-F(\lambda_i))\); equality of its active derivatives is equality of the strictly decreasing hazards \(g(\lambda_i)/(1-F(\lambda_i))\), which again forces equal coordinates.  The case \(k=q\) is already covered by Lemma \ref{lem:mds-endpoint-cases}.
+
+No boundary allocation can maximize in this range of shapes.  Indeed, a boundary allocation with positive success has a positive support of size \(q\ge k\).  Activate a zero coordinate with mass \(\varepsilon\) and subtract this mass from one positive coordinate.  Its new recovery probability is
+\[
+  F_\tau(\varepsilon)
+  =\frac{\varepsilon^\tau}{\Gamma(\tau+1)}(1+O(\varepsilon)).
+\]
+The pivotal probability for the new coordinate tends to the strictly positive probability that exactly \(k-1\) of the original active coordinates recover.  The loss caused by the donor perturbation is \(O(\varepsilon)\), since that coordinate remains bounded away from zero.  Hence the gain is a positive multiple of \(\varepsilon^\tau\), up to \(o(\varepsilon^\tau)\), and it dominates the donor loss.  Every maximizer therefore has full support, and the preceding stationary-point argument proves that full uniformity is the unique maximizer.
+
+Finally, let \(\tau=1\).  For \(k=1\),
+\[
+  \mathcal S_{n,1,1}(\lambda)
+  =1-\prod_i e^{-\lambda_i}=1-e^{-M},
+\]
+so every allocation is optimal.  Suppose \(k\ge2\).  For every \(\alpha<1\),
+\[
+  L_\alpha(x)=\frac{e^{-x}}{1-\alpha+\alpha e^{-x}},
+  \qquad
+  L_\alpha'(x)
+  =-\frac{(1-\alpha)e^{-x}}
+          {(1-\alpha+\alpha e^{-x})^2}<0.
+\]
+The pair-shadow equations, together with the \(k=q\) endpoint, show that any maximizing positive face must be uniform.  If such a face has \(q<n\) coordinates, put \(p=1-e^{-M/q}\).  On activating one zero coordinate and taking the mass from one positive coordinate, the new-coordinate derivative and donor derivative are respectively
+\[
+  \Pbb(\Bin(q,p)=k-1),
+  \qquad
+  (1-p)\Pbb(\Bin(q-1,p)=k-1).
+\]
+Their ratio is
+\[
+  \frac{\binom q{k-1}}{\binom{q-1}{k-1}}
+  =\frac q{q-k+1}>1.
+\]
+The perturbation strictly improves the objective.  Thus a maximizer has full support and is uniquely uniform.
+
+In the cases \(0<\tau\le1\), the established full-uniform optimum is one of the active-uniform candidates, so it also proves the finite-maximum formula.  For \(k=n\), uniqueness for every \(\tau>0\) follows directly from Lemma \ref{lem:mds-endpoint-cases}.  This completes the proof.
+\end{proof}
+
+\begin{proof}[Proof of Theorem \ref{thm:full-mds-active-uniform}]
+Apply Theorem \ref{thm:gamma-active-uniform} with \(\tau=t\), using \(F_t=\phi_t\).
+\end{proof}
+
+\begin{theorem}[Facewise active-uniform maximum]
+\label{thm:facewise-active-uniform-maximum}
+For \(M>0\), \(\tau>0\), and \(1\le k\le q\),
+\[
+  \max_{\lambda_i\ge0,\ \sum_{i=1}^q\lambda_i=M}
+       \mathcal S_{q,k,\tau}(\lambda)
+  =\max_{r=k,\ldots,q}
+       \Pbb\left(\Bin(r,F_\tau(M/r))\ge k\right).
+\]
+The maximizing allocations have exactly the classification in Theorem \ref{thm:gamma-active-uniform}, with \(n=q\).
+\end{theorem}
+
+\begin{proof}
+Apply Theorem \ref{thm:gamma-active-uniform} with \(n=q\), deleting any coordinates fixed to zero outside the face.
+\end{proof}
+
+\begin{remark}[Comparison with terminal-cloud minimization]
+Theorems \ref{thm:active-uniform-terminal-cloud} and \ref{thm:full-mds-active-uniform} have the same active-uniform form but optimize different objectives.  For the expected terminal cloud, the support size minimizes
+\[
+  (n-q)+q\psi_t(M/q).
+\]
+For MDS success, it maximizes
+\[
+  \Pbb\left(\Bin(q,\phi_t(M/q))\ge k\right).
+\]
+These support sizes need not agree.  The expected-cloud support size has the exact staircase in Theorem \ref{thm:terminal-cloud-staircase}.  A corresponding description of crossings, possible support jumps, and absence of re-entry for the MDS binomial-tail objective is a separate support-phase problem.
+\end{remark}
+
+\section{Support selection and local stability}
+\label{sec:mds-support}
+
+Theorem~\ref{thm:gamma-active-uniform} reduces the allocation problem to
+the finite family
+\begin{equation}\label{eq:mds-support-values}
+  V_q(M)=\Pbb\bigl(\Bin(q,F_\tau(M/q))\ge k\bigr),
+  \qquad k\le q\le n.
+\end{equation}
+The support selected by this binomial tail can differ from the support
+that minimizes the expected terminal cloud.  We give its small- and
+large-depth limits and a local test that eliminates unstable candidates.
+Throughout the asymptotic statements, \(n,k,\tau\) are fixed.
+
+\subsection{Small-depth support selection}
+
+\begin{proposition}[Small-depth expansion and tie-breaking]
+\label{prop:mds-small-depth}
+Let \(n\ge k\ge1\) and \(\tau>1\).  Uniformly over the finite set
+\(q\in\{k,\ldots,n\}\), as \(M\downarrow0\),
+\begin{equation}\label{eq:mds-small-depth}
+  V_q(M)
+  =\frac{\binom qk}{\Gamma(\tau+1)^kq^{\tau k}}M^{\tau k}
+   \left[
+     1-\frac{\tau k}{(\tau+1)q}M
+     +O\bigl(M^{\min\{2,\tau\}}\bigr)
+   \right].
+\end{equation}
+Put
+\begin{equation}\label{eq:mds-leading-coefficient}
+  c_{k,\tau}(q)=\frac{\binom qk}{q^{\tau k}},
+  \qquad
+  q_0=\max\operatorname*{arg\,max}_{k\le q\le n}c_{k,\tau}(q).
+\end{equation}
+There exists \(M_0>0\) such that \(q_0\) is the unique maximizing
+support size in~\eqref{eq:mds-support-values} whenever \(0<M<M_0\).
+Thus a tie between leading coefficients is resolved in favor of the
+larger support.
+\end{proposition}
+
+\begin{proof}
+Expanding the exponential in the defining Gamma integral gives
+\[
+  F_\tau(z)
+  =\frac{z^\tau}{\Gamma(\tau+1)}
+    \left[1-\frac{\tau}{\tau+1}z+O(z^2)\right].
+\]
+For fixed \(q\ge k\), the binomial tail at a small success probability
+\(p\) satisfies
+\[
+  \Pbb(\Bin(q,p)\ge k)=\binom qk p^k\bigl(1+O(p)\bigr).
+\]
+Substitute \(p=F_\tau(M/q)\).  The linear correction comes from
+\(F_\tau(M/q)^k\); the remaining relative errors have orders
+\(M^2\) and \(M^\tau\).  This proves~\eqref{eq:mds-small-depth},
+and finiteness of the set of supports makes the error uniform in \(q\).
+
+Any support with a smaller leading coefficient is eventually inferior
+to every support attaining the largest coefficient.  If two such
+coefficients tie and \(q_1<q_2\), then the linear terms in
+\eqref{eq:mds-small-depth} give
+\[
+  V_{q_2}(M)-V_{q_1}(M)
+  =\frac{c_{k,\tau}(q_1)}{\Gamma(\tau+1)^k}
+    \frac{\tau k}{\tau+1}
+    \left(\frac1{q_1}-\frac1{q_2}\right)M^{\tau k+1}
+    +o(M^{\tau k+1})>0
+\]
+for sufficiently small \(M>0\).  Here
+\(\min\{2,\tau\}>1\) is essential.  A final minimum over the
+finitely many comparison intervals proves the assertion.
+\end{proof}
+
+\begin{proposition}[Continuous localization of the leading support]
+\label{prop:mds-leading-localization}
+Let \(\tau>1\).  If \(k=1\), the coefficient
+\(c_{1,\tau}(q)=q^{1-\tau}\) is strictly decreasing, so \(q_0=1\).
+For \(k\ge2\), write
+\[
+  H_k=\sum_{j=1}^k\frac1j,
+  \qquad
+  \binom{x}{k}=\frac1{k!}\prod_{j=0}^{k-1}(x-j),\quad x\ge k.
+\]
+If \(H_k\le\tau\), the unique leading-coefficient maximizer is
+\(q_0=k\).  If \(H_k>\tau\), there is a unique \(x_{k,\tau}>k\)
+satisfying
+\begin{equation}\label{eq:mds-leading-critical}
+  \sum_{j=0}^{k-1}\frac{x_{k,\tau}}{x_{k,\tau}-j}=\tau k.
+\end{equation}
+Every integer maximizer of \(c_{k,\tau}\) lies in
+\begin{equation}\label{eq:mds-leading-neighbors}
+  \left\{
+    \kappa_{k,n}\bigl(\lfloor x_{k,\tau}\rfloor\bigr),
+    \kappa_{k,n}\bigl(\lceil x_{k,\tau}\rceil\bigr)
+  \right\},
+  \qquad
+  \kappa_{k,n}(r)=\min\{n,\max\{k,r\}\}.
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+For real \(x\ge k\),
+\begin{equation}\label{eq:mds-leading-log-derivative}
+  \frac{d}{d\log x}\log c_{k,\tau}(x)
+  =D_{k,\tau}(x)
+  :=\sum_{j=0}^{k-1}\frac{x}{x-j}-\tau k.
+\end{equation}
+For \(k\ge2\),
+\[
+  D_{k,\tau}'(x)
+  =-\sum_{j=1}^{k-1}\frac{j}{(x-j)^2}<0,
+  \qquad
+  D_{k,\tau}(k)=k(H_k-\tau),
+  \qquad
+  \lim_{x\to\infty}D_{k,\tau}(x)=k(1-\tau)<0.
+\]
+These facts give the asserted monotonicity or the unique continuous
+maximum.  A function that increases up to one point and decreases
+afterward attains its maximum on an integer interval at one of the two
+integers adjacent to that point, with the indicated endpoint clipping.
+\end{proof}
+
+\begin{example}[The small-depth support can exceed the decoding threshold]
+\label{ex:mds-small-depth-twelve}
+Take \(k=10\), \(\tau=2\), and any fixed \(n\ge12\).  Exact evaluation
+of~\eqref{eq:mds-leading-log-derivative} gives
+\[
+  D_{10,2}(11)=\frac{5591}{2520}>0,
+  \qquad
+  D_{10,2}(12)=-\frac{1759}{2310}<0.
+\]
+The only possible integer leading-coefficient maximizers are therefore
+\(11\) and \(12\).  Their exact ratio is
+\[
+  \frac{c_{10,2}(12)}{c_{10,2}(11)}
+  =6\left(\frac{11}{12}\right)^{20}>1,
+\]
+where the last inequality is the integer comparison
+\(6\cdot11^{20}>12^{20}\).  Consequently the unique optimal support
+is \(q=12\) for all sufficiently small positive \(M\).  Relative to
+using only \(k=10\) coordinates, its leading coefficient is larger by
+the factor
+\[
+  \frac{c_{10,2}(12)}{c_{10,2}(10)}
+  =66\left(\frac56\right)^{20}>1.
+\]
+Thus the possibility of sacrificing coordinates does not imply that
+the smallest feasible support is optimal at small depth.
+\end{example}
+
+\subsection{Large-depth support selection}
+
+\begin{proposition}[Eventual full support]
+\label{prop:mds-large-depth}
+Let \(\tau>0\), \(n\ge k\ge1\), and \(k\le q\le n\).  Put
+\(r=q-k+1\).  As \(M\to\infty\),
+\begin{equation}\label{eq:mds-large-depth}
+  1-V_q(M)
+  \sim
+  \binom q{k-1}
+  \frac{(M/q)^{(\tau-1)r}}{\Gamma(\tau)^r}
+  e^{-rM/q}.
+\end{equation}
+If \(k\ge2\), there is \(M_1<\infty\) such that \(q=n\) is the
+unique maximizing support size for every \(M>M_1\).  In that range
+the unique maximizing allocation is \(\lambda_i=M/n\).
+\end{proposition}
+
+\begin{proof}
+The upper Gamma tail satisfies
+\[
+  1-F_\tau(z)\sim\frac{z^{\tau-1}e^{-z}}{\Gamma(\tau)}.
+\]
+For completeness, this follows by applying l'H\^opital's rule to
+\(\int_z^\infty s^{\tau-1}e^{-s}\,ds\) divided by
+\(z^{\tau-1}e^{-z}\); the ratio of their derivatives tends to one.
+Let \(u=1-F_\tau(M/q)\).  Failure on a \(q\)-point support means at
+least \(r\) unsuccessful coordinates, and hence
+\[
+  1-V_q(M)=\Pbb(\Bin(q,u)\ge r)
+  \sim\binom qr u^r.
+\]
+This proves~\eqref{eq:mds-large-depth} because
+\(\binom qr=\binom q{k-1}\).
+
+For \(k\ge2\), the exponential decay rate of failure,
+\[
+  \frac rq=1-\frac{k-1}{q},
+\]
+strictly increases with \(q\).  The failure probability at \(q=n\)
+is therefore smaller than that at every \(q<n\) for sufficiently
+large \(M\), regardless of the fixed polynomial factors in
+\eqref{eq:mds-large-depth}.  There are only finitely many supports.
+The allocation statement now follows from
+Theorem~\ref{thm:gamma-active-uniform}.
+\end{proof}
+
+The restriction \(k\ge2\) in the support conclusion matters.  For
+\(k=1\), Theorem~\ref{thm:gamma-active-uniform} gives one active
+coordinate when \(\tau>1\), full uniformity when \(0<\tau<1\), and
+the allocation-independent value \(1-e^{-M}\) when \(\tau=1\).
+
+\subsection{The constrained Hessian at an active barycenter}
+
+For \(\tau>1\), set \(m=\tau-1\) and define
+\begin{equation}\label{eq:mds-stability-elasticities}
+  \eta_\tau(z)=m-z+\frac{z g_\tau(z)}{1-F_\tau(z)},
+  \qquad
+  \zeta_\tau(z)=z-m+\frac{z g_\tau(z)}{F_\tau(z)}.
+\end{equation}
+These are the logarithmic derivatives
+\(-zP'(z)/P(z)\) and \(zQ'(z)/Q(z)\) of the Gamma tail-to-density
+ratios in Section~\ref{sec:mds-success-modules}.  The proof there gives
+\[
+  \eta_\tau\ \text{strictly decreasing from }m\text{ to }0,
+  \qquad
+  \zeta_\tau\ \text{strictly increasing from }1\text{ to }\infty.
+\]
+
+\begin{proposition}[Barycenter stability and its threshold]
+\label{prop:mds-barycenter-stability}
+Let \(\tau>1\) and \(2\le k\le q-1\).  At the barycenter of a
+positive \(q\)-face, write
+\[
+  z=M/q,\qquad p=F_\tau(z),\qquad
+  R=\Pbb(\Bin(q-1,p)=k-1),
+  \qquad
+  a=\frac{q-k}{q-1},\quad b=\frac{k-1}{q-1}.
+\]
+For every vector \(v\in\R^q\) with \(\sum_i v_i=0\),
+\begin{equation}\label{eq:mds-barycenter-hessian}
+  D^2\mathcal S_{q,k,\tau}(z,\ldots,z)[v,v]
+  =\frac{g_\tau(z)R}{z}
+    \bigl[a\eta_\tau(z)-b\zeta_\tau(z)\bigr]
+    \sum_{i=1}^q v_i^2.
+\end{equation}
+Consequently:
+\begin{enumerate}[label=(\roman*)]
+  \item If \((\tau-1)(q-k)\le k-1\), this barycenter is a strict
+  facewise local maximum for every \(M>0\).
+  \item If \((\tau-1)(q-k)>k-1\), there is a unique \(z_*>0\)
+  satisfying
+  \begin{equation}\label{eq:mds-stability-threshold}
+    (q-k)\eta_\tau(z_*)=(k-1)\zeta_\tau(z_*).
+  \end{equation}
+  The barycenter is a strict facewise local minimum for \(M<qz_*\)
+  and a strict facewise local maximum for \(M>qz_*\).
+\end{enumerate}
+In particular, a candidate with
+\((q-k)\eta_\tau(M/q)>(k-1)\zeta_\tau(M/q)\) cannot maximize
+the full allocation problem.
+\end{proposition}
+
+\begin{proof}
+Write
+\[
+  \beta=\Pbb(\Bin(q-2,p)=k-1),\qquad
+  \gamma=\Pbb(\Bin(q-2,p)=k-2).
+\]
+The pivotal derivative identity gives the diagonal entries of the
+Hessian as \(g_\tau'(z)R\).  Conditioning on a pair gives every
+off-diagonal entry as \(g_\tau(z)^2(\gamma-\beta)\).
+Since \(\sum_i v_i=0\),
+\[
+  D^2\mathcal S_{q,k,\tau}[v,v]
+  =\bigl[g_\tau'(z)R-g_\tau(z)^2(\gamma-\beta)\bigr]
+    \sum_i v_i^2.
+\]
+The elementary binomial ratios are
+\[
+  \frac\beta R=\frac{a}{1-p},\qquad
+  \frac\gamma R=\frac b p.
+\]
+Using \(g_\tau'/g_\tau=m/z-1\) and \(a+b=1\), the coefficient
+of \(\sum_i v_i^2\) becomes
+\[
+  g_\tau(z)R
+  \left[\frac mz-1+\frac{a g_\tau(z)}{1-p}
+                    -\frac{b g_\tau(z)}p\right]
+  =\frac{g_\tau(z)R}{z}
+    \bigl[a\eta_\tau(z)-b\zeta_\tau(z)\bigr],
+\]
+which proves~\eqref{eq:mds-barycenter-hessian}.
+
+The barycenter is stationary by permutation symmetry.  The function
+\[
+  (q-k)\eta_\tau(z)-(k-1)\zeta_\tau(z)
+\]
+is strictly decreasing, has limit
+\(m(q-k)-(k-1)\) at zero, and tends to \(-\infty\) at infinity.
+Its sign gives the alternatives above.  A definite constrained
+Hessian yields a strict local extremum on the positive face by the
+second-order Taylor expansion.  A strict facewise local minimum
+cannot be a global maximizer on the simplex.
+\end{proof}
+
+At \(M=qz_*\), the constrained Hessian vanishes and this test makes
+no local classification.  Nor does facewise local maximality by
+itself compare different support sizes.  The support-phase problem
+at intermediate depth still requires comparisons among the values
+\(V_q(M)\).
+
+\subsection{An obstruction to frozen-pair equalization}
+
+The full stationarity conditions in the active-uniform proof cannot
+be replaced by a rule that equalizes or collapses every unequal
+pair while holding its shadow fixed.
+
+\begin{example}[An unequal pair beats both equalization and collapse]
+\label{ex:mds-frozen-pair}
+Let \(F_2(x)=1-(1+x)e^{-x}\), and put
+\[
+  \alpha=\frac{9999}{10000},\qquad
+  J(x)=F_2(x)+F_2(13-x)-\alpha F_2(x)F_2(13-x).
+\]
+Then
+\begin{equation}\label{eq:mds-frozen-pair-signs}
+  J(3)-J(0)>\frac{12}{10^6},\qquad
+  J(3)-J(13/2)>\frac9{10^6}.
+\end{equation}
+Thus replacing \((3,10)\) by either \((0,13)\), \((13,0)\), or
+\((13/2,13/2)\) decreases this frozen-pair objective.  The shadow
+is realizable in an MDS problem: with \(q=3,k=2\), let the third
+coordinate have recovery probability \(10000/10001\).  Its
+pair-shadow parameter is exactly the displayed \(\alpha\).
+\end{example}
+
+\begin{proof}
+Put \(E=e^{-1/2}\).  Direct substitution gives
+\begin{align*}
+  J(3)-J(0)
+  &=\frac{1-4E^6-11E^{20}}{10000}
+    +(14-44\alpha)E^{26},\\
+  J(3)-J(13/2)
+  &=\frac{-4E^6-11E^{20}+15E^{13}}{10000}
+    +\frac{49\alpha}{4}E^{26}.
+\end{align*}
+Here is a rational certificate of both signs.  Set
+\[
+  L=\frac{6065306597126334}{10^{16}},\qquad
+  U=\frac{6065306597126335}{10^{16}},\qquad
+  S_j=\sum_{r=0}^j\frac{(-1/2)^r}{r!}.
+\]
+The alternating-series bounds and rational comparisons give
+\(L<S_{21}<E<S_{20}<U\).  Since \(14-44\alpha<0\), substitution
+of the appropriate endpoints in each signed term yields
+\begin{align*}
+  J(3)-J(0)
+  &>\frac{1-4U^6-11U^{20}}{10000}
+      +(14-44\alpha)U^{26}
+    >\frac{12}{10^6},\\
+  J(3)-J(13/2)
+  &>\frac{-4U^6-11U^{20}+15L^{13}}{10000}
+      +\frac{49\alpha}{4}L^{26}
+    >\frac9{10^6}.
+\end{align*}
+All quantities in the last comparisons are rational.  Symmetry gives
+\(J(13)=J(0)\).
+
+For the asserted shadow, its two relevant masses are
+\(\beta=10000/10001\) and \(\gamma=1/10001\), so
+\(1-\gamma/\beta=\alpha\).  Because \(F_2\) is continuous and
+strictly increasing from zero to one, this third-coordinate
+probability is realized by a finite positive intensity.
+\end{proof}
+
+This example concerns a single conditional pair comparison.  It does
+not require the fixed third coordinate to satisfy its own
+stationarity equation.  The structured variations in
+Section~\ref{sec:mds-success-modules} use those additional equations
+to exclude asymmetric local maxima of the full objective.
+
+\section{Completion races and completed rate mass}
+\label{sec:completion-races}
+
+The Gamma response has a direct completion-time interpretation.  If
+\(Z_1,\ldots,Z_n\) are independent with law \(\Gamma(\tau,1)\), and
+\(p_i\ge0\) with \(\sum_i p_i=1\), define
+\[
+  T_i=Z_i/p_i,
+  \qquad T_i=\infty\ \hbox{when }p_i=0.
+\]
+For \(p_i>0\), \(T_i\) has shape \(\tau\) and rate \(p_i\), and
+\(\Pbb(T_i\le M)=F_\tau(Mp_i)\).  Independence gives
+\begin{equation}\label{eq:gamma-race-deadline}
+  \Pbb(T_{(k)}\le M)
+  =\Pbb\left(\sum_{i=1}^n
+       \Bernoulli(F_\tau(Mp_i))\ge k\right).
+\end{equation}
+Thus Theorem~\ref{thm:gamma-active-uniform} optimizes a fixed-deadline
+completion probability.  The same race has another observable: the
+total rate assigned to the first \(C\) completed labels.  For that
+observable, a radial order holds for a much broader class of
+requirements.
+
+\subsection{Radial order under exchangeable requirements}
+
+For bounded random variables \(X,Y\) taking values in \([0,1]\),
+write \(X\le_{\mathrm{icx}}Y\) if
+\(\E\varphi(X)\le\E\varphi(Y)\) for every finite increasing convex
+function \(\varphi:[0,1]\to\R\).  This is increasing-convex order.
+The crossing argument for size-biased ranks in~\cite{LongRank2026}
+extends as follows.
+
+\begin{theorem}[Radial order of completed rate mass]
+\label{thm:completed-rate-mass}
+Let \(n\ge2\), \(1\le C<n\), and let
+\((Z_1,\ldots,Z_n)\) be an exchangeable random vector whose
+coordinates are finite and strictly positive almost surely.  Assume
+that for every \(i\ne j\), the ratio \(Z_i/Z_j\) has an atomless
+distribution.  Fix \(h\in\R^n\) with \(\sum_i h_i=0\), and put
+\begin{equation}\label{eq:completed-mass-rate-ray}
+  p_i(\theta)=\frac1n+\theta h_i,
+  \qquad 0\le\theta\le\theta_*.
+\end{equation}
+Assume \(\theta_*>0\) and that every rate is positive throughout
+this closed interval.  Let \(S_C(\theta)\) be the labels of the
+first \(C\) completion times \(Z_i/p_i(\theta)\), and define
+\begin{equation}\label{eq:completed-rate-mass}
+  A_C(\theta)=\sum_{i\in S_C(\theta)}p_i(\theta).
+\end{equation}
+Then for \(0\le\theta_1<\theta_2\le\theta_*\),
+\begin{equation}\label{eq:completed-mass-icx}
+  A_C(\theta_1)\le_{\mathrm{icx}}A_C(\theta_2).
+\end{equation}
+In particular, the conclusion applies to iid positive requirements
+with an atomless distribution, including \(\Gamma(\tau,1)\)
+requirements for every \(\tau>0\).
+
+If the \(Z_i\) are iid and \(-\log Z_i\) has a density positive on
+the whole real line, then for every nonzero \(h\) the comparison is
+strict for every strictly increasing convex \(\varphi\) and every
+\(\theta_1<\theta_2\).  This strictness condition holds for all
+positive Gamma shapes.
+\end{theorem}
+
+\begin{proof}
+\emph{A common ordering and its crossings.}
+Use the same requirements for all \(\theta\), and rank the scores
+\[
+  Y_i(\theta)=\log p_i(\theta)-\log Z_i
+\]
+in decreasing order.  The first \(C\) scores are precisely the
+first \(C\) completion labels.  For every pair,
+\begin{equation}\label{eq:completed-mass-crossing-derivative}
+  \frac d{d\theta}(Y_i-Y_j)
+  =\frac{h_i}{p_i(\theta)}-\frac{h_j}{p_j(\theta)}
+  =\frac{h_i-h_j}{n p_i(\theta)p_j(\theta)}.
+\end{equation}
+Thus two scores cross at most once unless their difference is
+constant.  A crossing always moves the label with larger \(h_i\)
+above the label with smaller \(h_i\).
+
+The ratio hypothesis makes ties at each fixed parameter a null
+event.  It also rules out persistent ties between labels with equal
+\(h_i\).  There are at most \(\binom n2\) crossing parameters for
+each realization outside a null set.  At a crossing, order tied
+scores by decreasing \(h_i\); this is the order immediately to its
+right.  Simultaneous crossings cause no difficulty.  Within a tied
+group the order changes from increasing to decreasing \(h_i\).
+If the group intersects the cutoff at rank \(C\), the selected
+part therefore acquires the larger \(h_i\)'s; groups entirely on
+one side of the cutoff do not change the selected sum.
+Consequently
+\begin{equation}\label{eq:completed-h-mass}
+  H_C(\theta):=\sum_{i\in S_C(\theta)}h_i
+\end{equation}
+is pathwise nondecreasing.  At \(\theta=0\), exchangeability and
+absence of ties make \(S_C(0)\) a uniformly random \(C\)-subset.
+Hence
+\begin{equation}\label{eq:completed-h-mean}
+  \E H_C(0)=\frac Cn\sum_i h_i=0,
+  \qquad \E H_C(\theta)\ge0.
+\end{equation}
+
+\medskip\noindent\emph{Scaling an increasing convex cost.}
+We use an elementary fact.  Suppose \(X\) is bounded,
+\(\E X\ge0\), and \(c+aX\in[0,1]\) almost surely for every
+\(a\in[0,a_*]\).  If \(\varphi\) is increasing and convex on
+\([0,1]\), then
+\[
+  f(a)=\E\varphi(c+aX)
+\]
+is nondecreasing on \([0,a_*]\).  Indeed, it is convex, and Jensen's
+inequality gives
+\[
+  f(a)\ge\varphi(c+a\E X)\ge\varphi(c)=f(0).
+\]
+For \(0\le a<b\le a_*\), convexity now gives
+\[
+  f(a)\le(1-a/b)f(0)+(a/b)f(b)\le f(b).
+\]
+
+Apply this fact with \(c=C/n\) and \(X=H_C(\theta_1)\).
+Its domain condition holds on all of \([0,\theta_*]\): for each
+realized set \(S_C(\theta_1)\),
+\[
+  \frac Cn+aH_C(\theta_1)
+  =\sum_{i\in S_C(\theta_1)}p_i(a)\in[0,1].
+\]
+Since \(A_C(\theta)=C/n+\theta H_C(\theta)\), pathwise
+monotonicity followed by the scaling comparison yields
+\begin{align*}
+  \E\varphi(A_C(\theta_2))
+  &=\E\varphi\bigl(C/n+\theta_2H_C(\theta_2)\bigr)\\
+  &\ge\E\varphi\bigl(C/n+\theta_2H_C(\theta_1)\bigr)\\
+  &\ge\E\varphi\bigl(C/n+\theta_1H_C(\theta_1)\bigr)
+   =\E\varphi(A_C(\theta_1)).
+\end{align*}
+This proves~\eqref{eq:completed-mass-icx}.
+
+If the requirements are iid and atomless, conditioning on \(Z_j\)
+shows that \(\Pbb(Z_i/Z_j=r)=0\) for each fixed \(r>0\).
+They therefore satisfy the ratio hypothesis.
+
+\medskip\noindent\emph{Strictness for requirements with full-density log marks.}
+If \(h\ne0\), choose \(i,j\) with \(h_i>h_j\).  By
+\eqref{eq:completed-mass-crossing-derivative}, an open interval of
+values of \(-\log Z_i+\log Z_j\) produces a crossing strictly
+between \(\theta_1\) and \(\theta_2\).  Choose exactly \(C-1\)
+of the other marks sufficiently large that their scores stay above
+this pair throughout that parameter interval, and all the
+remaining marks sufficiently small that their scores stay below.
+These conditions can be imposed on a nonempty open set of log
+marks.  Independence and positive densities make its probability
+strictly positive.  On this event the crossing passes through rank
+\(C\), so
+\(H_C(\theta_2)>H_C(\theta_1)\).  The first comparison in the
+preceding display is then strict for every strictly increasing
+\(\varphi\).  Finally, if \(Z\sim\Gamma(\tau,1)\), the log mark
+\(W=-\log Z\) has density
+\[
+  \frac1{\Gamma(\tau)}e^{-\tau w-e^{-w}},\qquad w\in\R,
+\]
+which is positive everywhere.
+\end{proof}
+
+\begin{corollary}[A zero-rate endpoint]
+\label{cor:completed-mass-boundary}
+Under the requirement hypotheses of
+Theorem~\ref{thm:completed-rate-mass}, suppose instead that the rates
+in~\eqref{eq:completed-mass-rate-ray} are positive for
+\(0\le\theta<\theta_*\) and nonnegative at \(\theta_*\).  Assign
+completion time \(\infty\) to a zero-rate label.  The completed
+rate mass at \(\theta_*\), defined by any selection of the first
+\(C\) labels among these extended completion times, is independent
+of the choices among infinite-time ties.  Moreover,
+\[
+  A_C(\theta)\longrightarrow A_C(\theta_*)
+  \quad\hbox{almost surely as }\theta\uparrow\theta_*,
+\]
+and the increasing-convex order holds on the entire closed interval
+\([0,\theta_*]\).
+\end{corollary}
+
+\begin{proof}
+Let \(I_+=\{i:p_i(\theta_*)>0\}\).  If \(|I_+|>C\), the first
+\(C\) labels at the endpoint belong to \(I_+\) and have distinct
+finite completion times almost surely.  Their ranks are stable
+near the endpoint, whereas the zero-rate completion times tend to
+infinity.  This proves the asserted convergence in this case.
+If \(|I_+|\le C\), every positive-rate label is included among the
+first \(C\) near the endpoint; all other selected rates tend to
+zero.  The limiting mass is therefore
+\(\sum_{i\in I_+}p_i(\theta_*)=1\), independently of which
+zero-rate labels complete the selected set.
+
+For a continuous increasing convex cost, the order follows by
+bounded convergence from comparisons at positive-rate parameters.
+A finite increasing convex function on \([0,1]\) is continuous
+on \([0,1)\); its only possible endpoint discontinuity is an upward
+jump at \(1\).  Subtracting that jump times \(\1_{\{x=1\}}\)
+leaves a continuous increasing convex function.  At every
+positive-rate parameter, \(A_C<1\) because \(C<n\), so restoring
+the possible jump can only increase the endpoint expectation.
+This proves the statement for all the costs in the definition of
+\(\le_{\mathrm{icx}}\).
+\end{proof}
+
+\subsection{Exponential races, LRU caches, and discovery increments}
+
+For exponential requirements, the completion order is the
+Plackett--Luce size-biased order.  Indeed, the first exponential
+clock has label \(i\) with probability \(p_i\); after deleting a
+completed label, memorylessness gives the same rule on the
+remaining labels with probabilities proportional to their rates.
+Let \(S_C\) be this random prefix, and write
+\begin{equation}\label{eq:race-residual-mass}
+  Q_C=1-\sum_{i\in S_C}p_i=1-A_C.
+\end{equation}
+In an independent-reference request stream with law \(p\), the
+stationary LRU cache of capacity \(C\) has this same set law:
+scanning the request sequence backward from stationarity yields
+the first \(C\) distinct labels in size-biased order.  Equivalently,
+in a stationary Poisson request model, the independent backward
+ages have exponential rates \(p_i\).  The next request is
+independent of the cache state, so
+\begin{equation}\label{eq:lru-residual-mass-identity}
+  \operatorname{Hit}_{\mathrm{LRU}}(C;p)=\E A_C,
+  \qquad
+  \operatorname{MR}_{\mathrm{LRU}}(C;p)=\E Q_C.
+\end{equation}
+These identities connect the completed-mass order to the radial
+LRU extremality results of~\cite{LongLRU2026,LongRank2026}.
+
+The same residual mass governs discovery delays.  Let \(T_{(C)}\)
+be the time of the \(C\)-th distinct discovery in the continuous
+Poisson model, and let \(D_C\) be the draw index of that discovery
+in the discrete iid request sequence.  Set \(T_{(0)}=D_0=0\).
+For positive rates and \(0\le C<n\), memorylessness and the iid
+sampling rule give, conditional on the discovered prefix,
+\begin{align}
+  T_{(C+1)}-T_{(C)}\mid S_C
+     &\sim\operatorname{Exp}(Q_C),
+     \label{eq:race-exponential-gap}\\
+  D_{C+1}-D_C\mid S_C
+     &\sim\operatorname{Geom}(Q_C),
+     \label{eq:race-geometric-gap}
+\end{align}
+where the geometric law is supported on \(\{1,2,\ldots\}\).
+In particular,
+\begin{equation}\label{eq:race-reciprocal-mass-identity}
+  \E(T_{(C+1)}-T_{(C)})
+  =\E(D_{C+1}-D_C)=\E Q_C^{-1}.
+\end{equation}
+For \(C=0\), take \(Q_0=1\).
+
+Along a positive-rate ray, Theorem~\ref{thm:completed-rate-mass}
+equivalently orders all decreasing convex costs of \(Q_C\).
+The uniform positive lower bound on rates over a closed parameter
+interval bounds \(Q_C\) away from zero, so this also applies to
+the costs \(q^{-s}\), \(s>0\).  Their corresponding increasing
+convex costs of \(A_C\) can be extended linearly beyond the compact
+range of \(A_C\), if necessary.  Thus
+\begin{equation}\label{eq:race-residual-transform-orders}
+  \E Q_C\ \hbox{is nonincreasing},\qquad
+  \E Q_C^{-s}\ \hbox{is nondecreasing}\quad(s>0).
+\end{equation}
+In addition, for \(u\ge0\) and integers \(\ell\ge0\),
+\begin{align*}
+  \Pbb(T_{(C+1)}-T_{(C)}>u)&=\E e^{-uQ_C},\\
+  \Pbb(D_{C+1}-D_C>\ell)&=\E(1-Q_C)^\ell.
+\end{align*}
+The costs on the right are decreasing and convex in \(Q_C\).
+Every individual discovery increment is therefore nondecreasing
+in the usual stochastic order along the ray.  The two expectations
+in~\eqref{eq:lru-residual-mass-identity} and
+\eqref{eq:race-reciprocal-mass-identity} are positive and reciprocal
+moment transforms of the same random residual mass; in particular,
+\[
+  \operatorname{MR}_{\mathrm{LRU}}(C;p)
+  \,\E(D_{C+1}-D_C)
+  =\E Q_C\,\E Q_C^{-1}\ge1.
+\]
+For \(1\le C<n\), equality holds precisely at uniform positive
+\(p\).  Indeed, equality in the displayed Cauchy--Schwarz
+inequality requires \(Q_C\) to be constant.  Every \(C\)-subset
+has positive probability under size-biased sampling; equality of
+their masses forces \(p_i=p_j\) by comparing subsets that differ
+only by exchanging \(i\) and \(j\).
+
+\subsection{The distinction between a fixed rank and a fixed deadline}
+
+Theorem~\ref{thm:completed-rate-mass} fixes the number \(C\) of
+completed labels and orders their total assigned rate.  The
+deadline event~\eqref{eq:gamma-race-deadline} fixes elapsed time and
+asks whether the number of completions reaches \(k\).  The deadline
+indicator is not determined by \(A_C\) alone, so the rank-mass
+order does not prove the deadline optimizer theorem.  Its
+exchangeable-requirement generality also does not supply the
+independent Bernoulli representation needed for the MDS tail.
+
+For non-exponential requirements, the unfinished completion times
+retain age information.  Even conditioning on the completed set
+does not make the next completion gap exponential with rate
+\(Q_C\).  With integer Gamma shape \(t>1\), the natural Markov
+state records each unfinished label's current Poisson count in
+\(\{0,\ldots,t-1\}\); the completed prefix alone omits this
+information.  The rank-mass theorem remains valid, but
+\eqref{eq:race-exponential-gap}--\eqref{eq:race-reciprocal-mass-identity}
+are exponential-case identities.  Even in that case, separate
+stochastic comparisons of discovery increments do not by
+themselves compare their dependent sum.  These distinctions locate
+the exact scope of the connection between completion races,
+coupon collection, caching, and fixed-deadline allocation.
+
+\section{Recovery families and general recovery curves}
+
+For the fixed-law probability identities and monotone fixed-read transfer, the MDS recovery condition can be replaced by an arbitrary upward-closed family of recoverable strand sets. This section records those extensions and then gives a separate sufficient criterion for active-uniform optimization with a common intensity response.
+
+\begin{theorem}[Recovery-family extension beyond MDS codes]\label{thm:recovery-family}
+Let \(\mathcal R\subseteq 2^{[n]}\) be an upward-closed family of recoverable strand sets:
+\[
+  A\in\mathcal R,\quad A\subseteq A'\subseteq[n]
+  \qquad\Longrightarrow\qquad A'\in\mathcal R.
+\]
+Work in the Poissonized fixed-\(p\) hard-threshold model.  Thus
+\[
+  N_i\sim\Poisson(Mp_i),\qquad i=1,\ldots,n,
+\]
+independently, and strand \(i\) is recovered if and only if \(N_i\ge t\).  Define
+\[
+  \theta_i(M)=\phi_t(Mp_i)
+  =1-e^{-Mp_i}\sum_{r=0}^{t-1}\frac{(Mp_i)^r}{r!}.
+\]
+Let
+\[
+  B_i=\1_{\{N_i\ge t\}},
+  \qquad
+  S_M=\{i\in[n]:B_i=1\}.
+\]
+Then \(B_1,\ldots,B_n\) are independent Bernoulli random variables with
+\[
+  B_i\sim\Bernoulli(\theta_i(M)).
+\]
+The decoding success probability for the recovery family \(\mathcal R\) is
+\[
+  P_{\mathcal R}(M;p)
+  =\Pbb(S_M\in\mathcal R)
+  =\sum_{A\subseteq[n]}\1_{\{A\in\mathcal R\}}
+    \prod_{i\in A}\theta_i(M)
+    \prod_{i\notin A}(1-\theta_i(M)).
+\]
+Equivalently, if \(\mathcal M\) is the set of inclusion-minimal elements of \(\mathcal R\), then
+\[
+  P_{\mathcal R}(M;p)
+  =\Pbb\left(\bigcup_{A\in\mathcal M}\{A\subseteq S_M\}\right),
+\]
+and the exact inclusion-exclusion formula is
+\[
+  P_{\mathcal R}(M;p)
+  =\sum_{\varnothing\ne \mathcal J\subseteq\mathcal M}
+    (-1)^{|\mathcal J|+1}
+    \prod_{i\in\bigcup_{A\in\mathcal J}A}\theta_i(M).
+\]
+The MDS case is recovered by taking
+\[
+  \mathcal R_{\mathrm{MDS}}=\{A\subseteq[n]: |A|\ge k\}.
+\]
+Then
+\[
+  P_{\mathcal R_{\mathrm{MDS}}}(M;p)
+  =\Pbb\left(\sum_{i=1}^n B_i\ge k\right),
+\]
+the Poisson-binomial expression from Theorem \ref{thm:poissonized-identity}.
+
+Moreover, \(P_{\mathcal R}\) is monotone in the coordinatewise recovery probabilities: if
+\[
+  0\le \theta_i\le\theta_i'\qquad\text{for all }i,
+\]
+then
+\[
+  P_{\mathcal R}(\theta_1,\ldots,\theta_n)
+  \le
+  P_{\mathcal R}(\theta_1',\ldots,\theta_n').
+\]
+Consequently, in the hard-threshold model, \(P_{\mathcal R}(M;p)\) is nondecreasing in \(M\).
+
+Finally, the fixed-read de-Poissonization sandwich of Theorem \ref{thm:depoissonization} applies to every such recovery family.  If, for an integer fixed-read count \(m\),
+\[
+  P_{m,\mathcal R}^{\mathrm{fix}}
+  =\Pbb(\{i:C_i^{(m)}\ge t\}\in\mathcal R)
+\]
+denotes the fixed-read success probability and
+\[
+  \Pi_{\lambda,\mathcal R}=P_{\mathcal R}(\lambda;p)
+\]
+denotes the Poissonized success probability at mean \(\lambda\), then for every \(0<\varepsilon<1\),
+\[
+  \Pi_{(1-\varepsilon)m,\mathcal R}
+  -e^{-m[-\log(1-\varepsilon)-\varepsilon]}
+  \le
+  P_{m,\mathcal R}^{\mathrm{fix}},
+\]
+and
+\[
+  P_{m,\mathcal R}^{\mathrm{fix}}
+  \le
+  \Pi_{(1+\varepsilon)m,\mathcal R}
+  +e^{-m[\varepsilon-\log(1+\varepsilon)]}.
+\]
+\end{theorem}
+
+\begin{proof}
+Since the counts \(N_i\) are independent, the indicators
+\[
+  B_i=\1_{\{N_i\ge t\}}
+\]
+are independent Bernoulli variables with
+\[
+  \Pbb(B_i=1)=\Pbb(N_i\ge t)=\phi_t(Mp_i)=\theta_i(M).
+\]
+For a fixed subset \(A\subseteq[n]\),
+\[
+  \{S_M=A\}=\bigcap_{i\in A}\{B_i=1\}
+  \cap\bigcap_{i\notin A}\{B_i=0\},
+\]
+and therefore
+\[
+  \Pbb(S_M=A)=
+  \prod_{i\in A}\theta_i(M)\prod_{i\notin A}(1-\theta_i(M)).
+\]
+Decoding succeeds exactly when \(S_M\in\mathcal R\).  Summing over all \(A\subseteq[n]\) proves the reliability-polynomial formula.
+
+Let \(\mathcal M\) be the set of minimal elements of \(\mathcal R\).  Because \(\mathcal R\) is upward closed and \([n]\) is finite, a set \(S\subseteq[n]\) belongs to \(\mathcal R\) if and only if it contains at least one member of \(\mathcal M\).  Hence
+\[
+  \{S_M\in\mathcal R\}
+  =\bigcup_{A\in\mathcal M}\{A\subseteq S_M\}.
+\]
+For \(A\in\mathcal M\), let \(E_A=\{A\subseteq S_M\}\).  For a nonempty subcollection \(\mathcal J\subseteq\mathcal M\),
+\[
+  \bigcap_{A\in\mathcal J}E_A
+  =\left\{\bigcup_{A\in\mathcal J}A\subseteq S_M\right\}.
+\]
+By independence of the \(B_i\)'s,
+\[
+  \Pbb\left(\bigcap_{A\in\mathcal J}E_A\right)
+  =\prod_{i\in\bigcup_{A\in\mathcal J}A}\theta_i(M).
+\]
+Finite inclusion-exclusion over the union \(\bigcup_{A\in\mathcal M}E_A\) gives the displayed formula.
+
+For an \([n,k]\) MDS code, the recoverable sets are precisely the subsets of size at least \(k\), so the MDS specialization is immediate.
+
+We now prove monotonicity.  Let \(0\le\theta_i\le\theta_i'\le1\) for all \(i\).  Let \(U_1,\ldots,U_n\) be independent uniform random variables on \([0,1]\), and define
+\[
+  B_i=\1_{\{U_i\le\theta_i\}},
+  \qquad
+  B_i'=\1_{\{U_i\le\theta_i'\}}.
+\]
+Then \(B_i\le B_i'\) almost surely for every \(i\).  If
+\[
+  S=\{i:B_i=1\},
+  \qquad
+  S'=\{i:B_i'=1\},
+\]
+then \(S\subseteq S'\) almost surely.  Since \(\mathcal R\) is upward closed,
+\[
+  S\in\mathcal R\quad\Longrightarrow\quad S'\in\mathcal R.
+\]
+Taking expectations proves coordinatewise monotonicity.  Since \(\phi_t\) is nondecreasing, \(\theta_i(M)=\phi_t(Mp_i)\) is nondecreasing in \(M\), and therefore \(P_{\mathcal R}(M;p)\) is nondecreasing in \(M\).
+
+It remains to prove the fixed-read sandwich.  Define the count event
+\[
+  A_{\mathcal R,t}=\{c\in\N^n:\{i:c_i\ge t\}\in\mathcal R\}.
+\]
+This event is increasing.  Indeed, if \(c\le c'\) coordinatewise, then
+\[
+  \{i:c_i\ge t\}\subseteq\{i:c_i'\ge t\},
+\]
+and upward closure of \(\mathcal R\) preserves recoverability.  The result is now Theorem \ref{thm:depoissonization} applied to \(A_{\mathcal R,t}\).  Under fixed reads, \(P_m(A_{\mathcal R,t})=P_{m,\mathcal R}^{\mathrm{fix}}\); under Poissonization with mean \(\lambda\), \(\Pi_\lambda(A_{\mathcal R,t})=\Pi_{\lambda,\mathcal R}\).  This gives the two displayed bounds.
+\end{proof}
+
+\begin{remark}
+In these fixed-law identities and transfer bounds, the MDS condition enters through the special recovery family \(\mathcal R_{\mathrm{MDS}}=\{A:|A|\ge k\}\). For another outer code, recoverability is encoded by its upward-closed family \(\mathcal R\), and the computational problem becomes evaluation of the corresponding reliability polynomial. The allocation theorems additionally use the symmetry of the cardinality event; they do not follow for an arbitrary recovery family from this representation alone.
+\end{remark}
+
+\begin{example}[A non-MDS recovery family]
+Suppose a toy outer code can recover the desired information either from strands \(\{1,2\}\) or from strands \(\{3,4,5\}\).  The upward-closed recovery family is
+\[
+  \mathcal R=\{S\subseteq[5]:\{1,2\}\subseteq S\ \text{or}\ \{3,4,5\}\subseteq S\}.
+\]
+Its minimal recovery sets are
+\[
+  \mathcal M=\bigl\{\{1,2\},\{3,4,5\}\bigr\}.
+\]
+Writing \(\theta_i=\phi_t(Mp_i)\), Theorem \ref{thm:recovery-family} gives
+\[
+  P_{\mathcal R}(M;p)
+  =\theta_1\theta_2+\theta_3\theta_4\theta_5
+   -\theta_1\theta_2\theta_3\theta_4\theta_5.
+\]
+This is the reliability polynomial of the monotone recovery event
+\[
+  \{1,2\}\subseteq S_M\quad\text{or}\quad \{3,4,5\}\subseteq S_M.
+\]
+The example illustrates how the MDS condition \(|S_M|\ge k\) is replaced by a more structured recovery criterion.
+\end{example}
+
+\begin{theorem}[General recovery curves and arbitrary recovery families]\label{thm:general-recovery-curves}
+Let \(\mathcal R\subseteq 2^{[n]}\) be an upward-closed recovery family.  Fix a sampling distribution \(p=(p_1,\ldots,p_n)\).  For each strand \(i\), let
+\[
+  s_i:\N\to[0,1]
+\]
+be a strand-recovery curve. Let \(B_i\) indicate successful reconstruction of strand \(i\). Assume that, conditional on the entire count vector \((N_1,\ldots,N_n)\), these indicators are independent and
+\[
+ \Pbb(B_i=1\mid N_1,\ldots,N_n)=s_i(N_i)
+ \quad\text{almost surely}.
+\]
+Use the same conditional reconstruction law in the fixed-read model.
+
+In the Poissonized model with mean read depth \(M\), let
+\[
+  N_i\sim\Poisson(Mp_i),\qquad i=1,\ldots,n,
+\]
+independently, and define
+\[
+  \theta_i(M)=\E[s_i(N_i)]
+  =\sum_{r=0}^{\infty}s_i(r)e^{-Mp_i}\frac{(Mp_i)^r}{r!}.
+\]
+Let \(B_i\) be the indicator that strand \(i\) is successfully reconstructed, and let
+\[
+  S_M=\{i\in[n]:B_i=1\}.
+\]
+Then \(B_1,\ldots,B_n\) are independent Bernoulli random variables with
+\[
+  B_i\sim\Bernoulli(\theta_i(M)).
+\]
+Consequently, the Poissonized success probability for \(\mathcal R\) is
+\[
+  P_{\mathcal R}^{s}(M;p)
+  =\Pbb(S_M\in\mathcal R)
+  =\sum_{A\subseteq[n]}\1_{\{A\in\mathcal R\}}
+    \prod_{i\in A}\theta_i(M)
+    \prod_{i\notin A}(1-\theta_i(M)).
+\]
+Equivalently, if \(\mathcal M\) is the set of inclusion-minimal elements of \(\mathcal R\), then
+\[
+  P_{\mathcal R}^{s}(M;p)
+  =\sum_{\varnothing\ne\mathcal J\subseteq\mathcal M}
+    (-1)^{|\mathcal J|+1}
+    \prod_{i\in\bigcup_{A\in\mathcal J}A}\theta_i(M).
+\]
+If each \(s_i\) is nondecreasing, then \(P_{\mathcal R}^{s}(M;p)\) is nondecreasing in \(M\).  Moreover, in that case the fixed-read de-Poissonization sandwich holds: if \(P_{m,\mathcal R}^{s,\mathrm{fix}}\) is the success probability for exactly an integer \(m\) reads and \(\Pi_{\lambda,\mathcal R}^{s}=P_{\mathcal R}^{s}(\lambda;p)\), then for every \(0<\varepsilon<1\),
+\[
+  \Pi_{(1-\varepsilon)m,\mathcal R}^{s}
+  -e^{-m[-\log(1-\varepsilon)-\varepsilon]}
+  \le
+  P_{m,\mathcal R}^{s,\mathrm{fix}},
+\]
+and
+\[
+  P_{m,\mathcal R}^{s,\mathrm{fix}}
+  \le
+  \Pi_{(1+\varepsilon)m,\mathcal R}^{s}
+  +e^{-m[\varepsilon-\log(1+\varepsilon)]}.
+\]
+The hard-threshold model is recovered by taking \(s_i(r)=\1_{\{r\ge t\}}\), and the MDS model is recovered by taking \(\mathcal R=\{A\subseteq[n]: |A|\ge k\}\).
+\end{theorem}
+
+\begin{proof}
+To make the reconstruction randomness explicit, let \(U_1,\ldots,U_n\) be independent uniform random variables on \([0,1]\), independent of the counts, and set
+\[
+  B_i=\1_{\{U_i\le s_i(N_i)\}}.
+\]
+Then
+\[
+  \Pbb(B_i=1\mid N_i=r)=s_i(r).
+\]
+Since each \(B_i\) depends only on the independent pair \((N_i,U_i)\), the variables \(B_1,\ldots,B_n\) are independent.  Moreover,
+\[
+\begin{aligned}
+  \Pbb(B_i=1)
+  &=\sum_{r=0}^{\infty}\Pbb(B_i=1\mid N_i=r)\Pbb(N_i=r) \\
+  &=\sum_{r=0}^{\infty}s_i(r)e^{-Mp_i}\frac{(Mp_i)^r}{r!}
+  =\theta_i(M).
+\end{aligned}
+\]
+Thus the recovered set \(S_M=\{i:B_i=1\}\) has independent Bernoulli coordinates with parameters \(\theta_i(M)\).  The reliability-polynomial formula and the minimal-recovery-set inclusion-exclusion formula now follow exactly as in the proof of Theorem \ref{thm:recovery-family}, with \(\theta_i(M)\) in place of the hard-threshold recovery probabilities.
+
+Assume next that each \(s_i\) is nondecreasing.  If \(M_1\le M_2\), couple the Poisson counts by
+\[
+  N_i(M_2)=N_i(M_1)+N_i',
+\]
+where \(N_i'\sim\Poisson((M_2-M_1)p_i)\) independently.  Then \(N_i(M_1)\le N_i(M_2)\) almost surely.  Using the same auxiliary uniform \(U_i\),
+\[
+  \1_{\{U_i\le s_i(N_i(M_1))\}}
+  \le
+  \1_{\{U_i\le s_i(N_i(M_2))\}}
+\]
+almost surely.  Therefore the recovered set at \(M_1\) is contained in the recovered set at \(M_2\), and upward closure of \(\mathcal R\) gives monotonicity of \(P_{\mathcal R}^{s}(M;p)\).
+
+For the fixed-read sandwich, construct all fixed-prefix count vectors from one infinite iid read sequence, and use the same auxiliary uniforms \(U_1,\ldots,U_n\).  For a count vector \(c\) and uniform vector \(u\), define
+\[
+  F(c,u)=\1\{\{i:u_i\le s_i(c_i)\}\in\mathcal R\}.
+\]
+Because each \(s_i\) is nondecreasing and \(\mathcal R\) is upward closed, \(F(c,u)\) is increasing in \(c\) coordinatewise.  The coupling proof of Theorem \ref{thm:depoissonization} applies verbatim to the increasing functional \(F\), giving the displayed sandwich bounds.
+
+The hard-threshold and MDS specializations are immediate from the definitions.
+\end{proof}
+
+\begin{remark}
+This theorem permits a non-MDS outer code and random strand reconstruction. Its identities are exact under the stated own-count conditional probabilities and conditional independence. Evaluating the reliability polynomial of \(\mathcal R\) may be hard. Neither heterogeneous curves \(s_i\) nor arbitrary recovery families inherit active-uniform optimality from these probability identities; the criterion below concerns a common intensity response and the symmetric cardinality event.
+\end{remark}
+
+\begin{remark}[Why monotonicity is essential]
+The fixed-read sandwich in Theorem \ref{thm:general-recovery-curves} uses the fact that, for each fixed auxiliary uniform vector \(u\), the functional
+\[
+  F(c,u)=\1\{\{i:u_i\le s_i(c_i)\}\in\mathcal R\}
+\]
+is increasing in the count vector \(c\).  This follows from two hypotheses: each \(s_i\) is nondecreasing, and \(\mathcal R\) is upward closed.  If some recovery curve is nonmonotone, then adding reads can lower \(s_i(c_i)\), and the coupling comparison between a Poisson-stopped prefix and a fixed prefix may fail.  Such nonmonotone models require a different de-Poissonization argument.
+\end{remark}
+
+\subsection{A sufficient criterion for a common recovery response}
+\label{subsec:common-recovery-criterion}
+
+The preceding recovery-family formulas evaluate a specified sampling
+law.  An optimizer theorem needs additional structure.  For a common
+response curve and the cardinality condition of an MDS code, the
+active-uniform proof has the following general form.
+
+\begin{proposition}[A common-response tail-ratio criterion]
+\label{prop:common-recovery-active-uniform}
+Let \(F\) be an absolutely continuous distribution function on
+\([0,\infty)\), with \(F(0)=0\) and \(\lim_{x\to\infty}F(x)=1\).
+Suppose its density \(g\) is positive and \(C^2\) on
+\((0,\infty)\), and satisfies
+\begin{equation}\label{eq:common-response-density-hypotheses}
+  g(0+)=0,\qquad \lim_{x\to\infty}g(x)=0,
+  \qquad (\log g)''(x)<0\quad(x>0).
+\end{equation}
+Define
+\[
+  P(x)=\frac{1-F(x)}{g(x)},\qquad
+  Q(x)=\frac{F(x)}{g(x)}.
+\]
+Assume that on \((0,\infty)\),
+\begin{equation}\label{eq:common-response-slope-hypotheses}
+  L_1(x)=\frac{-P'(x)}{Q'(x)}
+       \quad\hbox{is strictly decreasing},\qquad
+  L_2(x)=\frac{(-P'(x))Q(x)^2}{Q'(x)P(x)^2}
+       \quad\hbox{is strictly increasing}.
+\end{equation}
+For independent \(B_i\sim\Bernoulli(F(\lambda_i))\), every global
+maximizer of
+\[
+  \mathcal S_F(\lambda)
+  =\Pbb\left(\sum_{i=1}^n B_i\ge k\right),
+  \qquad \lambda_i\ge0,\quad\sum_i\lambda_i=M,
+\]
+is uniform on its positive support, for every \(n\ge1\),
+\(1\le k\le n\), and \(M>0\).  In particular,
+\begin{equation}\label{eq:common-response-active-uniform-value}
+  \max_{\lambda_i\ge0,\ \sum_i\lambda_i=M}\mathcal S_F(\lambda)
+  =\max_{q=k,\ldots,n}
+      \Pbb\bigl(\Bin(q,F(M/q))\ge k\bigr).
+\end{equation}
+The full set of maximizers consists of the permutations of the
+active-uniform allocations whose support sizes attain this finite
+maximum.  If \(k=1\), their support size is one; if \(k=n\), the
+unique maximizer is full uniformity.
+\end{proposition}
+
+\begin{proof}
+We establish the properties of the response that are needed by the
+pair-shadow argument, and then exclude the possible asymmetric
+stationary patterns.
+
+\medskip\noindent\emph{Tail ratios and endpoint faces.}
+Put \(u=(\log g)'\), so \(u'<0\).  Differentiation gives
+\begin{equation}\label{eq:common-response-tail-odes}
+  P'=-1-uP,\qquad Q'=1-uQ.
+\end{equation}
+In fact \(P'<0\) and \(Q'>0\).  To see the first assertion, it is
+immediate from~\eqref{eq:common-response-tail-odes} when \(u(x)\ge0\).
+If \(u(x)<0\), strict log-concavity gives
+\[
+  \frac{g(x+s)}{g(x)}<e^{u(x)s}\quad(s>0),
+  \qquad
+  P(x)=\int_0^\infty\frac{g(x+s)}{g(x)}\,ds<\frac{-1}{u(x)}.
+\]
+Again \(P'(x)<0\).  For \(Q'\), the case \(u(x)\le0\) is
+immediate.  If \(u(x)>0\), the corresponding tangent-line bound
+to the left gives
+\[
+  Q(x)=\int_0^x\frac{g(s)}{g(x)}\,ds
+       <\int_0^x e^{u(x)(s-x)}\,ds<\frac1{u(x)},
+\]
+so \(Q'(x)>0\).  Thus the quotients in
+\eqref{eq:common-response-slope-hypotheses} are well defined.
+
+The hazard \(g/(1-F)=1/P\) is strictly increasing, while
+\((\log F)'=g/F=1/Q\) is strictly decreasing.  The latter property
+and strict Jensen show that on a positive \(q\)-face the
+all-must-succeed objective \(\prod_iF(\lambda_i)\) is uniquely
+maximized at its barycenter.  For \(k=1\), let
+\(A(x)=-\log(1-F(x))\).  Since \(A(0)=0\) and \(A'\) is strictly
+increasing,
+\[
+  A(x+y)>A(x)+A(y)\quad(x,y>0).
+\]
+Merging any two positive coordinates therefore strictly increases
+the at-least-one-success probability.  This proves the stated
+\(k=1\) conclusion.
+
+\medskip\noindent\emph{Marginal-ratio shape.}
+For \(\alpha<1\), define
+\[
+  D_\alpha=1-\alpha F>0,
+  \qquad L_\alpha=\frac g{D_\alpha},
+  \qquad N_\alpha=uD_\alpha+\alpha g.
+\]
+Then
+\[
+  L_\alpha'=\frac g{D_\alpha^2}N_\alpha,
+  \qquad N_\alpha'=u'D_\alpha<0.
+\]
+The density assumptions imply
+\(L_\alpha(0+)=L_\alpha(\infty)=0\).  Because \(L_\alpha\) is
+positive in the interior, it has an interior maximum.  The strict
+decrease of \(N_\alpha\) makes this maximum unique; denote its
+location by \(x_*(\alpha)\).  At the critical point,
+\[
+  \partial_\alpha N_\alpha=g-uF=\frac g{D_\alpha}>0.
+\]
+The implicit-function theorem consequently shows that
+\(x_*(\alpha)\) is strictly increasing in \(\alpha\).
+
+\medskip\noindent\emph{The possible stationary levels.}
+Consider an interior stationary point of a positive \(q\)-face with
+\(2\le k\le q-1\).  For a pair of coordinates, let \(Z\) be the
+sum of all the other Bernoulli variables, and write
+\[
+  \beta=\Pbb(Z=k-1)>0,\qquad
+  \gamma=\Pbb(Z=k-2)>0,\qquad
+  \alpha=1-\gamma/\beta<1.
+\]
+Conditioning on that pair shows that its contribution, up to an
+additive constant and the positive factor \(\beta\), is
+\[
+  F(x)+F(y)-\alpha F(x)F(y).
+\]
+The constrained stationary equation is therefore
+\(L_\alpha(x)=L_\alpha(y)\).
+
+The shadow parameter \(\alpha\) is nondecreasing in each remaining
+Bernoulli success probability.  Indeed, if \(p_j\) is the mass
+function of a shadow before a Bernoulli variable of parameter
+\(\theta\) is added, then
+\[
+  \beta(\theta)=(1-\theta)p_{k-1}+\theta p_{k-2},\qquad
+  \gamma(\theta)=(1-\theta)p_{k-2}+\theta p_{k-3},
+\]
+and
+\[
+  \frac d{d\theta}\left(1-\frac{\gamma(\theta)}{\beta(\theta)}\right)
+  =\frac{p_{k-2}^2-p_{k-1}p_{k-3}}{\beta(\theta)^2}\ge0.
+\]
+The inequality is log-concavity of a Bernoulli convolution, with
+zero masses outside its support; see~\cite{Liggett1997}.
+
+If three distinct stationary levels \(x_1<x_2<x_3\) occurred, the
+pair equations would give
+\[
+  x_*(\alpha_{12})<x_2<x_*(\alpha_{23}).
+\]
+But the first shadow contains \(x_3\) where the second contains
+\(x_1\), so \(\alpha_{12}\ge\alpha_{23}\), contradicting the
+increase of \(x_*\).  There are therefore at most two levels.
+
+Suppose the levels are \(x<y\).  The equation for an \(xy\)-pair
+puts \(x\) strictly before the peak of \(L_{\alpha_{xy}}\).
+If two small coordinates exist, their \(xx\)-shadow has
+\(\alpha_{xx}\ge\alpha_{xy}\), hence
+\(L_{\alpha_{xx}}'(x)>0\).  Splitting this pair into
+\(x+\varepsilon,x-\varepsilon\) gives second derivative
+\[
+  2\beta_{xx}\bigl[g'(x)(1-\alpha_{xx}F(x))
+                         +\alpha_{xx}g(x)^2\bigr]
+  =2\beta_{xx}(1-\alpha_{xx}F(x))^2L_{\alpha_{xx}}'(x)>0.
+\]
+Such a point is not a local maximum.  The only remaining asymmetric
+pattern is one small coordinate \(x\) and \(q-1\) equal larger
+coordinates \(y\).
+
+\medskip\noindent\emph{Exclusion of one small coordinate.}
+Set
+\[
+  a=\frac{q-k}{q-1},\qquad b=\frac{k-1}{q-1},\qquad a+b=1.
+\]
+Let \(D_x\) and \(D_y\) be the partial derivatives of the full
+objective with respect to the small coordinate and one large
+coordinate.  The binomial shadow ratios give
+\[
+  \frac{D_y}{D_x}
+  =a\frac{P(x)}{P(y)}+b\frac{Q(x)}{Q(y)}
+  =1+K(x,y).
+\]
+At a stationary point, \(K(x,y)=0\).  Put
+\[
+  S=\frac{P(x)-P(y)}{Q(y)-Q(x)}>0.
+\]
+Stationarity is equivalent to \(b/a=S Q(y)/P(y)\).
+Cauchy's mean-value theorem, first for \(P,Q\) and then for
+\(1/P,-1/Q\), together with the two strict slope assumptions gives
+\begin{equation}\label{eq:common-response-secant-bounds}
+  S<L_1(x),\qquad
+  S\frac{Q(x)Q(y)}{P(x)P(y)}<L_2(y).
+\end{equation}
+The first bound implies
+\[
+  K_x=\frac{aQ'(x)}{P(y)}\bigl[S-L_1(x)\bigr]<0.
+\]
+The second implies
+\[
+  K_y
+  =a\frac{P(x)(-P'(y))}{P(y)^2}
+    -b\frac{Q(x)Q'(y)}{Q(y)^2}>0.
+\]
+Along the feasible path \(y=(M-x)/(q-1)\), let
+\(G(x)=\mathcal S_F(x,y,\ldots,y)\).  Its first derivative is
+\(G'=D_x-D_y=-D_xK\); consequently at the stationary point,
+\[
+  G''=-D_x\left(K_x-\frac{K_y}{q-1}\right)>0.
+\]
+This excludes the final asymmetric local-maximum pattern.
+
+Finally, compactness gives a global maximizer.  Its positive support
+has size \(q\ge k\), because smaller supports have zero success
+probability while a \(k\)-point uniform allocation has positive
+success probability.  It is an interior local maximum on its
+positive face.  The endpoint cases and the preceding exclusions
+force that face's barycenter.  Evaluation on each possible support
+gives~\eqref{eq:common-response-active-uniform-value} and the complete
+equality description.
+\end{proof}
+
+The Gamma responses \(F_\tau\), \(\tau>1\), satisfy all these
+hypotheses by the tail-ratio inequalities proved in
+Section~\ref{sec:mds-success-modules}.  Strict log-concavity of the
+density supplies the marginal-ratio and level reductions; the two
+slope conditions in~\eqref{eq:common-response-slope-hypotheses}
+supply the final exclusion.  The criterion applies to a common
+response under an unweighted total budget.  It makes no optimizer
+claim for unequal response curves, unequal allocation costs, or a
+general upward-closed recovery family.
+
+\section{Random molecular environments}\label{sec:random-environments}
+
+\begin{definition}[Random molecular environment]
+Let \(\mathcal E\) be a random molecular environment.  Conditional on \(\mathcal E\), the read distribution is a random probability vector
+\[
+  P(\mathcal E)=(P_1(\mathcal E),\ldots,P_n(\mathcal E)).
+\]
+In the Poissonized model, conditional on \(\mathcal E\), counts satisfy
+\[
+  N_i\mid \mathcal E\sim \Poisson(MP_i(\mathcal E)),
+  \qquad i=1,\ldots,n,
+\]
+independently.
+\end{definition}
+
+\begin{theorem}[Random-environment coverage theorem]\label{thm:random-environment}
+Fix \(t\ge1\).  Conditional on \(\mathcal E\), define
+\[
+  \theta_i(M,\mathcal E)=\phi_t(MP_i(\mathcal E)).
+\]
+For an \([n,k]\) MDS outer code,
+\[
+  \Pbb(\mathrm{success}\mid \mathcal E)
+  =\Pbb\left(\sum_{i=1}^n B_i(M,\mathcal E)\ge k\mid\mathcal E\right),
+\]
+where, conditional on \(\mathcal E\), the \(B_i(M,\mathcal E)\) are independent Bernoulli random variables with parameters \(\theta_i(M,\mathcal E)\).  Equivalently,
+\[
+  \Pbb(\mathrm{success}\mid \mathcal E)
+  =\sum_{j=k}^n [u^j]\prod_{i=1}^n
+  \bigl(1-\theta_i(M,\mathcal E)+\theta_i(M,\mathcal E)u\bigr).
+\]
+Consequently,
+\[
+  \Pbb(\mathrm{success})
+  =\E_{\mathcal E}\left[
+  \sum_{j=k}^n [u^j]\prod_{i=1}^n
+  \bigl(1-\theta_i(M,\mathcal E)+\theta_i(M,\mathcal E)u\bigr)
+  \right].
+\]
+Let
+\[
+  q_M(\mathcal E)=\Pbb(\mathrm{success}\mid\mathcal E).
+\]
+If, for \(0<\delta,\eta<1\),
+\[
+  \Pbb_{\mathcal E}(q_M(\mathcal E)\ge1-\delta)
+  \ge1-\eta,
+\]
+then
+\[
+  \Pbb(\mathrm{success})\ge(1-\delta)(1-\eta),
+\]
+so
+\[
+  \Pbb(\mathrm{failure})\le \delta+
+  \eta-\delta\eta\le\delta+
+  \eta.
+\]
+Finally, define
+\[
+  \mu(M,\mathcal E)=\sum_i\theta_i(M,\mathcal E),
+\]
+\[
+  v(M,\mathcal E)=\sum_i\theta_i(M,\mathcal E)(1-\theta_i(M,\mathcal E)).
+\]
+If, with probability at least \(1-\eta\) over \(\mathcal E\),
+\[
+  \mu(M,\mathcal E)-k
+  \ge
+  \sqrt{2v(M,\mathcal E)\log(1/\delta)}
+  +\frac23\log(1/\delta),
+\]
+then
+\[
+  \Pbb(\mathrm{success})\ge(1-\delta)(1-\eta).
+\]
+\end{theorem}
+
+\begin{proof}
+Condition on \(\mathcal E\).  Then the read distribution \(P(\mathcal E)\) is deterministic.  Poisson splitting gives independent counts
+\[
+  N_i\mid\mathcal E\sim\Poisson(MP_i(\mathcal E)).
+\]
+The hard-threshold recovery indicator
+\[
+  B_i(M,\mathcal E)=\1_{\{N_i\ge t\}}
+\]
+is therefore conditionally Bernoulli with parameter
+\[
+  \theta_i(M,\mathcal E)=\phi_t(MP_i(\mathcal E)),
+\]
+and the indicators are conditionally independent.  MDS decoding succeeds iff at least \(k\) of these indicators equal one, proving the conditional identity.  The coefficient formula follows from the conditional probability generating function, and the unconditional identity follows by taking expectation over \(\mathcal E\).
+
+Let \(G=\{\mathcal E:q_M(\mathcal E)\ge1-\delta\}\).  Then
+\[
+\begin{aligned}
+  \Pbb(\mathrm{success})
+  &=\E_{\mathcal E}[q_M(\mathcal E)] \\
+  &\ge \E_{\mathcal E}[q_M(\mathcal E)\1_G] \\
+  &\ge (1-\delta)\Pbb_{\mathcal E}(G)
+  \ge(1-\delta)(1-\eta).
+\end{aligned}
+\]
+The failure bound is the complement.  Finally, Theorem \ref{thm:concentration} applies conditionally on any environment satisfying the displayed Bernstein-margin condition.  Hence on that event \(q_M(\mathcal E)\ge1-\delta\), and the preceding robust guarantee applies.
+\end{proof}
+
+\begin{remark}[Conditioning and allocation decisions]
+Conditional independence in Theorem \ref{thm:random-environment}
+does not imply independence after the environment is averaged out.
+Likewise, the allocation theorem applies to each conditional
+objective only when its common-curve and budget hypotheses hold.
+If \(\mathcal S_{\mathcal E}(\lambda)\) is an
+environment-dependent success probability on a common feasible
+set \(\mathcal D\), a fixed allocation satisfies
+\[
+ \sup_{\lambda\in\mathcal D}
+       \E_{\mathcal E}\mathcal S_{\mathcal E}(\lambda)
+ \le
+ \E_{\mathcal E}\sup_{\lambda\in\mathcal D}
+       \mathcal S_{\mathcal E}(\lambda),
+\]
+whenever these quantities are measurable.  The right-hand side
+allows an environment-specific decision and need not be attainable
+by one fixed allocation.  For a fixed deterministic objective,
+independent randomization of the allocation cannot improve its
+maximum, because the randomized value is an average of feasible
+deterministic values.
+\end{remark}
+
+\begin{theorem}[Annealed Jensen bias penalty]\label{thm:annealed-jensen}
+Let
+\[
+  P=(P_1,\ldots,P_n)
+\]
+be a random probability vector on \([n]\), with
+\[
+  \E P_i=\frac1n,
+  \qquad i=1,\ldots,n.
+\]
+For hard threshold \(t=1\), define the conditional terminal missing-cloud mean
+\[
+  \Lambda_1(M;P)=\sum_{i=1}^n e^{-MP_i}.
+\]
+Then, for every \(M>0\),
+\[
+  \E[\Lambda_1(M;P)]\ge n e^{-M/n}.
+\]
+Equality holds if and only if
+\[
+  P_i=\frac1n\qquad\text{for every }i
+\]
+almost surely.
+
+Moreover, write
+\[
+  P_i=\frac{1+\varepsilon_i}{n},
+  \qquad \sum_{i=1}^n\varepsilon_i=0\quad\text{a.s.},
+\]
+and set \(\alpha=M/n\).  If \(|\varepsilon_i|\le L\) almost surely for all \(i\), then
+\[
+  \E[\Lambda_1(M;P)]
+  =n e^{-\alpha}\left(
+  1+\frac{\alpha^2}{2}\cdot\frac1n\sum_{i=1}^n\E[\varepsilon_i^2]
+  +R_{\mathrm{ann}}
+  \right),
+\]
+where
+\[
+  |R_{\mathrm{ann}}|
+  \le
+  \frac{\alpha^3}{6}e^{\alpha L}
+  \cdot \frac1n\sum_{i=1}^n\E[|\varepsilon_i|^3].
+\]
+\end{theorem}
+
+\begin{proof}
+For each fixed \(i\), the function \(x\mapsto e^{-Mx}\) is strictly convex.  Jensen's inequality gives
+\[
+  \E[e^{-MP_i}]\ge e^{-M\E P_i}=e^{-M/n}.
+\]
+Summing over \(i\) proves
+\[
+  \E[\Lambda_1(M;P)]\ge n e^{-M/n}.
+\]
+Because the function is strictly convex, equality for coordinate \(i\) holds iff \(P_i\) is almost surely constant.  Since \(\E P_i=1/n\), this constant must be \(1/n\).  Equality in the summed inequality therefore holds iff every \(P_i=1/n\) almost surely.
+
+For the expansion, write \(\alpha=M/n\).  Then
+\[
+  \Lambda_1(M;P)=e^{-\alpha}\sum_{i=1}^n e^{-\alpha\varepsilon_i}.
+\]
+Taylor's formula gives
+\[
+  e^{-x}=1-x+\frac{x^2}{2}+\rho(x),
+  \qquad |\rho(x)|\le\frac{|x|^3}{6}e^{|x|}.
+\]
+With \(x=\alpha\varepsilon_i\), and using \(\sum_i\varepsilon_i=0\) almost surely,
+\[
+  \sum_i e^{-\alpha\varepsilon_i}
+  =n+\frac{\alpha^2}{2}\sum_i\varepsilon_i^2+\sum_i\rho_i,
+\]
+where
+\[
+  |\rho_i|\le\frac{\alpha^3}{6}e^{\alpha L}|\varepsilon_i|^3.
+\]
+Taking expectations and factoring out \(n e^{-\alpha}\) gives the stated expansion and remainder bound.
+\end{proof}
+
+\section{Empirical plug-in guarantees}
+
+The preceding fixed-\(p\) theory assumes that the sampling distribution is known.  In applications, \(p\) is usually estimated from calibration data.  The following result gives a conservative one-sided plug-in guarantee.  It uses only lower confidence bounds on the sampling probabilities.
+
+\begin{theorem}[Empirical plug-in guarantee]\label{thm:plugin}
+Work in the Poissonized hard-threshold model.  Conditional on a sampling distribution
+\[
+  p=(p_1,\ldots,p_n),
+\]
+the read counts are independent random variables
+\[
+  N_i\sim\Poisson(Mp_i),\qquad i=1,\ldots,n,
+\]
+and strand \(i\) is recovered if and only if \(N_i\ge t\).  Let
+\[
+  q_p(M)=\Pbb_p\bigl(\#\{i:N_i\ge t\}\ge k\bigr)
+\]
+be the Poissonized success probability for an outer \([n,k]\) MDS code.
+
+Suppose \(\ell=(\ell_1,\ldots,\ell_n)\) is a deterministic lower-bound vector satisfying
+\[
+  0\le \ell_i\le p_i\qquad\text{for every }i.
+\]
+Set
+\[
+  \underline\theta_i(M)=\phi_t(M\ell_i),
+\]
+and define
+\[
+  \underline q_\ell(M)
+  =\Pbb\left(\sum_{i=1}^n \underline B_i\ge k\right),
+\]
+where \(\underline B_1,\ldots,\underline B_n\) are independent Bernoulli random variables with
+\[
+  \underline B_i\sim\Bernoulli(\underline\theta_i(M)).
+\]
+Equivalently,
+\[
+  \underline q_\ell(M)
+  =\sum_{j=k}^{n}[u^j]
+    \prod_{i=1}^n\bigl(1-\underline\theta_i(M)+\underline\theta_i(M)u\bigr).
+\]
+Then
+\[
+  q_p(M)\ge \underline q_\ell(M).
+\]
+Consequently, if
+\[
+  \underline q_\ell(M)\ge 1-\delta,
+\]
+then
+\[
+  q_p(M)\ge 1-\delta.
+\]
+
+Now suppose the lower bounds are obtained from independent calibration data and are random.  Let
+\[
+  \widehat\ell=(\widehat\ell_1,\ldots,\widehat\ell_n)
+\]
+be simultaneous lower confidence bounds satisfying
+\[
+  \Pbb\bigl(\widehat\ell_i\le p_i\ \text{for all }i\bigr)\ge 1-\eta.
+\]
+If the read depth \(M=M(\widehat\ell)\) is chosen so that
+\[
+  \underline q_{\widehat\ell}\bigl(M(\widehat\ell)\bigr)\ge 1-\delta
+\]
+for every realized lower-bound vector \(\widehat\ell\), then the joint probability, over both calibration and subsequent sequencing, satisfies
+\[
+  \Pbb(\mathrm{success})\ge (1-\eta)(1-\delta).
+\]
+Equivalently,
+\[
+  \Pbb(\mathrm{failure})\le \eta+\delta-\eta\delta\le \eta+\delta.
+\]
+\end{theorem}
+
+\begin{proof}
+We first prove the deterministic lower-bound statement.  The function \(\phi_t\) is nondecreasing on \([0,\infty)\).  Indeed,
+\[
+  \phi_t(\lambda)=1-e^{-\lambda}\sum_{r=0}^{t-1}\frac{\lambda^r}{r!},
+\]
+and direct differentiation gives
+\[
+  \phi_t'(\lambda)=e^{-\lambda}\frac{\lambda^{t-1}}{(t-1)!}\ge 0.
+\]
+Since \(\ell_i\le p_i\), we have
+\[
+  \underline\theta_i(M)=\phi_t(M\ell_i)\le \phi_t(Mp_i)=:\theta_i(M).
+\]
+Let \(U_1,\ldots,U_n\) be independent uniform random variables on \([0,1]\), and define
+\[
+  B_i=\1_{\{U_i\le \theta_i(M)\}},\qquad
+  \underline B_i=\1_{\{U_i\le \underline\theta_i(M)\}}.
+\]
+Then \((B_i)\) are independent Bernoulli variables with parameters \(\theta_i(M)\), and \((\underline B_i)\) are independent Bernoulli variables with parameters \(\underline\theta_i(M)\).  Moreover,
+\[
+  \underline B_i\le B_i\qquad\text{almost surely for every }i.
+\]
+Therefore
+\[
+  \sum_i \underline B_i\le \sum_i B_i\qquad\text{almost surely},
+\]
+and hence
+\[
+  \Pbb\left(\sum_i B_i\ge k\right)
+  \ge
+  \Pbb\left(\sum_i \underline B_i\ge k\right).
+\]
+The left-hand side is \(q_p(M)\), and the right-hand side is \(\underline q_\ell(M)\).  This proves
+\[
+  q_p(M)\ge \underline q_\ell(M).
+\]
+The deterministic guarantee follows immediately.
+
+Now let
+\[
+  G=\{\widehat\ell_i\le p_i\text{ for all }i\}
+\]
+be the calibration-good event.  By assumption, \(\Pbb(G)\ge1-\eta\).  Conditional on the calibration data, if \(G\) occurs, then the deterministic guarantee applies with \(\ell=\widehat\ell\).  Therefore, on \(G\),
+\[
+  \Pbb(\mathrm{success}\mid \widehat\ell)
+  \ge
+  \underline q_{\widehat\ell}\bigl(M(\widehat\ell)\bigr)
+  \ge 1-\delta.
+\]
+Taking expectation over the calibration data gives
+\[
+\begin{aligned}
+  \Pbb(\mathrm{success})
+  &=\E\bigl[\Pbb(\mathrm{success}\mid \widehat\ell)\bigr] \\
+  &\ge \E\bigl[\Pbb(\mathrm{success}\mid \widehat\ell)\1_G\bigr] \\
+  &\ge (1-\delta)\Pbb(G) \\
+  &\ge (1-\delta)(1-\eta).
+\end{aligned}
+\]
+The failure bound follows by subtracting from one.
+\end{proof}
+
+\begin{remark}
+Only lower confidence bounds are needed for this one-sided recovery guarantee.  If \(\ell_i\le p_i\), then strand \(i\) is at least as likely to be recovered under the true law as under the lower-bound law.  The lower-bound Poisson-binomial tail is therefore a conservative success probability.
+\end{remark}
+
+\subsection{Perturbation bounds and finite support comparisons}
+
+The same uniform coupling gives a two-sided perturbation estimate.  It
+controls the effect of an approximate allocation or an approximate
+recovery curve without a new optimization argument.
+
+\begin{proposition}[Perturbation bound]
+\label{prop:recovery-perturbation}
+Let \(B_i\sim\Bernoulli(a_i)\) and
+\(\widetilde B_i\sim\Bernoulli(\widetilde a_i)\) be independent
+within each family, with \(a_i,\widetilde a_i\in[0,1]\).  For
+every event \(\mathcal A\subseteq\{0,1\}^n\),
+\[
+ \bigl|\Pbb(B\in\mathcal A)
+       -\Pbb(\widetilde B\in\mathcal A)\bigr|
+ \le \min\left\{1,\sum_{i=1}^n|a_i-\widetilde a_i|\right\}.
+\]
+Consequently, for any common recovery curve \(F\),
+\[
+ \bigl|\mathcal S_F(\lambda)-\mathcal S_F(\widetilde\lambda)\bigr|
+ \le \sum_i|F(\lambda_i)-F(\widetilde\lambda_i)|,
+ \qquad
+ \mathcal S_F(\lambda)
+ :=\Pbb\!\left(\sum_i\Bernoulli(F(\lambda_i))\ge k\right),
+\]
+where the Bernoulli variables are independent.  If \(F\) is
+\(L\)-Lipschitz, the right-hand side is at most
+\(L\|\lambda-\widetilde\lambda\|_1\).  For the Gamma curve
+\(F_\tau\) with \(\tau\ge1\), one can take
+\[
+ L_\tau=
+ \begin{cases}
+  1,&\tau=1,\\[2pt]
+  (\tau-1)^{\tau-1}e^{-(\tau-1)}/\Gamma(\tau),&\tau>1.
+ \end{cases}
+\]
+\end{proposition}
+
+\begin{proof}
+Take independent uniform \(U_i\) and set
+\(B_i=\1_{\{U_i\le a_i\}}\),
+\(\widetilde B_i=\1_{\{U_i\le\widetilde a_i\}}\).
+The two event indicators agree unless at least one coordinate
+differs.  The union bound gives the first inequality, and the
+remaining estimates follow by substitution and the Lipschitz
+property.  For \(\tau>1\), differentiating the Gamma density
+shows that its maximum occurs at \(\tau-1\); at \(\tau=1\),
+the density is \(e^{-x}\).
+\end{proof}
+
+\begin{remark}[A certified finite comparison]
+Suppose one of the active-uniform candidates has value exceeding
+every other candidate by a positive gap \(\delta\).  If every
+candidate allocation is perturbed by at most \(\varepsilon\) in
+\(\ell^1\), the winning candidate remains strictly best among
+these perturbed candidates whenever
+\(2L_\tau\varepsilon<\delta\).  The same conclusion holds for
+any candidate values known within a common error bound smaller
+than \(\delta/2\).  This is a gap between finitely many support
+comparisons; continuity prevents a positive objective gap from
+all nonuniform allocations arbitrarily close to a maximizer.
+For \(0<\tau<1\), the density is unbounded at zero, but the
+CDF perturbation bound in Proposition
+\ref{prop:recovery-perturbation} still applies.
+\end{remark}
+
+\section{Nonuniform motif-subset posterior identities}
+
+We now move from hard strand recovery to posterior information in combinatorial motif systems.  The next theorem is the basic nonuniform posterior-flux identity.
+
+\begin{theorem}[Nonuniform posterior identity for motif-subset channels]\label{thm:posterior-identity}
+Let
+\[
+  \mathcal X=\binom{[n]}{k}
+\]
+be the input alphabet of \(k\)-motif symbols.  Let \(X\) be drawn from a prior distribution
+\[
+  \pi=(\pi_x)_{x\in\mathcal X},\qquad \sum_{x\in\mathcal X}\pi_x=1.
+\]
+For each \(x\in\mathcal X\), let
+\[
+  q_x=(q_x(1),\ldots,q_x(n))
+\]
+be a probability distribution on \([n]\).  Conditional on \(X=x\), suppose the observed reads
+\[
+  Y=(Y_1,\ldots,Y_R)\in[n]^R
+\]
+are independent with common law \(q_x\).  Thus
+\[
+  \Pbb(Y=y\mid X=x)=L_x(y):=\prod_{r=1}^R q_x(y_r).
+\]
+Define the output law
+\[
+  P_\pi(y)=\sum_{z\in\mathcal X}\pi_z L_z(y).
+\]
+Then, for every \(y\in[n]^R\) with \(P_\pi(y)>0\),
+\[
+  \Pbb(X=x\mid Y=y)=
+  \frac{\pi_x L_x(y)}{\sum_{z\in\mathcal X}\pi_z L_z(y)}.
+\]
+Consequently,
+\[
+  I_\pi(X;Y)
+  =H(\pi)-\E_Y\left[
+    H\left(
+      \left(
+      \frac{\pi_xL_x(Y)}{\sum_{z\in\mathcal X}\pi_zL_z(Y)}
+      \right)_{x\in\mathcal X}
+    \right)
+  \right].
+\]
+Equivalently,
+\[
+  I_\pi(X;Y)
+  =\E_Y\left[
+    D\left(\Pbb(X\in\cdot\mid Y)\,\middle\|\,\pi\right)
+  \right].
+\]
+In particular, the channel capacity is obtained by maximizing this expression over all priors \(\pi\in\Delta(\mathcal X)\).
+
+If the read sequence is summarized by its count vector
+\[
+  C_i=\#\{r:Y_r=i\},\qquad \sum_i C_i=R,
+\]
+then, for every count vector \(c\) with positive marginal probability,
+\[
+  \Pbb(X=x\mid C=c)=
+  \frac{\pi_x\prod_i q_x(i)^{c_i}}
+       {\sum_{z\in\mathcal X}\pi_z\prod_i q_z(i)^{c_i}}.
+\]
+\end{theorem}
+
+\begin{proof}
+By the product structure of the channel,
+\[
+  \Pbb(X=x,Y=y)=\pi_x L_x(y).
+\]
+Summing over \(x\) gives
+\[
+  \Pbb(Y=y)=\sum_{z\in\mathcal X}\pi_zL_z(y)=P_\pi(y).
+\]
+Bayes' formula therefore gives, whenever \(P_\pi(y)>0\),
+\[
+  \Pbb(X=x\mid Y=y)=
+  \frac{\pi_xL_x(y)}{\sum_{z\in\mathcal X}\pi_zL_z(y)}.
+\]
+
+The entropy-drop identity follows from
+\[
+  I_\pi(X;Y)=H(X)-H(X\mid Y),
+\]
+with \(H(X)=H(\pi)\) and
+\[
+  H(X\mid Y)=\E_Y[H(\Pbb(X\in\cdot\mid Y))].
+\]
+Substitution of the posterior distribution just computed yields the displayed formula.
+
+For the divergence form, let \(\pi_Y\) denote the posterior distribution of \(X\) given \(Y\).  Then
+\[
+\begin{aligned}
+  \E_Y[D(\pi_Y\|\pi)]
+  &=\sum_{x,y}\Pbb(X=x,Y=y)
+    \log\frac{\Pbb(X=x\mid Y=y)}{\Pbb(X=x)} \\
+  &=\sum_{x,y}\Pbb(X=x,Y=y)
+    \log\frac{\Pbb(X=x,Y=y)}{\Pbb(X=x)\Pbb(Y=y)} \\
+  &=I_\pi(X;Y).
+\end{aligned}
+\]
+
+For the count-vector form, conditional on \(X=x\),
+\[
+  \Pbb(C=c\mid X=x)=
+  \frac{R!}{\prod_i c_i!}\prod_i q_x(i)^{c_i}.
+\]
+Bayes' formula gives a common multinomial coefficient in numerator and denominator; this coefficient is independent of \(x\), so it cancels.  The result is
+\[
+  \Pbb(X=x\mid C=c)=
+  \frac{\pi_x\prod_i q_x(i)^{c_i}}
+       {\sum_{z\in\mathcal X}\pi_z\prod_i q_z(i)^{c_i}}.
+\]
+\end{proof}
+
+\begin{remark}[Weighted visibility and interference]
+If motifs have visibility weights \(w_i>0\) and no interference, a natural model is
+\[
+  q_x(i)=\frac{w_i\1_{\{i\in x\}}}{\sum_{j\in x}w_j}.
+\]
+With background interference distribution \(b=(b_1,\ldots,b_n)\) and interference rate \(\rho\), the model becomes
+\[
+  q_x(i)=(1-\rho)\frac{w_i\1_{\{i\in x\}}}{\sum_{j\in x}w_j}+\rho b_i.
+\]
+The theorem gives the exact soft-information posterior in either case.
+\end{remark}
+
+\section{Radial orbit reduction}
+
+The next theorem records the radial reduction that replaces full uniform optimality in symmetric channels by orbit-invariant optimality under residual symmetry.
+
+\begin{theorem}[Radial orbit reduction for equivariant channels]\label{thm:orbit-reduction}
+Let \(\mathcal X\) and \(\mathcal Y\) be finite sets, and let
+\[
+  W(y\mid x),\qquad x\in\mathcal X,
+  \ y\in\mathcal Y,
+\]
+be a discrete channel.  Let a finite group \(G\) act on \(\mathcal X\) and \(\mathcal Y\) by bijections.  Assume the channel is \(G\)-equivariant:
+\[
+  W(gy\mid gx)=W(y\mid x)
+  \qquad\forall g\in G,
+  \ x\in\mathcal X,
+  \ y\in\mathcal Y.
+\]
+Let
+\[
+  \mathcal X=O_1\sqcup\cdots\sqcup O_m
+\]
+be the decomposition of \(\mathcal X\) into \(G\)-orbits.  Then there exists a capacity-achieving input distribution \(P^*\) satisfying
+\[
+  P^*(gx)=P^*(x)\qquad\forall g\in G,
+  \ x\in\mathcal X.
+\]
+Equivalently, capacity is achieved by a distribution of the form
+\[
+  P_\alpha(x)=\frac{\alpha_j}{|O_j|}
+  \qquad\text{for }x\in O_j,
+\]
+where \(\alpha=(\alpha_1,\ldots,\alpha_m)\in\Delta_m\).  Consequently,
+\[
+  C(W)=\max_{\alpha\in\Delta_m} I(P_\alpha;W).
+\]
+If \(G\) acts transitively on \(\mathcal X\), then the uniform distribution on \(\mathcal X\) is capacity-achieving.
+\end{theorem}
+
+\begin{proof}
+For \(g\in G\), define the relabeled input law
+\[
+  P^g(x)=P(g^{-1}x).
+\]
+We first show that relabeling does not change mutual information.  The output law induced by \(P^g\) is
+\[
+\begin{aligned}
+  (P^gW)(y)
+  &=\sum_x P(g^{-1}x)W(y\mid x) \\
+  &=\sum_z P(z)W(y\mid gz) \\
+  &=\sum_z P(z)W(g^{-1}y\mid z) \\
+  &=(PW)(g^{-1}y),
+\end{aligned}
+\]
+where equivariance was used in the third line.  Thus \(P^gW\) is just a relabeling of \(PW\), so
+\[
+  H(P^gW)=H(PW).
+\]
+Also \(W(\cdot\mid gx)\) is a relabeling of \(W(\cdot\mid x)\), so
+\[
+  H(W(\cdot\mid gx))=H(W(\cdot\mid x)).
+\]
+It follows from
+\[
+  I(P;W)=H(PW)-\sum_x P(x)H(W(\cdot\mid x))
+\]
+that
+\[
+  I(P^g;W)=I(P;W).
+\]
+
+Now average \(P\) over its group orbit:
+\[
+  \overline P=\frac1{|G|}\sum_{g\in G}P^g.
+\]
+Mutual information is concave in the input law, since \(H(PW)\) is concave in \(P\) and the conditional entropy term is linear in \(P\).  Therefore
+\[
+  I(\overline P;W)
+  \ge \frac1{|G|}\sum_{g\in G}I(P^g;W)
+  =I(P;W).
+\]
+Because the input alphabet is finite, a capacity-achieving law exists.  If \(P\) is capacity-achieving, then \(\overline P\) is also capacity-achieving.
+
+Finally, \(\overline P\) is \(G\)-invariant.  Indeed, for any \(h\in G\),
+\[
+  (\overline P)^h
+  =\frac1{|G|}\sum_{g\in G}(P^g)^h
+  =\frac1{|G|}\sum_{g\in G}P^{hg}
+  =\overline P,
+\]
+since \(hg\) ranges over \(G\) as \(g\) ranges over \(G\).  Thus \(\overline P(hx)=\overline P(x)\) for all \(h\in G\) and \(x\in\mathcal X\).
+
+A \(G\)-invariant law is constant on each orbit \(O_j\), so it has the form
+\[
+  P_\alpha(x)=\frac{\alpha_j}{|O_j|}\qquad x\in O_j,
+\]
+where \(\alpha_j=P_\alpha(O_j)\).  Conversely, every law of this form is \(G\)-invariant.  This proves the orbit reduction.  If \(G\) is transitive, there is only one orbit, so the orbit-uniform law is the uniform distribution on \(\mathcal X\).
+\end{proof}
+
+\begin{corollary}[Class-structured nonuniform motif channels]\label{cor:class-structured}
+Let
+\[
+  \mathcal X=\binom{[n]}{k}.
+\]
+Suppose the motifs are partitioned into classes
+\[
+  [n]=C_1\sqcup\cdots\sqcup C_d,
+\]
+and the channel is invariant under arbitrary permutations inside each class.  Then capacity is achieved by an input distribution depending only on the type vector
+\[
+  a(x)=\bigl(|x\cap C_1|,\ldots,|x\cap C_d|\bigr).
+\]
+More precisely, for each feasible type vector \(a=(a_1,\ldots,a_d)\), define
+\[
+  O_a=\{x\in\binom{[n]}{k}: |x\cap C_j|=a_j\text{ for all }j\}.
+\]
+Then
+\[
+  |O_a|=\prod_{j=1}^d \binom{|C_j|}{a_j},
+\]
+and there is a capacity-achieving prior of the form
+\[
+  P^*(x)=
+  \frac{\alpha_a}{\prod_{j=1}^d\binom{|C_j|}{a_j}}
+  \qquad\text{for }x\in O_a.
+\]
+\end{corollary}
+
+\begin{proof}
+The residual symmetry group is
+\[
+  G=S_{C_1}\times\cdots\times S_{C_d},
+\]
+the product of the symmetric groups on the classes.  Two \(k\)-subsets are in the same \(G\)-orbit if and only if they contain the same number of motifs from each class.  Hence the orbits are precisely the type classes \(O_a\).  The cardinality formula follows by choosing \(a_j\) motifs independently from each class \(C_j\).  The result is Theorem \ref{thm:orbit-reduction} applied to these orbits.
+\end{proof}
+
+
+\section{Orbit-level optimality certificates}
+
+The orbit reduction tells us what variables remain after symmetry has been used.  The next lemma is the standard finite-channel optimality certificate; it is included to make the orbit-level KKT theorem completely self-contained.
+
+\begin{lemma}[Finite-channel KKT certificate]\label{lem:finite-channel-kkt}
+Let \(W\) be a finite channel with input alphabet \(\mathcal X\) and output alphabet \(\mathcal Y\).  Let \(P\) be an input distribution, let \(Q=PW\) be the corresponding output law, and set \(C=I(P;W)\).  Then \(P\) is capacity-achieving if and only if
+\[
+  D(W(\cdot\mid x)\|Q)\le C
+  \qquad\text{for every }x\in\mathcal X,
+\]
+with equality for every \(x\) such that \(P(x)>0\).  If \(D(W(\cdot\mid x)\|Q)=+\infty\) for some \(x\), the displayed inequality is understood to fail.
+\end{lemma}
+
+\begin{proof}
+First suppose the displayed inequalities hold.  Let \(R\) be any other input law, with output law \(Q_R=RW\).  The identity
+\[
+  \sum_x R(x)D(W(\cdot\mid x)\|Q)=I(R;W)+D(Q_R\|Q)
+\]
+holds whenever the left side is finite; if the left side is infinite, the desired upper bound is trivial only when the inequalities fail, so under the stated inequalities the left side is finite and at most \(C\).  Hence
+\[
+  I(R;W)+D(Q_R\|Q)\le \sum_x R(x)C=C.
+\]
+Since \(D(Q_R\|Q)\ge0\), it follows that \(I(R;W)\le C\).  Thus \(P\) is capacity-achieving.
+
+Conversely, assume \(P\) is capacity-achieving.  Fix an input symbol \(x_0\), and write \(W_0=W(\cdot\mid x_0)\).  We first show that \(W_0\ll Q\).  Suppose not.  Then there is a set
+\[
+  A=\{y\in\mathcal Y:Q(y)=0,\; W_0(y)>0\}
+\]
+with \(a=W_0(A)>0\).  For \(0<\varepsilon<1\), set
+\[
+  P_\varepsilon=(1-\varepsilon)P+\varepsilon\delta_{x_0},
+  \qquad
+  Q_\varepsilon=(1-\varepsilon)Q+\varepsilon W_0.
+\]
+Every input in the support of \(P\) assigns zero mass to \(A\), because \(Q(A)=0\).  On \(\mathcal Y\setminus A\), \(Q_\varepsilon\to Q\), so the contribution of the old input mass to \(I(P_\varepsilon;W)\) is
+\[
+  (1-\varepsilon)I(P;W)+O(\varepsilon)
+\]
+as \(\varepsilon\downarrow0\), since the alphabets are finite and all relevant probabilities are bounded on the support of \(Q\).  The new input \(x_0\) contributes at least
+\[
+  \varepsilon\sum_{y\in A}W_0(y)\log\frac{W_0(y)}{\varepsilon W_0(y)} + O(\varepsilon)
+  =\varepsilon a\log(1/\varepsilon)+O(\varepsilon).
+\]
+Therefore
+\[
+  I(P_\varepsilon;W)=I(P;W)+\varepsilon a\log(1/\varepsilon)+O(\varepsilon)>I(P;W)
+\]
+for all sufficiently small \(\varepsilon\), contradicting optimality.  Hence \(W_0\ll Q\) for every \(x_0\).
+
+Now \(D(W_0\|Q)<\infty\).  Consider again
+\[
+  P_\varepsilon=(1-\varepsilon)P+\varepsilon\delta_{x_0}.
+\]
+A direct differentiation of
+\[
+  I(P_\varepsilon;W)=
+  \sum_{x,y}P_\varepsilon(x)W(y\mid x)
+  \log\frac{W(y\mid x)}{Q_\varepsilon(y)}
+\]
+at \(\varepsilon=0+\) gives
+\[
+  \left.\frac{d}{d\varepsilon}I(P_\varepsilon;W)\right|_{\varepsilon=0+}
+  =D(W(\cdot\mid x_0)\|Q)-I(P;W).
+\]
+The differentiation is justified because \(W(\cdot\mid x_0)\ll Q\) and the alphabets are finite.  Since \(P\) is optimal, this one-sided derivative is at most zero.  Thus
+\[
+  D(W(\cdot\mid x_0)\|Q)
+  \le I(P;W)=C.
+\]
+This holds for every \(x_0\).  Finally,
+\[
+  C=I(P;W)=\sum_x P(x)D(W(\cdot\mid x)\|Q).
+\]
+Since every term in this average is at most \(C\), equality must hold for every \(x\) with \(P(x)>0\).  This proves the lemma.
+\end{proof}
+
+\begin{theorem}[Orbit-level KKT certificate and tied Blahut--Arimoto equations]\label{thm:orbit-kkt}
+Assume the setting of Theorem \ref{thm:orbit-reduction}.  Let
+\[
+  \mathcal X=O_1\sqcup\cdots\sqcup O_m
+\]
+be the input-orbit decomposition, and let
+\[
+  P_\alpha(x)=\frac{\alpha_j}{|O_j|}\qquad x\in O_j.
+\]
+Let
+\[
+  Q_\alpha(y)=\sum_{x\in\mathcal X}P_\alpha(x)W(y\mid x)
+\]
+be the output law induced by \(P_\alpha\).  Define the orbit divergence
+\[
+  d_j(\alpha)=\frac1{|O_j|}\sum_{x\in O_j}
+    D\left(W(\cdot\mid x)\,\middle\|\,Q_\alpha\right).
+\]
+Then
+\[
+  I(P_\alpha;W)=\sum_{j=1}^m \alpha_j d_j(\alpha).
+\]
+A vector \(\alpha^*\in\Delta_m\) is capacity-achieving if and only if, with
+\[
+  C=I(P_{\alpha^*};W),
+\]
+one has
+\[
+  d_j(\alpha^*)\le C\qquad\text{for all }j,
+\]
+and
+\[
+  d_j(\alpha^*)=C\qquad\text{for every }j\text{ with }\alpha_j^*>0.
+\]
+Thus every active orbit has equal orbit divergence \(C\), and every inactive orbit has orbit divergence at most \(C\).
+
+If \(\alpha^*\) lies in the relative interior of \(\Delta_m\), then it is capacity-achieving if and only if
+\[
+  d_1(\alpha^*)=\cdots=d_m(\alpha^*).
+\]
+Equivalently, an interior optimum is a fixed point of the tied Blahut--Arimoto equation
+\[
+  \alpha_j^*=
+  \frac{\alpha_j^*\exp(d_j(\alpha^*))}
+       {\sum_{\ell=1}^m\alpha_\ell^*\exp(d_\ell(\alpha^*))},
+  \qquad j=1,\ldots,m.
+\]
+\end{theorem}
+
+\begin{proof}
+Since \(P_\alpha\) is orbit-invariant and the channel is equivariant, \(Q_\alpha\) is invariant under the action of \(G\) on \(\mathcal Y\).  If \(x'=gx\), then \(W(\cdot\mid x')\) is a relabeling of \(W(\cdot\mid x)\), while \(Q_\alpha\) is unchanged by the same relabeling.  Therefore
+\[
+  D(W(\cdot\mid x')\|Q_\alpha)=D(W(\cdot\mid x)\|Q_\alpha).
+\]
+Thus the divergence is constant on each input orbit.
+
+The mutual-information identity follows from the divergence representation:
+\[
+\begin{aligned}
+  I(P_\alpha;W)
+  &=\sum_{x\in\mathcal X}P_\alpha(x)D(W(\cdot\mid x)\|Q_\alpha) \\
+  &=\sum_{j=1}^m \sum_{x\in O_j}
+    \frac{\alpha_j}{|O_j|}D(W(\cdot\mid x)\|Q_\alpha) \\
+  &=\sum_{j=1}^m \alpha_j d_j(\alpha).
+\end{aligned}
+\]
+
+By Theorem \ref{thm:orbit-reduction}, full capacity is attained among orbit-invariant input laws.  Applying Lemma \ref{lem:finite-channel-kkt} to \(P_{\alpha^*}\) gives exactly
+\[
+  d_j(\alpha^*)\le C\quad\text{for all }j,
+\]
+with equality for each orbit carrying positive mass \(\alpha_j^*>0\).  This proves the orbit-level KKT certificate.
+
+If \(\alpha^*\) is interior, every orbit is active, so the certificate is equivalent to
+\[
+  d_1(\alpha^*)=\cdots=d_m(\alpha^*)=C.
+\]
+In that case the tied Blahut--Arimoto fixed-point equation follows immediately:
+\[
+  \frac{\alpha_j^*\exp(d_j(\alpha^*))}
+       {\sum_\ell\alpha_\ell^*\exp(d_\ell(\alpha^*))}
+  =\frac{\alpha_j^*e^C}{\sum_\ell\alpha_\ell^*e^C}
+  =\alpha_j^*.
+\]
+Conversely, if an interior point satisfies the tied fixed-point equation, then cancellation of the positive factors \(\alpha_j^*\) gives
+\[
+  \exp(d_j(\alpha^*))=\sum_{\ell=1}^m\alpha_\ell^*\exp(d_\ell(\alpha^*))
+\]
+for every \(j\).  Hence all \(d_j(\alpha^*)\) are equal.  Their common value equals \(I(P_{\alpha^*};W)\), because \(I(P_{\alpha^*};W)=\sum_j\alpha_j^*d_j(\alpha^*)\).  The KKT certificate therefore applies, and \(\alpha^*\) is capacity-achieving.
+\end{proof}
+
+\begin{remark}
+The theorem proves the optimality certificate and the tied Blahut--Arimoto fixed-point equations \cite{Blahut1972,Arimoto1972}.  It does not assert convergence of the iteration
+\[
+  \alpha_j^{(r+1)}=
+  \frac{\alpha_j^{(r)}\exp(d_j(\alpha^{(r)}))}
+       {\sum_\ell \alpha_\ell^{(r)}\exp(d_\ell(\alpha^{(r)}))}.
+\]
+Convergence is a numerical-analysis question.  The present theorem supplies the reduced variables and a certificate for any proposed optimum.
+\end{remark}
+
+
+\section{Nonuniform likelihoods for motif-subset decoding}
+
+The posterior identities above also determine how nonuniform motif readout should enter sum-product decoding \cite{KschischangFreyLoeliger2001}.  We use QSPA to mean the \emph{\(q\)-ary sum-product algorithm}, namely the standard sum-product algorithm applied to a nonbinary alphabet of size \(q\).  Nonuniformity changes the local evidence vectors; it does not change the algebraic check-node rules.
+
+\begin{theorem}[Nonuniform likelihood initialization for motif-subset sum-product decoding]\label{thm:qspa-init}
+Let \(\mathcal A\) be a finite symbol alphabet.  Let \(\mathcal C\subseteq\mathcal A^m\) be a code represented by a factor graph with variable nodes \(1,\ldots,m\), factor nodes \(h\in\mathcal H\), and constraint indicators
+\[
+  \psi_h(x_{\partial h})\in\{0,1\}.
+\]
+Thus
+\[
+  x=(x_1,\ldots,x_m)\in\mathcal C
+  \quad\Longleftrightarrow\quad
+  \prod_{h\in\mathcal H}\psi_h(x_{\partial h})=1.
+\]
+Allow coordinate-wise symbol-shaping weights \(\omega_j(a)\ge0\).  The prior on codewords is
+\[
+  \Pbb(X=x)=\frac1{Z_0}
+  \left(\prod_{j=1}^m \omega_j(x_j)\right)
+  \left(\prod_{h\in\mathcal H}\psi_h(x_{\partial h})\right),
+\]
+where \(Z_0\) normalizes the distribution.
+Conditional on \(X=x\), suppose the observations are independent.  At coordinate \(j\), the likelihood is
+\[
+  W_j(y_j\mid x_j).
+\]
+Define the local evidence
+\[
+  \lambda_j(a;y_j)=\omega_j(a)W_j(y_j\mid a),
+  \qquad a\in\mathcal A.
+\]
+Then the posterior distribution of \(X\) given \(Y=y\) factors as
+\[
+  \Pbb(X=x\mid Y=y)=\frac1{Z(y)}
+  \left(\prod_{j=1}^m \lambda_j(x_j;y_j)\right)
+  \left(\prod_{h\in\mathcal H}\psi_h(x_{\partial h})\right).
+\]
+Consequently, for sum-product or QSPA decoding on this factor graph, the correct variable-node initialization is the nonuniform likelihood vector
+\[
+  \lambda_j(\cdot;y_j)=\bigl(\omega_j(a)W_j(y_j\mid a)\bigr)_{a\in\mathcal A}.
+\]
+If the factor graph is cycle-free, then the sum-product algorithm with these initial likelihoods returns the exact posterior marginals
+\[
+  \Pbb(X_j=a\mid Y=y),
+  \qquad j=1,\ldots,m,
+  \ a\in\mathcal A.
+\]
+In particular, the check-node update rules are unchanged by nonuniform sampling; only the local likelihood vectors change.
+
+For motif-subset channels, take \(\mathcal A=\binom{[n]}k\).  At coordinate \(j\), if symbol \(x\in\mathcal A\) is transmitted and reads \(Y_{j,1},\ldots,Y_{j,R_j}\) are conditionally independent with law
+\[
+  q_{j,x}(i)=\Pbb(Y_{j,r}=i\mid X_j=x),
+\]
+then, for counts \(c_{j,i}=\#\{r:Y_{j,r}=i\}\), the correct initialization is
+\[
+  \lambda_j(x)\propto
+  \omega_j(x)\prod_{i=1}^n q_{j,x}(i)^{c_{j,i}}.
+\]
+For the nonuniform visibility/interference model
+\[
+  q_{j,x}(i)=
+  (1-\rho)\frac{w_{j,i}\1_{\{i\in x\}}}{\sum_{r\in x}w_{j,r}}
+  +\rho b_{j,i},
+\]
+this becomes
+\[
+  \lambda_j(x)\propto
+  \omega_j(x)
+  \prod_{i=1}^n
+  \left[
+  (1-\rho)\frac{w_{j,i}\1_{\{i\in x\}}}{\sum_{r\in x}w_{j,r}}
+  +\rho b_{j,i}
+  \right]^{c_{j,i}}.
+\]
+\end{theorem}
+
+\begin{proof}
+By the assumed prior,
+\[
+  \Pbb(X=x)=\frac1{Z_0}
+  \left(\prod_{j=1}^m \omega_j(x_j)\right)
+  \left(\prod_{h\in\mathcal H}\psi_h(x_{\partial h})\right).
+\]
+By conditional independence of the observations,
+\[
+  \Pbb(Y=y\mid X=x)=\prod_{j=1}^m W_j(y_j\mid x_j).
+\]
+Hence
+\[
+\begin{aligned}
+  \Pbb(X=x,Y=y)
+  &=\frac1{Z_0}
+    \left(\prod_{j=1}^m \omega_j(x_j)W_j(y_j\mid x_j)\right)
+    \left(\prod_{h\in\mathcal H}\psi_h(x_{\partial h})\right) \\
+  &=\frac1{Z_0}
+    \left(\prod_{j=1}^m \lambda_j(x_j;y_j)\right)
+    \left(\prod_{h\in\mathcal H}\psi_h(x_{\partial h})\right).
+\end{aligned}
+\]
+Dividing by the marginal probability of \(Y=y\) gives the posterior factorization, with the normalizing constant
+\[
+  Z(y)=\sum_{x\in\mathcal A^m}
+  \left(\prod_{j=1}^m \lambda_j(x_j;y_j)\right)
+  \left(\prod_{h\in\mathcal H}\psi_h(x_{\partial h})\right).
+\]
+This proves the local-evidence claim.
+
+For a cycle-free factor graph, the standard sum-product induction applies.  Remove an edge between a variable node and a factor node.  The two directed messages across that edge are the conditional partition functions of the two resulting components, with the boundary variable fixed.  The variable-to-factor recursion multiplies the local evidence and incoming component partition functions, while the factor-to-variable recursion sums the constraint indicator against the incoming component partition functions.  Induction from the leaves proves this interpretation for every directed edge.  Therefore the product of incoming factor-to-variable messages at variable node \(j\), multiplied by \(\lambda_j(a;y_j)\), is the unnormalized posterior marginal for \(X_j=a\).  Normalizing gives the exact posterior marginal.
+
+It remains only to compute the motif likelihood.  Conditional on \(X_j=x\), the reads at coordinate \(j\) are independent with law \(q_{j,x}\), so
+\[
+  W_j(y_j\mid x)=\prod_{r=1}^{R_j}q_{j,x}(Y_{j,r}).
+\]
+Writing this in terms of the count vector gives
+\[
+  W_j(y_j\mid x)=\prod_{i=1}^n q_{j,x}(i)^{c_{j,i}}.
+\]
+If one uses unordered counts rather than ordered reads, the multinomial coefficient is independent of \(x\) and cancels from posterior likelihood ratios.  Hence the initialization is proportional to
+\[
+  \omega_j(x)\prod_{i=1}^n q_{j,x}(i)^{c_{j,i}}.
+\]
+Substituting the displayed visibility/interference model gives the final formula.
+\end{proof}
+
+\begin{remark}
+The theorem does not assert that loopy QSPA always converges or is exact.  Its claim is the probabilistic one: under a nonuniform motif readout model, the posterior over codewords factors with the same code constraints and with local evidence vectors given by the nonuniform likelihoods.  On trees, sum-product is exact.  On loopy LDPC-style graphs, the same equations are the standard belief-propagation approximation to this exact posterior.
+\end{remark}
+
+\section{Further directions}
+
+The allocation theorem reduces the Gamma deadline problem to a finite comparison of explicit binomial tails. The following questions concern additional structure or models beyond its hypotheses.
+\begin{enumerate}[label=(\arabic*)]
+ \item \textbf{Global MDS support phases.} For \(\tau>1\) and \(2\le k<n\), determine the crossings of
+ \[
+  V_q(M)=\Pbb\!\left(\Bin(q,F_\tau(M/q))\ge k\right),
+  \qquad k\le q\le n.
+ \]
+ Section \ref{sec:mds-support} gives the small-budget optimum, eventual full support, and local stability thresholds. It remains to determine crossing uniqueness, whether an optimal support size can reappear after losing optimality, and whether transitions can skip support sizes. The expected-cloud staircase does not settle these questions for the success objective.
+ \item \textbf{Further common recovery curves.} Identify additional families satisfying Proposition \ref{prop:common-recovery-active-uniform}, or weaker analytic conditions sufficient for the final one-small exclusion. The optimal constant in the mixed Gamma tail-ratio bound is a related special-function question.
+ \item \textbf{Exact fixed-read optimization.} For integer thresholds \(t\ge2\), prove an active-uniform theorem or find counterexamples in the multinomial fixed-read model. The first-copy case is covered by \cite{Anceaume2015}. The de-Poissonization bounds transfer read-depth guarantees but do not classify exact fixed-read optimizers.
+ \item \textbf{Heterogeneous requirements and costs.} Determine what replaces active-uniformity when shapes or recovery curves vary across types, the resource constraint has unequal costs, or recovery is governed by a weighted or nonsymmetric family. Even classwise equalization requires an additional argument.
+ \item \textbf{Joint clock and stopping-time comparisons.} The completed-rate-mass order concerns a fixed number of selected labels. Joint residual-mass orders and comparisons of full collection times require control beyond the marginal rank-mass theorem. For non-exponential requirements, residual ages or stages must be retained.
+ \item \textbf{Random and risk-sensitive objectives.} Study fixed allocations under random environments and terminal-cloud Chernoff or moment-generating-function objectives. Pointwise optimization at each environment or deadline cannot generally be interchanged with expectation or integration.
+ \item \textbf{Coverage and decoding algorithms.} Develop posterior-normalizer algorithms, class-structured motif asymptotics, empirical calibration of recovery curves, and convergence or approximation guarantees for orbit-level and loopy belief-propagation procedures.
+ \item \textbf{Nonmonotone reconstruction.} Extend fixed-read transfer to mechanisms for which additional reads can degrade reconstruction. Such models require a replacement for the monotone-prefix coupling used here.
+\end{enumerate}
+
+\begin{thebibliography}{99}\raggedright
+
+\bibitem{Abbe2013} E. Abbe, S.-L. Huang, and E. Telatar,
+Proof of the outage probability conjecture for MISO channels,
+\emph{IEEE Trans. Inf. Theory} 59 (2013), 2596--2602;
+\href{https://arxiv.org/abs/1103.5478}{arXiv:1103.5478}.
+
+\bibitem{Abraham2026} H. Abraham, I. Feldman, and E. Yaakobi,
+Analyzing Collection Strategies: A Computational Perspective on the Coupon Collector Problem,
+\href{https://arxiv.org/abs/2601.12351}{arXiv:2601.12351} (2026).
+
+\bibitem{Anceaume2015} E. Anceaume, Y. Busnel, E. Schulte-Geers, and B. Sericola,
+Optimization results for a generalized coupon collector problem,
+\emph{J. Appl. Probab.} 53 (2016), 622--629;
+\href{https://arxiv.org/abs/1504.03878}{arXiv:1504.03878}.
+
+\bibitem{Arimoto1972}
+S. Arimoto,
+``An algorithm for computing the capacity of arbitrary discrete memoryless channels,''
+\emph{IEEE Transactions on Information Theory}, vol. 18, no. 1, pp. 14--20, 1972.
+
+\bibitem{Baricz2012} \'A. Baricz,
+Mills' ratio: reciprocal convexity and functional inequalities,
+\emph{Acta Universitatis Sapientiae Mathematica} 4 (2012), 26--35;
+\href{https://arxiv.org/abs/1010.3267}{arXiv:1010.3267}.
+
+\bibitem{BarLevSabaryGabrysYaakobi2025}
+D. Bar-Lev, O. Sabary, R. Gabrys, and E. Yaakobi,
+``Cover your bases: How to minimize the sequencing coverage in DNA storage systems,''
+\emph{IEEE Transactions on Information Theory}, vol. 71, no. 1, pp. 192--218, 2025.
+\href{https://doi.org/10.1109/TIT.2024.3496587}{doi:10.1109/TIT.2024.3496587};
+\href{https://arxiv.org/abs/2305.05656}{arXiv:2305.05656}.
+
+\bibitem{Blahut1972}
+R. E. Blahut,
+``Computation of channel capacity and rate-distortion functions,''
+\emph{IEEE Transactions on Information Theory}, vol. 18, no. 4, pp. 460--473, 1972.
+
+\bibitem{BoucheronLugosiMassart2013}
+S. Boucheron, G. Lugosi, and P. Massart,
+\emph{Concentration Inequalities: A Nonasymptotic Theory of Independence}.
+Oxford University Press, 2013.
+
+\bibitem{ChurchGaoKosuri2012}
+G. M. Church, Y. Gao, and S. Kosuri,
+``Next-generation digital information storage in DNA,''
+\emph{Science}, vol. 337, no. 6102, p. 1628, 2012.
+
+\bibitem{Doumas2026} A. V. Doumas and S. Spektor,
+Equal probabilities maximize the expected deficit in the siblings of the coupon collector,
+\href{https://arxiv.org/abs/2606.21591}{arXiv:2606.21591} (2026).
+
+\bibitem{FGT1992} P. Flajolet, D. Gardy, and L. Thimonier,
+Birthday paradox, coupon collectors, caching algorithms and self-organizing search,
+\emph{Discrete Applied Mathematics} 39 (1992), 207--229.
+
+\bibitem{Goldman2013}
+N. Goldman, P. Bertone, S. Chen, C. Dessimoz, E. M. LeProust, B. Sipos, and E. Birney,
+``Towards practical, high-capacity, low-maintenance information storage in synthesized DNA,''
+\emph{Nature}, vol. 494, pp. 77--80, 2013.
+
+\bibitem{KschischangFreyLoeliger2001}
+F. R. Kschischang, B. J. Frey, and H.-A. Loeliger,
+``Factor graphs and the sum-product algorithm,''
+\emph{IEEE Transactions on Information Theory}, vol. 47, no. 2, pp. 498--519, 2001.
+
+\bibitem{Liggett1997}
+T. M. Liggett,
+``Ultra logconcave sequences and negative dependence,''
+\emph{Journal of Combinatorial Theory, Series A}, vol. 79, no. 2, pp. 315--325, 1997.
+
+\bibitem{LongLRU2026} C. D. Long,
+Radial Extremality for LRU Caching and the Fill--Holst Conjecture,
+\href{https://arxiv.org/abs/2605.26107}{arXiv:2605.26107} (2026).
+
+\bibitem{LongRank2026} C. D. Long,
+Residual-Mass Transform Order for LRU Caching and the Coupon Collector,
+\href{https://github.com/long-mathematics/nonuniform-random-permutations/blob/main/papers/07-residual-mass-transform-order/residual-mass-transform-order.tex}{Paper VII, repository source} (June 2026).
+
+\bibitem{LongSiblings2026} C. D. Long,
+Extremality and Limit Laws for the Siblings of the Coupon Collector,
+\href{https://arxiv.org/abs/2606.29635}{arXiv:2606.29635} (2026).
+
+\bibitem{LongTransforms2026} C. D. Long,
+Radial Transform Extremality for the Siblings of the Coupon Collector,
+\href{https://arxiv.org/abs/2606.31391}{arXiv:2606.31391} (2026).
+
+\bibitem{MacWilliamsSloane1977}
+F. J. MacWilliams and N. J. A. Sloane,
+\emph{The Theory of Error-Correcting Codes}.
+North-Holland, 1977.
+
+\bibitem{Muller2026} S. M\"uller and S. \v Sebek,
+Weighted-threshold Coupon Collection,
+\href{https://arxiv.org/abs/2607.08551}{arXiv:2607.08551} (2026).
+
+\bibitem{Organick2018}
+L. Organick et al.,
+``Random access in large-scale DNA data storage,''
+\emph{Nature Biotechnology}, vol. 36, pp. 242--248, 2018.
+
+\bibitem{Segura2014} J. Segura,
+Monotonicity properties and bounds for the chi-square and gamma distributions,
+\href{https://arxiv.org/abs/1406.6106}{arXiv:1406.6106} (2014).
+
+\bibitem{SunZhang2004} L. Sun and X. Zhang,
+Stochastic Comparisons of Order Statistics from Gamma Distributions,
+\emph{Chinese Journal of Applied Probability and Statistics} 20 (2004), 404--408.
+
+\bibitem{YazdiGabrysMilenkovic2017}
+S. M. H. T. Yazdi, R. Gabrys, and O. Milenkovic,
+``Portable and error-free DNA-based data storage,''
+\emph{Scientific Reports}, vol. 7, Article 5011, 2017.
+
+\end{thebibliography}
+
+
+
+\end{document}
