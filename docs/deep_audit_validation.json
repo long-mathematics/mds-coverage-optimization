@@ -1,0 +1,40 @@
+{
+  "date": "2026-10-11",
+  "base_commit": "471e88fbf383095f79b5884717b20c676a3fd18b",
+  "scope": "Clarity-only integration following the deep audits of Paper I-A, Paper I-B, and Paper II; no theorem strengthening or proof-assistant certification.",
+  "principal_theorem_statements_changed": false,
+  "formal_statement_clarifications": [
+    "lem:gamma-tail-ratio-bound"
+  ],
+  "optional_strengthenings_applied": false,
+  "commands_required": [
+    "make test",
+    "make pdf",
+    "make check"
+  ],
+  "status": "all standard checks passed on the clean GitHub runner",
+  "commands_passed": [
+    "make test",
+    "make pdf",
+    "make check"
+  ],
+  "source_and_pdf_records": [
+    {
+      "source": "gamma_mds_active_uniform.tex",
+      "pdf": "gamma_mds_active_uniform.pdf",
+      "source_sha256": "7914154fe2a409a070f54437371b8db79aed5c6a935d2104462edbc6bc234155",
+      "pdf_sha256": "5cc14c15b7a5873731dd52ae69b0d7efbf59d8f70838dcdcb486638bdb196148",
+      "pages": 28
+    },
+    {
+      "source": "terminal_cloud_staircase.tex",
+      "pdf": "terminal_cloud_staircase.pdf",
+      "source_sha256": "dd5ac834f104ddbc04596b6b05c67b5e37ea4219ae89e34a1cea90e014b98529",
+      "pdf_sha256": "27720a6c3cfe7ab48c5076d2e5a3bfaf8559dfdf7a2dacac66d66e752123d28f",
+      "pages": 14
+    }
+  ],
+  "statement_registry_schema": 2,
+  "visual_review": "pending human affected-page review before merge",
+  "proof_assistant_coverage": null
+}

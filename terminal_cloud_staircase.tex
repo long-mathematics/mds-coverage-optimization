@@ -201,7 +201,9 @@ for some $q\in\{1,\ldots,n\}$.
 \end{theorem}
 
 \begin{proof}
-Let $\lambda^*$ be a global minimizer.  If two positive coordinates of $\lambda^*$ are unequal, say $\lambda_i^*,\lambda_j^*>0$ and $\lambda_i^*\ne\lambda_j^*$, set $S=\lambda_i^*+\lambda_j^*$.  Holding all other coordinates fixed, the contribution of this pair is $h_S(\lambda_i^*)$.  Since $\lambda_i^*$ is neither $0$, nor $S/2$, nor $S$, the two-point hypothesis gives a replacement of the pair by one of $(0,S)$, $(S/2,S/2)$, or $(S,0)$ that strictly decreases the objective while preserving the total sum.  This contradicts minimality.  Hence all positive coordinates of $\lambda^*$ are equal.  If there are $q$ positive coordinates, their common value is $M/q$, and the objective value is $(n-q)f(0)+qf(M/q)$.  Taking the best $q$ gives the formula and the characterization of minimizers.
+The allocation simplex is compact and the objective is continuous, so
+a global minimizer exists.  Let $\lambda^*$ be one.  If two positive
+coordinates of $\lambda^*$ are unequal, say $\lambda_i^*,\lambda_j^*>0$ and $\lambda_i^*\ne\lambda_j^*$, set $S=\lambda_i^*+\lambda_j^*$.  Holding all other coordinates fixed, the contribution of this pair is $h_S(\lambda_i^*)$.  Since $\lambda_i^*$ is neither $0$, nor $S/2$, nor $S$, the two-point hypothesis gives a replacement of the pair by one of $(0,S)$, $(S/2,S/2)$, or $(S,0)$ that strictly decreases the objective while preserving the total sum.  This contradicts minimality.  Hence all positive coordinates of $\lambda^*$ are equal.  If there are $q$ positive coordinates, their common value is $M/q$, and the objective value is $(n-q)f(0)+qf(M/q)$.  Taking the best $q$ gives the formula and the characterization of minimizers.
 \end{proof}
 
 \begin{lemma}[Two-point radial collapse]\label{lem:two-point-radial-collapse}
@@ -300,8 +302,12 @@ Then
 For \(t=1\),
 \[
   a_1(x)=\frac{1-e^{-x}}{x},
+  \qquad
+  a_1'(x)=\frac{(x+1)e^{-x}-1}{x^2}<0,
 \]
-which is strictly decreasing on \((0,\infty)\).  Since \(M/q\) is strictly decreasing as \(q\) increases, \(A_q(M)=M a_1(M/q)\) is strictly increasing in \(q\).  Hence \(q=n\) is the unique maximizer of \(A_q(M)\), equivalently the unique minimizer of \(\mathcal L_q(M)\).
+where the strict inequality is equivalent to \(e^x>1+x\).  Thus
+\(a_1\) is strictly decreasing on \((0,\infty)\).  Since \(M/q\) is
+strictly decreasing as \(q\) increases, \(A_q(M)=M a_1(M/q)\) is strictly increasing in \(q\).  Hence \(q=n\) is the unique maximizer of \(A_q(M)\), equivalently the unique minimizer of \(\mathcal L_q(M)\).
 
 Now assume \(t\ge2\).  We first prove that \(a_t\) has a single peak.  Since
 \[
@@ -428,6 +434,17 @@ Every optimal support size \(q\in\arg\min_{1\le r\le n}\mathcal L_r(M)\) satisfi
 \]
 Thus the exact support search is localized to the nearest integer support sizes around \(M/\rho_t\), with only endpoint clipping by \(1\) and \(n\).
 \end{corollary}
+\begin{proof}
+If \(q\) is optimal, Theorem~\ref{thm:terminal-cloud-staircase} gives
+\(\beta_{q-1}\le M\le\beta_q\).  For \(1<q<n\), the strict bounds
+on the phase boundaries imply
+\[
+ (q-1)\rho_t<\beta_{q-1}\le M\le\beta_q<(q+1)\rho_t.
+\]
+Hence \(q-1<M/\rho_t<q+1\), so \(q\) is one of the floor or ceiling
+of \(M/\rho_t\).  When \(q=1\) or \(q=n\), the same conclusion follows
+after applying the clipping map to the one available finite boundary.
+\end{proof}
 
 \begin{example}[Low read depth and deliberate sacrifice]
 Take \(n=2\), \(t=2\), and \(M=1\).  The two candidate active support sizes are
@@ -651,8 +668,11 @@ randomness. For each fixed \(u\),
 \[
  c\longmapsto\1\{\{i:u_i\le s_i(c_i)\}\text{ is recoverable}\}
 \]
-is increasing. The preceding prefix argument applies with the same
-\(U_i\) at every prefix and the same Poisson-tail error bounds.
+is increasing. For each fixed \(u\), the preceding prefix argument
+therefore gives the two sandwich inequalities for the corresponding
+deterministic count event, with error terms independent of \(u\).
+Averaging those inequalities over the auxiliary uniforms \(U_i\)
+gives the stated unconditional randomized-recovery bounds.
 \end{proof}
 
 \begin{remark}[Scope of transfer]

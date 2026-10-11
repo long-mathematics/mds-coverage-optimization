@@ -32,3 +32,15 @@ All current formal statements are inventoried in [docs/statement_registry.json](
 Prior v30 audit claims are historical context. The integration audit records proof review of the new arguments and localized extraction corrections; it does not claim an external referee report or proof-assistant certification. Finite exact certificates concern only the specified examples and algebraic identities. The new support diagnostics reproduce transition values and selected strict inequalities; numerical diagnostics cannot establish theorem validity for all parameters.
 
 The [localized first-audit repairs](docs/FIRST_AUDIT_CORRECTIONS.md) are retained in full. Relative to that corrected version, the global-support integration preserves every existing formal statement in both papers and adds ten in Paper I.
+
+## Deep-audit clarification baseline
+
+The independent deep audits of Paper I-A, Paper I-B, and Paper II found no
+principal theorem, scope, or equality case requiring weakening.  The
+subsequent clarity patch makes the mixed Gamma parameters explicit,
+expands endpoint inversion and Newton normalization, writes the two
+boundary derivatives literally, records the convex/Borel hypotheses in
+the Pr'ekopa step, and supplies four omitted proof details in Paper II.
+Only `lem:gamma-tail-ratio-bound` changes inside a formal statement
+environment, solely to state its existing relation `m = tau - 1`
+explicitly.  See [docs/DEEP_AUDIT_CLARIFICATIONS.md](docs/DEEP_AUDIT_CLARIFICATIONS.md).

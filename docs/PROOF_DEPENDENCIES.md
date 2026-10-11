@@ -31,3 +31,15 @@ The finite rational frozen-pair counterexample rules out an attractive but inval
 6. Coordinatewise monotonicity and conditioning -> calibration/environment guarantees, with 0 < delta, eta < 1 for the product-probability bounds, a measurable finite depth rule, explicit feasibility, and conditional fixed-law sequencing with fresh randomness. The annealed equality case retains a local positive-budget hypothesis.
 
 **No proof dependency crosses between the flagship theorems of Papers I and II.** Bibliographical comparisons do not create such a dependency.
+
+## Deep-audit explication notes
+
+The allocation proof now records the normalized Newton inequality before
+ordinary Poisson-binomial log-concavity, and writes the shape-below-one and
+shape-one boundary directions explicitly.  The global support proof states
+the two inverse-asymptotic rules used at the quantile endpoints and records
+that the Pr'ekopa sets are closed convex Borel sets.  Paper II now states
+compactness/existence in the abstract collapse proof, proves the threshold-one
+efficiency derivative, proves the localization corollary, and explicitly
+averages the fixed-uniform transfer inequalities.  These are proof
+explications, not new dependency arrows or theorem strengthenings.
