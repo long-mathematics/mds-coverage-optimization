@@ -1,7 +1,17 @@
 {
   "status": "Analytic proofs supplied; no proof-assistant coverage claimed.",
+  "source_sha256": {
+    "gamma_mds_active_uniform.tex": "0edf38efe12f1e62f2cc2b942b1dbff48c8ca24494262fad501bef82ddda401d",
+    "terminal_cloud_staircase.tex": "5cd3b74a9a26c57152f1b678dec58dbaa8ddc376ae02d83289e08ab39286430d"
+  },
   "manuscripts": {
     "gamma_mds_active_uniform.tex": [
+      {
+        "label": "thm:mds-global-support-staircase",
+        "kind": "theorem",
+        "title": "Complete Gamma MDS support staircase",
+        "statement_sha256": "d0f72336142573acf29163cffaaf8068c50c1d311ca7b86da7efa943bbc4217d"
+      },
       {
         "label": "thm:gamma-active-uniform",
         "kind": "theorem",
@@ -111,6 +121,60 @@
         "statement_sha256": "cc8ee0cd10ac25326884efa75a04f007b2b4f28c4931dbb6b79c7c40b1f6942b"
       },
       {
+        "label": "thm:mds-pairwise-crossing",
+        "kind": "theorem",
+        "title": "Complete pairwise crossing classification",
+        "statement_sha256": "b40150993419a0ac86944ca61c3c16244c8b5ab7e61d19de163251e0e087cd04"
+      },
+      {
+        "label": "thm:mds-log-support-concavity",
+        "kind": "theorem",
+        "title": "Strict concavity in logarithmic support",
+        "statement_sha256": "dfd5fc3475b460d838943c89065427d1bd7706b0ebf6d59f8296ccde28e7a76f"
+      },
+      {
+        "label": "lem:mds-cumulative-hazard-geometry",
+        "kind": "lemma",
+        "title": "Cumulative-hazard geometry",
+        "statement_sha256": "35f799b1ae40f3ac840a5029f9051b4901fb04362b9da446a6cc0d780d119445"
+      },
+      {
+        "label": "lem:mds-density-ratio-crossing",
+        "kind": "lemma",
+        "title": "Density-ratio crossing lemma",
+        "statement_sha256": "bf230d775293b82a5517e982e5d99831da5383486d4087cfcf986bca387b10ae"
+      },
+      {
+        "label": "lem:mds-exponential-quantile-ratio",
+        "kind": "lemma",
+        "title": "Exponential quantile-ratio monotonicity",
+        "statement_sha256": "11a2c2e6ffe4c4c245dca6425b7726186c9b92a4f1bee1148dc167e9c3457eeb"
+      },
+      {
+        "label": "lem:mds-quantile-transfer",
+        "kind": "lemma",
+        "title": "Transfer through a geometrically convex function",
+        "statement_sha256": "14b6659dd18e331e95e09223b8efb9667212b04fe5667f0d2af742e2a6c21f77"
+      },
+      {
+        "label": "prop:mds-gamma-quantile-order",
+        "kind": "proposition",
+        "title": "Strict scaled Gamma quantile order",
+        "statement_sha256": "677c0f8024620d727979dc942d6a3bdcfb22c23718b61b7c496771a98b015671"
+      },
+      {
+        "label": "lem:mds-adjacent-global-tie",
+        "kind": "lemma",
+        "title": "An adjacent tie is a global tie",
+        "statement_sha256": "3f1e50f47b0a979a67ef0ed5eaadcbfa176c1c8624bf06787b230f5b864342f8"
+      },
+      {
+        "label": "cor:mds-nonadjacent-crossing-location",
+        "kind": "corollary",
+        "title": "Nonadjacent crossing locations",
+        "statement_sha256": "75fcb5bf7356cc50e446655ef1be7fff0cdbd92612de39e0e64c16af1b67c5a1"
+      },
+      {
         "label": "prop:common-recovery-active-uniform",
         "kind": "proposition",
         "title": "A common-response tail-ratio criterion",
@@ -164,13 +228,13 @@
         "label": "thm:poissonized-identity",
         "kind": "proposition",
         "title": "Independent recovery and the Poisson-binomial tail",
-        "statement_sha256": "a19011fcf84f058e628c2c2cd722e0fdcc089d8a1d1ec7db34249aa4a452ba5b"
+        "statement_sha256": "9273e126c5b075289d3b5c9ea3796e6e78afa48133251b36f0756eb746e71ce2"
       },
       {
         "label": "thm:dp",
         "kind": "proposition",
         "title": "Exact dynamic program",
-        "statement_sha256": "ae10fe6cd16885321f005b60fad4c94d05c7eaa2fed30d48c0c07afb845a89e5"
+        "statement_sha256": "08893f6582bceb7f767501b748f9cb7911235840c7e0c197f19a13c24fdd5649"
       },
       {
         "label": "thm:terminal-cloud",
@@ -200,7 +264,7 @@
         "label": "thm:random-environment",
         "kind": "proposition",
         "title": "Conditional environments and a two-stage guarantee",
-        "statement_sha256": "0a6e0461e22d8e0345e699422109364e3a22ed7d8c692d83675c9c2cc7552933"
+        "statement_sha256": "3fd2f4ab8593b3a0b9b42826147bada93e731862c84ce59602fab7d9bc73487f"
       },
       {
         "label": "thm:annealed-jensen",
@@ -212,7 +276,7 @@
         "label": "thm:plugin",
         "kind": "theorem",
         "title": "Conservative calibration guarantee",
-        "statement_sha256": "b48becf1c7f03f785916654cb45fc8559d74351e2c05e9531423141a4e2d1619"
+        "statement_sha256": "c832dbbf88da283b25929161e7f444559602340725d71ee8822bf6c13bbb8901"
       }
     ]
   }

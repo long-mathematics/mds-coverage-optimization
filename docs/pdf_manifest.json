@@ -4,15 +4,15 @@
     {
       "source": "gamma_mds_active_uniform.tex",
       "pdf": "gamma_mds_active_uniform.pdf",
-      "source_sha256": "36854a9c5a0890462e78f601f9873342e58a31209ffb62ea8b927bba73c2e990",
-      "pdf_sha256": "3829e97d9b0a260000f768e278b11bea7d1459b1c2efab69bd8aa2e5e167ef93",
-      "pages": 21
+      "source_sha256": "0edf38efe12f1e62f2cc2b942b1dbff48c8ca24494262fad501bef82ddda401d",
+      "pdf_sha256": "ba073d47211f90476f961dc3986ce234f7e7232074d9a279cf36ecbb04fc8f8f",
+      "pages": 27
     },
     {
       "source": "terminal_cloud_staircase.tex",
       "pdf": "terminal_cloud_staircase.pdf",
-      "source_sha256": "a44203e4a1b3c2a21e9b8c68637af23eba65dfa7656520e7cd1b79f192485980",
-      "pdf_sha256": "b6b676b3df1a3cfaee7685debe303fec1c1265128e82b6c37641e0928f26ad39",
+      "source_sha256": "5cd3b74a9a26c57152f1b678dec58dbaa8ddc376ae02d83289e08ab39286430d",
+      "pdf_sha256": "2a1cecc0ee463f1f79788752814dc4757b9ba44f4a7ac675d61c3a16a4d75a85",
       "pages": 13
     }
   ]

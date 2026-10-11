@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Structural, provenance, link and statement checks; not mathematical verification."""
+"""Structural, provenance, link and source/statement checks; not a proof checker."""
 from pathlib import Path
 import argparse, hashlib, json, re
 ROOT=Path(__file__).resolve().parents[1]
@@ -17,7 +17,7 @@ def statements(text):
 
 def main():
  p=argparse.ArgumentParser();p.add_argument('--sources-only',action='store_true');p.add_argument('--write-registry',action='store_true');args=p.parse_args()
- registry={};count=0
+ registry={};source_hashes={};count=0
  for stem in STEMS:
   text=(ROOT/f'{stem}.tex').read_text()
   labels=re.findall(r'\\label\{([^}]+)\}',text)
@@ -31,16 +31,20 @@ def main():
   if re.search(r'\\(?:input|include)\{',text):raise ValueError('Manuscripts must be standalone')
   if text.count(r'\author{Christopher D. Long}')!=1:raise ValueError('Author mismatch')
   registry[f'{stem}.tex']=statements(text);count+=len(registry[f'{stem}.tex'])
- record={'status':'Analytic proofs supplied; no proof-assistant coverage claimed.','manuscripts':registry}
+  source_hashes[f'{stem}.tex']=sha(ROOT/f'{stem}.tex')
+ # Full source hashes also detect edits to ambient hypotheses, definitions,
+ # notation, or proofs outside the individually inventoried statement bodies.
+ record={'status':'Analytic proofs supplied; no proof-assistant coverage claimed.',
+         'source_sha256':source_hashes,'manuscripts':registry}
  regpath=ROOT/'docs/statement_registry.json'
  if args.write_registry:regpath.write_text(json.dumps(record,indent=2)+'\n')
- elif json.loads(regpath.read_text())!=record:raise ValueError('Statement registry is stale')
+ elif json.loads(regpath.read_text())!=record:raise ValueError('Statement/source registry is stale')
  archive=ROOT/'archive/v30/nonuniform_coverage_theorem_notes_v30.tex'
  expected=json.loads((ROOT/'archive/v30/provenance.json').read_text())
  if sha(archive)!=expected['sha256']:raise ValueError('The frozen v30 archive changed')
  for name in ['README.md','AGENTS.md','CITATION.cff','LICENSE','LICENSES/CC-BY-4.0.txt','LICENSES/MIT.txt','THEOREM_STATUS.md','FORMALIZATION_STATUS.md','FORMALIZATION_AUDIT.md']:
   if not (ROOT/name).is_file():raise ValueError('Missing '+name)
- for md in [ROOT/'README.md',ROOT/'AGENTS.md',ROOT/'THEOREM_STATUS.md',ROOT/'FORMALIZATION_STATUS.md',ROOT/'FORMALIZATION_AUDIT.md']:
+ for md in [*ROOT.glob('*.md'),*ROOT.glob('docs/*.md'),ROOT/'archive/v30/README.md',ROOT/'scripts/results/README.md']:
   for link in re.findall(r'\]\(([^)]+)\)',md.read_text()):
    if '://' not in link and not link.startswith(('#','mailto:')):
     path=(md.parent/link.split('#')[0])

@@ -18,3 +18,11 @@ The baseline is the immutable source at `archive/v30/nonuniform_coverage_theorem
 | Original introduction, further directions, bibliography | Both papers | Rewritten to match narrower scope; independent bibliographies retain only cited items, plus companion-paper references |
 
 Canonical filenames have no version suffix. The two papers have separate abstracts and numbered statement sequences, and retain stable labels where practical. The registry records statement hashes for subsequent review. Neither active paper needs the other paper or the archive to compile or prove its main result.
+
+## Subsequent integration: global Gamma/MDS support phases
+
+The global support results added on October 11, 2026 are new material following the v30 split. They are integrated into Paper I, now titled **Optimal Allocations for Gamma Completion and MDS Recovery**, under the stable basename `gamma_mds_active_uniform`. They are not attributed to the frozen v30 source and do not create a third active paper.
+
+The new proof uses the Gamma hazard-elasticity calculation and the two support asymptotics already in Paper I, then adds exponential quantile-ratio ordering, strict logarithmic-support concavity, and the complete adjacent-support staircase. The local stability result and the common-response criterion retain their separate scopes. The preliminary proof supplement served as the development source; the integrated paper is the canonical exposition.
+
+The same revision corrects localized extraction details: Paper I defines the complementary integer-threshold response where needed; Paper II states probability ranges in its conditional guarantees, restores arbitrary-curve continuity, and explicitly includes zero budget in the coverage toolkit. The original v30 source and its provenance hash remain frozen. See [the integration audit](INTEGRATION_AUDIT.md) and [proof dependencies](PROOF_DEPENDENCIES.md).

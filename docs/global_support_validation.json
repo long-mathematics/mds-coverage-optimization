@@ -1,0 +1,75 @@
+{
+  "date": "2026-10-11",
+  "scope": "Local validation of the global Gamma/MDS support integration; no proof-assistant certification.",
+  "base_commit": "d5a8b96201785a02fb93b0cc93ba6a658c55345a",
+  "commands": [
+    "make test",
+    "make pdf",
+    "make check"
+  ],
+  "all_commands_passed": true,
+  "labeled_formal_statements": 45,
+  "statement_changes": {
+    "gamma_mds_active_uniform.tex": {
+      "added": [
+        "thm:mds-global-support-staircase",
+        "thm:mds-pairwise-crossing",
+        "thm:mds-log-support-concavity",
+        "lem:mds-cumulative-hazard-geometry",
+        "lem:mds-density-ratio-crossing",
+        "lem:mds-exponential-quantile-ratio",
+        "lem:mds-quantile-transfer",
+        "prop:mds-gamma-quantile-order",
+        "lem:mds-adjacent-global-tie",
+        "cor:mds-nonadjacent-crossing-location"
+      ],
+      "modified": [],
+      "removed": []
+    },
+    "terminal_cloud_staircase.tex": {
+      "added": [],
+      "modified": [
+        "thm:poissonized-identity",
+        "thm:dp",
+        "thm:random-environment",
+        "thm:plugin"
+      ],
+      "removed": []
+    }
+  },
+  "source_and_pdf_records": [
+    {
+      "source": "gamma_mds_active_uniform.tex",
+      "pdf": "gamma_mds_active_uniform.pdf",
+      "source_sha256": "0edf38efe12f1e62f2cc2b942b1dbff48c8ca24494262fad501bef82ddda401d",
+      "pdf_sha256": "ba073d47211f90476f961dc3986ce234f7e7232074d9a279cf36ecbb04fc8f8f",
+      "pages": 27
+    },
+    {
+      "source": "terminal_cloud_staircase.tex",
+      "pdf": "terminal_cloud_staircase.pdf",
+      "source_sha256": "5cd3b74a9a26c57152f1b678dec58dbaa8ddc376ae02d83289e08ab39286430d",
+      "pdf_sha256": "2a1cecc0ee463f1f79788752814dc4757b9ba44f4a7ac675d61c3a16a4d75a85",
+      "pages": 13
+    }
+  ],
+  "recorded_diagnostics_match_fresh_outputs": {
+    "exact_certificates": true,
+    "symbolic_identities": true,
+    "numerical_diagnostics": true,
+    "support_phases": true
+  },
+  "support_diagnostics": {
+    "precision_decimal_digits": 80,
+    "identity_records": 8,
+    "crossing_examples": 9,
+    "dominance_budget_comparisons": 10,
+    "real_support_concavity_examples": 5,
+    "all_checks_passed": true
+  },
+  "tex_warnings": [],
+  "visual_review": "docs/VISUAL_REVIEW.md",
+  "analytic_integration_review": "docs/INTEGRATION_AUDIT.md",
+  "external_referee_review_claimed": false,
+  "proof_assistant_coverage": null
+}

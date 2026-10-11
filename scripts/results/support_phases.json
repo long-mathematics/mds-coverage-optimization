@@ -1,0 +1,437 @@
+{
+  "all_checks_passed": true,
+  "dominance_examples": [
+    {
+      "case": "strict_leading_coefficient",
+      "k": 10,
+      "log_leading_coefficient_ratio": "0.54322360614733302064006043325553891",
+      "q": 10,
+      "r": 12,
+      "samples": [
+        {
+          "budget": ".0001",
+          "larger_support_logit_advantage": "0.54323471718682550982511920297560317"
+        },
+        {
+          "budget": ".5",
+          "larger_support_logit_advantage": "0.59703061907690039296468187972062753"
+        },
+        {
+          "budget": "5",
+          "larger_support_logit_advantage": "0.95307424899682085787676608673732657"
+        },
+        {
+          "budget": "20",
+          "larger_support_logit_advantage": "1.2117598016672963835456469559101601"
+        },
+        {
+          "budget": "200",
+          "larger_support_logit_advantage": "21.338448237742666904578558465676551"
+        }
+      ],
+      "shape": "2.0",
+      "shape_formula": "2"
+    },
+    {
+      "case": "equal_leading_coefficients",
+      "k": 2,
+      "log_leading_coefficient_ratio": "4.2168791772922092897394296205080076e-81",
+      "q": 2,
+      "r": 3,
+      "samples": [
+        {
+          "budget": ".0001",
+          "larger_support_logit_advantage": "0.00001870224196684390208557450220186553"
+        },
+        {
+          "budget": ".5",
+          "larger_support_logit_advantage": "0.0485777405868070285269599620788435"
+        },
+        {
+          "budget": "5",
+          "larger_support_logit_advantage": "0.29528617199769199744580354822984638"
+        },
+        {
+          "budget": "20",
+          "larger_support_logit_advantage": "2.2223081654386662333172388312667263"
+        },
+        {
+          "budget": "200",
+          "larger_support_logit_advantage": "31.459074050384319641603088736220261"
+        }
+      ],
+      "shape": "1.3547556456757273884880951310870071",
+      "shape_formula": "log(3)/(2*log(3/2))"
+    }
+  ],
+  "failures": [],
+  "identity_checks": [
+    {
+      "identity": "inverse Gamma hazard integral and cumulative-hazard curvature",
+      "relative_residual": "2.1084395886461046448697148102540038e-81",
+      "second_logarithmic_derivative_of_cumulative_hazard": "-0.022379450544539612024919657736962344",
+      "shape": "1.2",
+      "x": ".2"
+    },
+    {
+      "identity": "inverse Gamma hazard integral and cumulative-hazard curvature",
+      "relative_residual": "0.0",
+      "second_logarithmic_derivative_of_cumulative_hazard": "-0.21576711044745097298385134544407815",
+      "shape": "2",
+      "x": "2"
+    },
+    {
+      "identity": "inverse Gamma hazard integral and cumulative-hazard curvature",
+      "relative_residual": "0.0",
+      "second_logarithmic_derivative_of_cumulative_hazard": "-0.22087014724221203230677608483532024",
+      "shape": "3.5",
+      "x": "20"
+    },
+    {
+      "absolute_residual": "1.0673975417520904764652931226910894e-80",
+      "curvature": "-0.069635929596306793513616732936040518",
+      "identity": "scaled exponential order-statistic density-ratio curvature",
+      "k": 2,
+      "q": 2,
+      "r": 4,
+      "scale": ".4",
+      "x": ".3"
+    },
+    {
+      "absolute_residual": "3.9533242287114462091307152692262571e-82",
+      "curvature": "-0.037878135098119681484428559603420845",
+      "identity": "scaled exponential order-statistic density-ratio curvature",
+      "k": 3,
+      "q": 4,
+      "r": 7,
+      "scale": ".75",
+      "x": "3"
+    },
+    {
+      "absolute_residual": "1.104546029691988474446548689871912e-90",
+      "curvature": "-9.6269139422088065509875271586959808e-11",
+      "identity": "scaled exponential order-statistic density-ratio curvature",
+      "k": 5,
+      "q": 6,
+      "r": 9,
+      "scale": ".8",
+      "x": "30"
+    },
+    {
+      "identity": "real-support beta and exponential-spacing Laplace transforms",
+      "k": 2,
+      "laplace_parameter": ".7",
+      "relative_residual": "2.1084395886461046448697148102540038e-81",
+      "support": "2.5"
+    },
+    {
+      "identity": "real-support beta and exponential-spacing Laplace transforms",
+      "k": 4,
+      "laplace_parameter": "3",
+      "relative_residual": "4.2168791772922092897394296205080076e-81",
+      "support": "5.25"
+    }
+  ],
+  "noninteger_shape_nonadjacent_crossing": {
+    "absolute_logit_residual": "1.8890643329741745362319038741317106e-62",
+    "bracket": [
+      "1",
+      "100"
+    ],
+    "budget": "4.4172206353808126477029741379092509395870615392266",
+    "common_probability_scaling_relative_residual": "1.6633086271657276919745152025920521e-61",
+    "derivative_relative_residual": "1.8597058447917278103294981486017304e-79",
+    "failure_probability": "0.73145573357003281333245192571022367",
+    "from_support": 4,
+    "k": 3,
+    "logit_advantage_at_101_percent_budget": "0.0017181469209597804975732740259079603",
+    "logit_advantage_at_99_percent_budget": "-0.0017250290087638173614556567947102064",
+    "logit_difference_derivative": "0.038972620892002821154639228022894327",
+    "shape": "1.5",
+    "slope_difference": "0.0076553234624150835575340410512327684",
+    "success_probability": "0.26854426642996718666754807428977633",
+    "to_support": 7
+  },
+  "precision_decimal_digits": 80,
+  "random_sampling": false,
+  "real_support_concavity_examples": [
+    {
+      "budget": "2",
+      "geometric_intermediate_support": "4.9877804185215616108794332099316444",
+      "k": 3,
+      "log_success_concavity_gain": "0.13521996743313083316589319488957832",
+      "q": 3,
+      "r": 7,
+      "shape": "1.1",
+      "theta": ".4"
+    },
+    {
+      "budget": "12",
+      "geometric_intermediate_support": "6.3245553203367586639977870888654371",
+      "k": 4,
+      "log_success_concavity_gain": "0.12680397626390361525309550435658513",
+      "q": 4,
+      "r": 10,
+      "shape": "1.5",
+      "theta": ".5"
+    },
+    {
+      "budget": "30",
+      "geometric_intermediate_support": "6.325269095141249429869356560170347",
+      "k": 5,
+      "log_success_concavity_gain": "0.05280706708435289219371179645727367",
+      "q": 5,
+      "r": 9,
+      "shape": "2.3",
+      "theta": ".6"
+    },
+    {
+      "budget": "60",
+      "geometric_intermediate_support": "4.0",
+      "k": 2,
+      "log_success_concavity_gain": "0.00000000045107843408118367813892290903780223",
+      "q": 2,
+      "r": 8,
+      "shape": "3.5",
+      "theta": ".5"
+    },
+    {
+      "budget": "200",
+      "geometric_intermediate_support": "4.8070387906990970229051259925907609",
+      "k": 2,
+      "log_success_concavity_gain": "6.118450690438030780765562012773944e-44",
+      "q": 2,
+      "r": 7,
+      "shape": "1.2",
+      "theta": ".3"
+    }
+  ],
+  "scope": "Deterministic finite checks of proof identities, representative pair comparisons, transition budgets and real-support concavity. These diagnostics do not prove a continuum inequality, all-pair crossing theorem or global support staircase.",
+  "staircase_examples": [
+    {
+      "initial_support": 12,
+      "k": 10,
+      "minimum_logit_gap_to_a_third_support_at_a_transition": "0.041572733955604594601725295851333447",
+      "n": 16,
+      "sampled_phase_interiors": [
+        {
+          "budget": "1.8759034043630699509457698900988384",
+          "logit_gap_to_second_best": "0.061148184096860174811228655681080839",
+          "winner": 12
+        },
+        {
+          "budget": "6.3014894884569589321373709729294704",
+          "logit_gap_to_second_best": "0.04897573056019164958930441956209304",
+          "winner": 13
+        },
+        {
+          "budget": "11.592095214768106869074182157590079",
+          "logit_gap_to_second_best": "0.031154854323381897978058365190622872",
+          "winner": 14
+        },
+        {
+          "budget": "17.265474650272280316131974516878355",
+          "logit_gap_to_second_best": "0.019489576786894844144433585320741",
+          "winner": 15
+        },
+        {
+          "budget": "40.395862078392249712997573768475634",
+          "logit_gap_to_second_best": "0.09816577111687377945939370072815763",
+          "winner": 16
+        }
+      ],
+      "shape": "2",
+      "transitions": [
+        {
+          "absolute_logit_residual": "1.0616004258546535271712807929692363e-62",
+          "bracket": [
+            "3",
+            "5"
+          ],
+          "budget": "3.7518068087261399018915397801976768207445292103468",
+          "common_probability_scaling_relative_residual": "1.7118875183196673223711254884946448e-60",
+          "derivative_relative_residual": "4.2644447790894352525057120808610872e-79",
+          "failure_probability": "0.99999999999939022513748331583045867",
+          "from_support": 12,
+          "logit_advantage_at_101_percent_budget": "0.0011108987017004108738135861820947238",
+          "logit_advantage_at_99_percent_budget": "-0.00111508088649668604463906365259569",
+          "logit_difference_derivative": "0.029665380107414247732154387265725926",
+          "slope_difference": "1.8089203076492670031316339395704581e-14",
+          "success_probability": "6.0977486251668416954132578028206728e-13",
+          "to_support": 13
+        },
+        {
+          "absolute_logit_residual": "4.1335899120899584022936387612237917e-63",
+          "bracket": [
+            "8",
+            "10"
+          ],
+          "budget": "8.8511721681877779623832021656612639489149150931938",
+          "common_probability_scaling_relative_residual": "4.1749721380171139113065021064918864e-61",
+          "derivative_relative_residual": "5.6603215234763701848232901306399858e-79",
+          "failure_probability": "0.99999899110434555012744434286602561",
+          "from_support": 13,
+          "logit_advantage_at_101_percent_budget": "0.0014924678363902719969536697809863888",
+          "logit_advantage_at_99_percent_budget": "-0.0015057762049185543950812589811425983",
+          "logit_difference_derivative": "0.016936866951574466617339334863317293",
+          "slope_difference": "0.000000017087514227902896673129643603836649",
+          "success_probability": "0.0000010088956544498725556571339743877621",
+          "to_support": 14
+        },
+        {
+          "absolute_logit_residual": "4.0162259741226648505960016190717412e-63",
+          "bracket": [
+            "13",
+            "16"
+          ],
+          "budget": "14.333018261348435775765162149518893531788615157461",
+          "common_probability_scaling_relative_residual": "3.4601186478147951923987194901461523e-61",
+          "derivative_relative_residual": "7.4826224399098547288966986920086695e-79",
+          "failure_probability": "0.99926069816182982107263730565537402",
+          "from_support": 14,
+          "logit_advantage_at_101_percent_budget": "0.0013962176544982410576500545856143735",
+          "logit_advantage_at_99_percent_budget": "-0.0014183333852450273683556846059461134",
+          "logit_difference_derivative": "0.0098182077883609979020282455850017566",
+          "slope_difference": "0.0000072532527550543722315319681749346987",
+          "success_probability": "0.00073930183817017892736269434462598183",
+          "to_support": 15
+        },
+        {
+          "absolute_logit_residual": "4.2284480454172406066183879641586797e-63",
+          "bracket": [
+            "19",
+            "22"
+          ],
+          "budget": "20.197931039196124856498786884237816772774354132364",
+          "common_probability_scaling_relative_residual": "3.2419873434773064490329365702093003e-61",
+          "derivative_relative_residual": "8.548010426246099128331360972456074e-79",
+          "failure_probability": "0.97209471525816312296609673526835309",
+          "from_support": 15,
+          "logit_advantage_at_101_percent_budget": "0.0011281740415483763746682506652720001",
+          "logit_advantage_at_99_percent_budget": "-0.0011528761708588350027665129617466767",
+          "logit_difference_derivative": "0.0056461676521430487781281145970197501",
+          "slope_difference": "0.00015316121752296348111316645536696946",
+          "success_probability": "0.027905284741836877033903264731646915",
+          "to_support": 16
+        }
+      ]
+    },
+    {
+      "initial_support": 2,
+      "k": 2,
+      "minimum_logit_gap_to_a_third_support_at_a_transition": "0.18154079822653831239473095968285574",
+      "n": 6,
+      "sampled_phase_interiors": [
+        {
+          "budget": "3.0949345735868600645565043168263837",
+          "logit_gap_to_second_best": "0.14728423998670705341672912165957512",
+          "winner": 2
+        },
+        {
+          "budget": "11.732449092577331572187813386873162",
+          "logit_gap_to_second_best": "0.13633093162456891779387669650049662",
+          "winner": 3
+        },
+        {
+          "budget": "25.245639195811417574024741063767598",
+          "logit_gap_to_second_best": "0.17068068024193807968294373657062274",
+          "winner": 4
+        },
+        {
+          "budget": "44.225301632936422785373343631629258",
+          "logit_gap_to_second_best": "0.18079865267397022563175727793447688",
+          "winner": 5
+        },
+        {
+          "budget": "110.46870782446190687591964655163375",
+          "logit_gap_to_second_best": "1.2288996475022323301607172039763233",
+          "winner": 6
+        }
+      ],
+      "shape": "2",
+      "transitions": [
+        {
+          "absolute_logit_residual": "3.5021492832230371810123185709723064e-62",
+          "bracket": [
+            "5",
+            "8"
+          ],
+          "budget": "6.1898691471737201291130086336527674832675791577939",
+          "common_probability_scaling_relative_residual": "1.364387209987493755261238991590632e-61",
+          "derivative_relative_residual": "5.623440662185553422650661300667692e-81",
+          "failure_probability": "0.33644369263109605212380388895774595",
+          "from_support": 2,
+          "logit_advantage_at_101_percent_budget": "0.0029089822344214916929360638477308599",
+          "logit_advantage_at_99_percent_budget": "-0.0028932784848798599522325567642424364",
+          "logit_difference_derivative": "0.046867205402027359426647154008321096",
+          "slope_difference": "0.010463072407434221032865389672483373",
+          "success_probability": "0.66355630736890394787619611104225405",
+          "to_support": 3
+        },
+        {
+          "absolute_logit_residual": "4.3401492334121428976937888636066723e-62",
+          "bracket": [
+            "15",
+            "20"
+          ],
+          "budget": "17.275029037980943015262618140093555661056240656361",
+          "common_probability_scaling_relative_residual": "7.6812405368745593408232182447901928e-61",
+          "derivative_relative_residual": "1.1723656501947291987665293585603609e-80",
+          "failure_probability": "0.0013456993861207402720482234397583055",
+          "from_support": 3,
+          "logit_advantage_at_101_percent_budget": "0.0058681429784365530152120445357996835",
+          "logit_advantage_at_99_percent_budget": "-0.005782016155894859132996233081744195",
+          "logit_difference_derivative": "0.033720914870329078096866473418731188",
+          "slope_difference": "0.000045317149005115838356025817870036429",
+          "success_probability": "0.99865430061387925972795177656024169",
+          "to_support": 4
+        },
+        {
+          "absolute_logit_residual": "3.0982562300422923010114884349123471e-62",
+          "bracket": [
+            "30",
+            "36"
+          ],
+          "budget": "33.216249353641892132786863987441641011835193815182",
+          "common_probability_scaling_relative_residual": "8.6232225653251906303421456997495231e-61",
+          "derivative_relative_residual": "9.645761886843341240939805802224028e-80",
+          "failure_probability": "0.000000048764271540475311498822892273633595",
+          "from_support": 4,
+          "logit_advantage_at_101_percent_budget": "0.0083214791337305031054410706915975068",
+          "logit_advantage_at_99_percent_budget": "-0.008241274822913294866878468284322242",
+          "logit_difference_derivative": "0.024932596657603167382435749247256457",
+          "slope_difference": "0.0000000012158198543319355975803496160116078",
+          "success_probability": "0.99999995123572845952468850117710773",
+          "to_support": 5
+        },
+        {
+          "absolute_logit_residual": "2.8936334171492503345620010944211001e-62",
+          "bracket": [
+            "50",
+            "60"
+          ],
+          "budget": "55.234353912230953437959823275816875544149060258279",
+          "common_probability_scaling_relative_residual": "1.2090661787790849930598865967902953e-60",
+          "derivative_relative_residual": "2.0513849404334838331447862589235679e-79",
+          "failure_probability": "6.7923524118481676605328971157516074e-15",
+          "from_support": 5,
+          "logit_advantage_at_101_percent_budget": "0.0099719722556121863470628793363114406",
+          "logit_advantage_at_99_percent_budget": "-0.00989723251114395892946691662554988",
+          "logit_difference_derivative": "0.017986723054284427782693528992499697",
+          "slope_difference": "1.2217216171901304390676201180237454e-16",
+          "success_probability": "0.99999999999999320764758815183233947",
+          "to_support": 6
+        }
+      ]
+    }
+  ],
+  "tail_evaluation": "Separate lower and upper regularized Gamma integrals; separate finite binomial success/failure sums for integer support and regularized beta tails for real support; log1p for the near-one side.",
+  "tolerances": {
+    "absolute_logit_residual_at_crossing": "1.0e-55",
+    "identity_absolute_or_stated_relative_error": "1.0e-60",
+    "relative_common_probability_scaling_error_at_crossing": "1.0e-55",
+    "root_bisection_iterations": 200,
+    "strict_inequality_margin_relative_to_stated_scale": "1.0e-40",
+    "strict_inequality_scale": "1 unless specified; geometric-concavity tests use the maximum absolute log success in the comparison"
+  }
+}

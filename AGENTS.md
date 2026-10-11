@@ -12,11 +12,12 @@
 
 - Use a feature branch and pull request; prefer squash merge after checks pass. Do not bypass branch rules or change visibility, permissions, or licensing casually.
 - Preserve theorem hypotheses and equality cases. Identify and document mathematical changes in the PR, `THEOREM_STATUS.md`, and the integration audit as appropriate.
-- Every theorem, lemma, proposition and corollary must have a stable label. After an intentional statement edit, regenerate `docs/statement_registry.json` using `python scripts/validate_repository.py --write-registry --sources-only`, and review its diff.
+- Every theorem, lemma, proposition and corollary must have a stable label. After an intentional manuscript edit, regenerate `docs/statement_registry.json` using `python scripts/validate_repository.py --write-registry --sources-only`, and review its diff. The registry records individual statements and full source hashes so changes to ambient hypotheses, definitions, and proofs are also detected.
 - Run `make test`, `make pdf`, and `make check`. Commit matching sources, PDFs, and `docs/pdf_manifest.json`. Visually inspect affected PDF pages; a text comparison is not a visual audit.
 - New finite checks belong in `scripts/`; label their scope and use deterministic seeds. They do not prove a continuum inequality or global optimizer theorem.
 - README math uses `$...$` or `$$...$$`, expanded standard commands, and no isolated line containing only `=` or `-`. Keep all manuscript and related-work links valid.
-- Neither expected-cloud optimality nor Poissonized transfer establishes fixed-read or MDS support-phase optimality. Facewise stability is not global maximality. Keep these boundaries explicit.
+- Paper I proves the Gamma/MDS support staircase for shape > 1 and 2 <= k <= n; its initial support q0 may exceed k. Supports below q0 are permanently dominated; absence of skipped transitions concerns the staircase q0 through n. Keep the leading-coefficient tie case, q0 = n empty crossing list, and adjacent boundary equality cases explicit.
+- The Gamma/MDS and expected-cloud support theorems have separate proofs. Expected-cloud optimality does not establish MDS optimality, and Poissonized transfer does not establish the exact fixed-read optimizer. Facewise stability is not global maximality.
 
 ## Formalization
 

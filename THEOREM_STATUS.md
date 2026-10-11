@@ -1,6 +1,6 @@
 # Theorem status
 
-Status at the initial two-paper split, October 11, 2026.
+Status after integration of the global Gamma/MDS support results, October 11, 2026. Paper I is now titled **Optimal Allocations for Gamma Completion and MDS Recovery**; its stable source and PDF basenames are unchanged.
 
 | Claim | Location / stable label | Status |
 |---|---|---|
@@ -11,13 +11,21 @@ Status at the initial two-paper split, October 11, 2026.
 | Small-budget support and tie-breaking | I, `prop:mds-small-depth` | Proved for fixed finite n, k, and shape greater than one |
 | Eventual full support | I, `prop:mds-large-depth` | Proved for k >= 2; not asserted for k = 1 |
 | Active-barycenter stability | I, `prop:mds-barycenter-stability` | Facewise result; degenerate threshold left unclassified |
-| Global MDS support phases | I, further questions | Open: crossing uniqueness, re-entry, skipped supports |
+| Gamma cumulative-hazard geometry | I, `lem:mds-cumulative-hazard-geometry` | Strict geometric concavity for every real shape > 1; inverse elasticity is positive and strictly increasing |
+| Scaled Gamma quantile-ratio order | I, `prop:mds-gamma-quantile-order` | Strict increase for each pair k <= q < r, k >= 2, shape > 1; analytic transfer from exponential order statistics |
+| Global MDS pairwise crossings | I, `thm:mds-pairwise-crossing` | Complete dominance-or-unique-crossing classification, including leading-coefficient equality and strict transversality |
+| Strict concavity in logarithmic support | I, `thm:mds-log-support-concavity` | Positive real-support interpolation; strictness proved by a positive-measure shell in the Prékopa–Leindler argument |
+| Global Gamma/MDS support staircase | I, `thm:mds-global-support-staircase` | Proved for shape > 1 and 2 <= k <= n; consecutive supports q0 through n; no re-entry or skipped transitions after q0; exactly two adjacent supports at each boundary |
+| Nonadjacent crossing location | I, `cor:mds-nonadjacent-crossing-location` | Crossing lies strictly between the outer adjacent transition budgets and below the optimum |
 | Expected-cloud active-uniform minimizers | II, `thm:active-uniform-terminal-cloud` | Analytic proof supplied for integer t >= 2; t = 1 separately by strict convexity |
 | Expected-cloud adjacent-support staircase | II, `thm:terminal-cloud-staircase` | Full analytic phase classification supplied |
+| Zero-budget coverage and arbitrary-curve continuity | II, `thm:poissonized-identity`, `thm:dp` | Toolkit includes M = 0; continuity holds for all bounded count recovery curves; monotonicity has its own hypothesis |
 | Fixed-read sandwich | II, `thm:depoissonization` | Probability transfer for a fixed law, not optimizer transfer |
-| Calibration/environment guarantees | II, `thm:plugin`, `thm:random-environment` | Conditional guarantees with stated independence and feasibility assumptions |
+| Calibration/environment guarantees | II, `thm:plugin`, `thm:random-environment` | Conditional guarantees with independence, feasibility, and explicit 0 < delta, eta < 1 |
 | Exact higher-threshold fixed-read optimizer | Neither paper | Open here; no claim inherited from Poissonization |
 
-All current statements are inventoried in [docs/statement_registry.json](docs/statement_registry.json). The registry hashes statements, not proofs, and is not a mathematical checker. Proof dependencies and suggested audit order are in [docs/PROOF_DEPENDENCIES.md](docs/PROOF_DEPENDENCIES.md).
+Here q0 is the largest maximizer of the small-budget coefficient over the available supports. It may exceed k; supports below it are permanently dominated. If q0 = n, there are no transition budgets and full support is optimal for every positive budget. The shape <= 1 and k = 1 classifications are unchanged. The general-response support remark concerns active-uniform candidates; it does not establish an optimizer classification for arbitrary response curves.
 
-Prior v30 audit claims are historical context. The integration audit here is a separate recorded review; it does not claim a new independent referee or proof-assistant certification. Finite exact certificates concern only the specified examples and algebraic identities. Numerical diagnostics cannot establish theorem validity for all parameters.
+All current formal statements are inventoried in [docs/statement_registry.json](docs/statement_registry.json). Individual statement hashes are supplemented by full source hashes, which also detect edits to ambient hypotheses, definitions, and proofs. These are change-detection checks, not mathematical verification. Proof dependencies and suggested audit order are in [docs/PROOF_DEPENDENCIES.md](docs/PROOF_DEPENDENCIES.md).
+
+Prior v30 audit claims are historical context. The integration audit records proof review of the new arguments and localized extraction corrections; it does not claim an external referee report or proof-assistant certification. Finite exact certificates concern only the specified examples and algebraic identities. The new support diagnostics reproduce transition values and selected strict inequalities; numerical diagnostics cannot establish theorem validity for all parameters.

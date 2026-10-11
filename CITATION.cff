@@ -11,10 +11,10 @@ license:
   - MIT
   - CC-BY-4.0
 date-released: 2026-10-11
-abstract: "Analytic manuscripts and reproducibility checks for Gamma/MDS active-uniform allocation and the expected terminal-cloud staircase. No proof-assistant certification is claimed."
+abstract: "Analytic manuscripts and reproducibility checks for optimal Gamma/MDS allocations, their complete support staircase, and the separate expected terminal-cloud staircase. No proof-assistant certification is claimed."
 references:
   - type: unpublished
-    title: "Active-Uniform Laws for Gamma Completion and MDS Recovery"
+    title: "Optimal Allocations for Gamma Completion and MDS Recovery"
     authors:
       - family-names: Long
         given-names: Christopher D.
