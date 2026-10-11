@@ -1,7 +1,7 @@
 {
   "date": "2026-10-11",
-  "scope": "Local validation of the global Gamma/MDS support integration; no proof-assistant certification.",
-  "base_commit": "d5a8b96201785a02fb93b0cc93ba6a658c55345a",
+  "scope": "Local validation of the global Gamma/MDS support integration, including the separately merged first-audit corrections; no proof-assistant certification.",
+  "base_commit": "32a82e03a6ad78331635e465a42c91308eaeafcd",
   "commands": [
     "make test",
     "make pdf",
@@ -28,12 +28,7 @@
     },
     "terminal_cloud_staircase.tex": {
       "added": [],
-      "modified": [
-        "thm:poissonized-identity",
-        "thm:dp",
-        "thm:random-environment",
-        "thm:plugin"
-      ],
+      "modified": [],
       "removed": []
     }
   },
@@ -41,16 +36,16 @@
     {
       "source": "gamma_mds_active_uniform.tex",
       "pdf": "gamma_mds_active_uniform.pdf",
-      "source_sha256": "0edf38efe12f1e62f2cc2b942b1dbff48c8ca24494262fad501bef82ddda401d",
-      "pdf_sha256": "ba073d47211f90476f961dc3986ce234f7e7232074d9a279cf36ecbb04fc8f8f",
+      "source_sha256": "314d3959557803756ae58f4fb59939257b96fffcc72137572fd96df4ceb0d21b",
+      "pdf_sha256": "404290f6cdace3d7c0bf4abb8cde1e63208db50d7f527335e9d0b09da4525db2",
       "pages": 27
     },
     {
       "source": "terminal_cloud_staircase.tex",
       "pdf": "terminal_cloud_staircase.pdf",
-      "source_sha256": "5cd3b74a9a26c57152f1b678dec58dbaa8ddc376ae02d83289e08ab39286430d",
-      "pdf_sha256": "2a1cecc0ee463f1f79788752814dc4757b9ba44f4a7ac675d61c3a16a4d75a85",
-      "pages": 13
+      "source_sha256": "24790dfd913e430ee44d8b24bc96cacccb6555f5a7e5b765c56a75ae49b34214",
+      "pdf_sha256": "c4da336c222fe254a11df2a88c0ff767c6094ebf0cbd083a008d97777a1949f6",
+      "pages": 14
     }
   ],
   "recorded_diagnostics_match_fresh_outputs": {
@@ -71,5 +66,13 @@
   "visual_review": "docs/VISUAL_REVIEW.md",
   "analytic_integration_review": "docs/INTEGRATION_AUDIT.md",
   "external_referee_review_claimed": false,
-  "proof_assistant_coverage": null
+  "proof_assistant_coverage": null,
+  "preserved_audit_pull_request": "https://github.com/long-mathematics/mds-coverage-optimization/pull/3",
+  "statement_registry_schema": 2,
+  "statement_comparison_basis": "Per-label statement_sha256 against the corrected base; context and whole-source fingerprints are refreshed separately.",
+  "preserved_paper_ii_proof_blocks": 13,
+  "audit_regression_tests": {
+    "count": 5,
+    "all_passed": true
+  }
 }

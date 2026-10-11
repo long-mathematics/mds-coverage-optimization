@@ -14,3 +14,7 @@
 Use the labels in [docs/statement_registry.json](docs/statement_registry.json) as the manuscript-to-Lean correspondence keys. The two main theorems are independent: Paper II is not a dependency of Paper I, and vice versa.
 
 When work begins, use a root `lakefile.toml`, pinned `lean-toolchain` and Mathlib dependency/manifest, a root `MdsCoverageOptimization.lean`, and a `MdsCoverageOptimization/` module tree. Add Lean CI only when there is real formalized content. Keep proposed tasks distinct from completed coverage and apply [FORMALIZATION_AUDIT.md](FORMALIZATION_AUDIT.md).
+
+## Ambient context after the first audit
+
+Before translating a statement, resolve its complete local context, not only its theorem environment. Registry schema 2 fingerprints source prefixes and whole manuscripts to flag context drift. Important contexts include Paper I's common Gamma response and positive-face hypotheses, its fixed n/k/shape asymptotic regime, and Paper II's distinction between positive-budget optimizer claims and nonnegative-budget probability identities. Calibration depth rules are now explicitly measurable and finite, and the conditional sequencing law is stated. These source checks do not certify measurability or any analytic proof in Lean.

@@ -27,7 +27,7 @@ The finite rational frozen-pair counterexample rules out an attractive but inval
 2. This lemma and `thm:abstract-two-point-collapse` -> `thm:active-uniform-terminal-cloud`.
 3. Strict decrease of x phi'_t(x)/phi_t(x) -> unique efficiency peak rho_t -> unique adjacent support crossings -> strictly ordered beta_q -> `thm:terminal-cloud-staircase` and its corollaries.
 4. Fixed-law Poisson splitting and conditional reconstruction independence -> Poisson-binomial identity and dynamic program, including the M = 0 endpoint. Local uniform convergence of bounded Poisson-expectation series gives continuity without a monotonicity hypothesis. Bernstein concentration is an external standard input, not part of the extremizer proof.
-5. Monotone-prefix coupling + Poisson Chernoff bounds -> `thm:depoissonization`.
-6. Coordinatewise monotonicity and conditioning -> calibration/environment guarantees, with 0 < delta, eta < 1 for the product-probability bounds and explicit feasibility for adaptive calibration choices.
+5. Monotone-prefix coupling + Poisson Chernoff bounds -> `thm:depoissonization`, with zero reads handled directly before applying positive-mean Chernoff bounds.
+6. Coordinatewise monotonicity and conditioning -> calibration/environment guarantees, with 0 < delta, eta < 1 for the product-probability bounds, a measurable finite depth rule, explicit feasibility, and conditional fixed-law sequencing with fresh randomness. The annealed equality case retains a local positive-budget hypothesis.
 
 **No proof dependency crosses between the flagship theorems of Papers I and II.** Bibliographical comparisons do not create such a dependency.

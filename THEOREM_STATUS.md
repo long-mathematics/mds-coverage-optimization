@@ -20,12 +20,15 @@ Status after integration of the global Gamma/MDS support results, October 11, 20
 | Expected-cloud active-uniform minimizers | II, `thm:active-uniform-terminal-cloud` | Analytic proof supplied for integer t >= 2; t = 1 separately by strict convexity |
 | Expected-cloud adjacent-support staircase | II, `thm:terminal-cloud-staircase` | Full analytic phase classification supplied |
 | Zero-budget coverage and arbitrary-curve continuity | II, `thm:poissonized-identity`, `thm:dp` | Toolkit includes M = 0; continuity holds for all bounded count recovery curves; monotonicity has its own hypothesis |
-| Fixed-read sandwich | II, `thm:depoissonization` | Probability transfer for a fixed law, not optimizer transfer |
-| Calibration/environment guarantees | II, `thm:plugin`, `thm:random-environment` | Conditional guarantees with independence, feasibility, and explicit 0 < delta, eta < 1 |
+| Fixed-read sandwich | II, `thm:depoissonization` | Includes zero reads as a separate case; probability transfer for a fixed law, not optimizer transfer |
+| Calibration/environment guarantees | II, `thm:plugin`, `thm:random-environment` | Explicit 0 < delta, eta < 1; measurable finite calibration depth, feasibility, and a conditional fixed-law sequencing model with fresh randomness |
+| Annealed one-read bias penalty | II, `thm:annealed-jensen` | Random-probability-vector and positive-budget assumptions stated locally, preserving strict equality classification |
 | Exact higher-threshold fixed-read optimizer | Neither paper | Open here; no claim inherited from Poissonization |
 
 Here q0 is the largest maximizer of the small-budget coefficient over the available supports. It may exceed k; supports below it are permanently dominated. If q0 = n, there are no transition budgets and full support is optimal for every positive budget. The shape <= 1 and k = 1 classifications are unchanged. The general-response support remark concerns active-uniform candidates; it does not establish an optimizer classification for arbitrary response curves.
 
-All current formal statements are inventoried in [docs/statement_registry.json](docs/statement_registry.json). Individual statement hashes are supplemented by full source hashes, which also detect edits to ambient hypotheses, definitions, and proofs. These are change-detection checks, not mathematical verification. Proof dependencies and suggested audit order are in [docs/PROOF_DEPENDENCIES.md](docs/PROOF_DEPENDENCIES.md).
+All current formal statements are inventoried in [docs/statement_registry.json](docs/statement_registry.json). Schema 2 supplements individual statement hashes with complete source-prefix and whole-source hashes. These conservative fingerprints also detect edits to ambient hypotheses, definitions, and proofs, but are not semantic dependency analysis or mathematical verification. Proof dependencies and suggested audit order are in [docs/PROOF_DEPENDENCIES.md](docs/PROOF_DEPENDENCIES.md).
 
 Prior v30 audit claims are historical context. The integration audit records proof review of the new arguments and localized extraction corrections; it does not claim an external referee report or proof-assistant certification. Finite exact certificates concern only the specified examples and algebraic identities. The new support diagnostics reproduce transition values and selected strict inequalities; numerical diagnostics cannot establish theorem validity for all parameters.
+
+The [localized first-audit repairs](docs/FIRST_AUDIT_CORRECTIONS.md) are retained in full. Relative to that corrected version, the global-support integration preserves every existing formal statement in both papers and adds ten in Paper I.

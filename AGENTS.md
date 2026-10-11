@@ -12,7 +12,7 @@
 
 - Use a feature branch and pull request; prefer squash merge after checks pass. Do not bypass branch rules or change visibility, permissions, or licensing casually.
 - Preserve theorem hypotheses and equality cases. Identify and document mathematical changes in the PR, `THEOREM_STATUS.md`, and the integration audit as appropriate.
-- Every theorem, lemma, proposition and corollary must have a stable label. After an intentional manuscript edit, regenerate `docs/statement_registry.json` using `python scripts/validate_repository.py --write-registry --sources-only`, and review its diff. The registry records individual statements and full source hashes so changes to ambient hypotheses, definitions, and proofs are also detected.
+- Every theorem, lemma, proposition and corollary must have a stable label. After an intentional manuscript edit, regenerate `docs/statement_registry.json` using `python scripts/validate_repository.py --write-registry --sources-only`, and review its diff. Schema 2 records individual statements, complete source prefixes, and whole sources so changes to ambient hypotheses, definitions, and proofs are also detected.
 - Run `make test`, `make pdf`, and `make check`. Commit matching sources, PDFs, and `docs/pdf_manifest.json`. Visually inspect affected PDF pages; a text comparison is not a visual audit.
 - New finite checks belong in `scripts/`; label their scope and use deterministic seeds. They do not prove a continuum inequality or global optimizer theorem.
 - README math uses `$...$` or `$$...$$`, expanded standard commands, and no isolated line containing only `=` or `-`. Keep all manuscript and related-work links valid.
@@ -22,3 +22,7 @@
 ## Formalization
 
 Follow `FORMALIZATION_STATUS.md` and `FORMALIZATION_AUDIT.md`. When formalization begins, use a pinned root-level Lake project with `MdsCoverageOptimization.lean` and `MdsCoverageOptimization/`, not a separate `formalization/` project. Do not introduce `sorry`, `admit`, custom proof axioms, or tautological redefinitions to claim coverage. A clean kernel build must be accompanied by statement-correspondence and transitive-axiom audits.
+
+## Context-sensitive statement registry
+
+Registry schema 2 records each statement environment, its complete preceding source prefix, and the whole manuscript source. Review context/source hash changes as well as statement hashes; a changed surrounding assumption or definition is mathematically relevant even when a theorem environment is unchanged. Prefix hashes are deliberately conservative, not semantic dependency analysis. Do not refresh the registry merely to silence a failure without reviewing the source diff.

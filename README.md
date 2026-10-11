@@ -61,7 +61,7 @@ The expected-defect objective and the MDS success probability have **separate an
 
 ## Status and scope
 
-These are research manuscripts with analytic proofs, **not proof-assistant-certified results**. Numerical diagnostics are not proofs. See [theorem status](THEOREM_STATUS.md), the [statement registry](docs/statement_registry.json), [integration audit](docs/INTEGRATION_AUDIT.md), and [formalization roadmap](FORMALIZATION_STATUS.md).
+These are research manuscripts with analytic proofs, **not proof-assistant-certified results**. Numerical diagnostics are not proofs. See [theorem status](THEOREM_STATUS.md), the [context-sensitive statement registry](docs/statement_registry.json), [integration audit](docs/INTEGRATION_AUDIT.md), [first-audit corrections](docs/FIRST_AUDIT_CORRECTIONS.md), and [formalization roadmap](FORMALIZATION_STATUS.md).
 
 This is not a general DNA-storage or transfer-calculus collection. Motif-channel posterior inference, capacity, orbit methods, and decoding are excluded from the active papers. The completed-rate-mass theorem is also excluded; its natural connection is to [nonuniform-random-permutations](https://github.com/long-mathematics/nonuniform-random-permutations). Cross-referencing that project does not import its proofs or its formalization status.
 
@@ -80,7 +80,7 @@ make pdf
 make check
 ```
 
-`make test` runs exact rational certificates, symbolic identities, and deterministic finite numerical diagnostics, including the MDS support transitions. Results are written to `build/checks/`; recorded outputs and their scope are in [scripts/results](scripts/results/README.md). `make pdf` builds both PDFs and updates the source/PDF hash manifest. `make check` checks provenance, the statement and source registry, internal references, local README links, and warning-free rebuilds, and compares rebuilt PDF text against the tracked PDFs. Different TeX versions need not produce byte-identical PDFs; hashes identify the stored source/PDF pair, while rebuild checks compare extracted text.
+`make test` runs exact rational certificates, symbolic identities, deterministic finite numerical diagnostics including the MDS support transitions, and localized-audit regression tests. Results are written to `build/checks/`; recorded outputs and their scope are in [scripts/results](scripts/results/README.md). `make pdf` builds both PDFs and updates the source/PDF hash manifest. `make check` checks provenance, the statement and source-context registry, internal references, local README links, and warning-free rebuilds, and compares rebuilt PDF text against the tracked PDFs. Registry schema 2 fingerprints each statement, its complete source prefix, and the whole manuscript. Different TeX versions need not produce byte-identical PDFs; hashes identify the stored source/PDF pair, while rebuild checks compare extracted text.
 
 `make archive` optionally compiles the frozen master. `make clean` removes build products, not the tracked PDFs or archive. No Lean project or placeholder theorem is included; see [formalization audit policy](FORMALIZATION_AUDIT.md).
 

@@ -12,12 +12,13 @@ def statements(text):
   lab=re.search(r'\\label\{([^}]+)\}',m.group(3))
   if not lab:raise ValueError('Unlabeled formal statement: '+str(m.group(2)))
   out.append({'label':lab.group(1),'kind':m.group(1),'title':m.group(2) or '',
-              'statement_sha256':hashlib.sha256(m.group(0).encode()).hexdigest()})
+              'statement_sha256':hashlib.sha256(m.group(0).encode()).hexdigest(),
+              'context_sha256':hashlib.sha256(text[:m.start()].encode()).hexdigest()})
  return out
 
 def main():
  p=argparse.ArgumentParser();p.add_argument('--sources-only',action='store_true');p.add_argument('--write-registry',action='store_true');args=p.parse_args()
- registry={};source_hashes={};count=0
+ registry={};count=0
  for stem in STEMS:
   text=(ROOT/f'{stem}.tex').read_text()
   labels=re.findall(r'\\label\{([^}]+)\}',text)
@@ -31,11 +32,12 @@ def main():
   if re.search(r'\\(?:input|include)\{',text):raise ValueError('Manuscripts must be standalone')
   if text.count(r'\author{Christopher D. Long}')!=1:raise ValueError('Author mismatch')
   registry[f'{stem}.tex']=statements(text);count+=len(registry[f'{stem}.tex'])
-  source_hashes[f'{stem}.tex']=sha(ROOT/f'{stem}.tex')
  # Full source hashes also detect edits to ambient hypotheses, definitions,
  # notation, or proofs outside the individually inventoried statement bodies.
- record={'status':'Analytic proofs supplied; no proof-assistant coverage claimed.',
-         'source_sha256':source_hashes,'manuscripts':registry}
+ record={'schema_version':2,
+         'status':'Analytic proofs supplied; no proof-assistant coverage claimed.',
+         'source_sha256':{f'{stem}.tex':sha(ROOT/f'{stem}.tex') for stem in STEMS},
+         'manuscripts':registry}
  regpath=ROOT/'docs/statement_registry.json'
  if args.write_registry:regpath.write_text(json.dumps(record,indent=2)+'\n')
  elif json.loads(regpath.read_text())!=record:raise ValueError('Statement/source registry is stale')
