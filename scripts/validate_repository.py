@@ -47,6 +47,11 @@ def main():
     if not path.exists():raise ValueError(f'Broken local link in {md.name}: {link}')
  readme=(ROOT/'README.md').read_text()
  if r'\[' in readme or r'\(' in readme:raise ValueError('Use GitHub dollar-delimited mathematics')
+ # GitHub README math must be self-contained and avoid unsupported macro definitions.
+ for md in [ROOT/'README.md', ROOT/'archive/v30/README.md', ROOT/'scripts/results/README.md']:
+  content=md.read_text()
+  forbidden=re.search(r'\\(?:operatorname|DeclareMathOperator|DeclareRobustCommand|newcommand|renewcommand|providecommand|def|gdef)\b',content)
+  if forbidden:raise ValueError(f'Unsupported/unexpanded README TeX macro in {md}: {forbidden.group(0)}')
  if re.search(r'^\s*[=\-]\s*$',readme,re.M):raise ValueError('Unsafe lone Markdown math line')
  if not args.sources_only:
   manifest=json.loads((ROOT/'docs/pdf_manifest.json').read_text())
